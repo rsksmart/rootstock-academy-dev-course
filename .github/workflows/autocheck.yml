@@ -45,11 +45,19 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       # 4. Download the official template and tests & inject student contracts 
+      - name: Generate GitHub App installation token
+        id: get_token
+        uses: peter-murray/github-app-installation-token-action@v1
+        with:
+          app_id: ${{ secrets.GH_APP_ID }}
+          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          installation_id: ${{ secrets.GH_APP_INSTALLATION_ID }}
+    
       - name: Assemble module project and validate contracts
         run: |
           echo "🔧 Cloning official template repo..."
-          git clone https://${{ secrets.TESTS_REPO_TOKEN }}@github.com/rsksmart/rsk-devcourse-assestments-internal tmp_template
-
+          git clone https://x-access-token:${{ steps.get_token.outputs.token }}@github.com/rsksmart/rsk-devcourse-assestments-internal.git tmp_template
+          
           echo "📁 Copying module ${MODULE} to working directory..."
           cp -r tmp_template/${MODULE} project
 
