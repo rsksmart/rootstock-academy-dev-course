@@ -47,7 +47,7 @@ jobs:
           rm -rf project/contracts/*
     
           echo "📦 Copying student's contracts into project/contracts..."
-          cp -r contracts/* project/contracts/
+          cp -r ${MODULE}/contracts/* project/contracts/
 
           echo "✅ Project structure ready."
 
@@ -80,7 +80,7 @@ jobs:
           echo "📁 Creating reports directory"
           mkdir -p reports
 
-          if [ -f "project/hardhat.config.js" ] && [ -f "project/package.json" ]; then
+          if [ -f "project/hardhat.config.ts" ] && [ -f "project/package.json" ]; then
             echo "🧪 Running Hardhat tests..."
             cd project
             npm install
