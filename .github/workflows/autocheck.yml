@@ -1,7 +1,7 @@
 name: Auto Check PRs
 
 on:
-  pull_request:
+  pull_request_target:
     branches:
       - main  # branch students submit PRs to
 
@@ -13,19 +13,25 @@ jobs:
       # 1. Checkout the student's PR code
       - name: Checkout PR code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
 
-      # 2. Detect the module from the branch name (e.g., module1/student-solution)
-      - name: Detect module from branch name
+      # 2. Detect the module from the PR title (e.g., module1/student-username)
+      - name: Detect module from PR title
         run: |
-          echo “Parsing branch name: $GITHUB_HEAD_REF”
-          MODULE=$(echo “$GITHUB_HEAD_REF” | grep -oE ‘^module[0-9]+’)
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          echo "Parsing PR title: $PR_TITLE"
+          MODULE=$(echo "$PR_TITLE" | grep -oE '^module[0-9]+')
 
-          if [ -z “$MODULE” ]; then
-            echo “:x: ERROR: Branch name must start with ‘moduleX/’, e.g., ‘module1/[github_username]’”
+          if [ -z "$MODULE" ]; then
+            echo ":x: ERROR: PR title must start with 'moduleX/', e.g., 'module1/your-username'"
+            echo "Current PR title: $PR_TITLE"
             exit 1
           fi
 
-          echo “MODULE=$MODULE” >> $GITHUB_ENV
+          echo "✅ Detected module: $MODULE"
+          echo "MODULE=$MODULE" >> $GITHUB_ENV
 
       # 3. Setup Node.js
       - name: Setup Node.js
