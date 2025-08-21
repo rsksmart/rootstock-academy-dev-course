@@ -10,6 +10,7 @@ contract Lock {
   address payable public owner;
 
   event Withdrawal(uint amount, uint when);
+  event Withdrawal2(uint amount, uint when);
 
   constructor(uint _unlockTime) payable {
     require(
@@ -29,6 +30,7 @@ contract Lock {
     require(msg.sender == owner, "You aren't the owner");
 
     emit Withdrawal(address(this).balance, block.timestamp);
+    emit Withdrawal2(address(this).balance, block.timestamp);
 
     owner.transfer(address(this).balance);
   }
