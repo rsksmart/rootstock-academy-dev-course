@@ -23,9 +23,12 @@
 </ol>
 </details>
 <details>
-<summary> <a href="#module-2-smart-contract-development">Module 2: Smart Contract Development</a></summary>
+<summary> <a href="#module-2-testing-smart-contracts">Module 2: Testing Smart Contracts</a></summary>
 <ol>
-  <li><a href="#coming-soon">Coming Soon</a></li>
+  <li><a href="#module-2-overview">Overview</a></li>
+  <li><a href="#module-2-exercises">Exercises</a></li>
+  <li><a href="#module-2-running-tests">Running Tests</a></li>
+  <li><a href="#module-2-submission-guidelines">Submission Guidelines</a></li>
 </ol>
 </details>
 
@@ -40,6 +43,7 @@ Welcome to the **Rootstock Developer Course**! This hands-on course will guide y
 ### What You'll Learn
 
 - ✅ Solidity programming language fundamentals
+- ✅ Smart contract testing with Hardhat and Ethers.js
 - ✅ Smart contract development and deployment
 - ✅ Best practices for secure contract design
 - ✅ Integration with blockchain networks
@@ -369,11 +373,261 @@ npm install
 
 ---
 
-# Module 2: Smart Contract Development
+# Module 2: Testing Smart Contracts
 
-## Coming Soon
+💡 **Learning Time**: 6-8 hours  
+📹 **Video Lessons**: Available on the platform  
+🎯 **Goal**: Master smart contract testing with Hardhat and Ethers.js
 
-Module 2 will cover advanced smart contract development topics. Stay tuned!
+## Module 2 Overview
+
+In Module 2, you'll learn how to write comprehensive tests for Solidity smart contracts using Hardhat and Ethers.js. This module teaches you testing best practices and advanced techniques essential for building reliable blockchain applications.
+
+### What You'll Learn
+
+By completing this module, you will be able to:
+- Write basic deployment and state tests
+- Test contract functions and their effects
+- Verify event emissions
+- Test error handling and reverts
+- Use advanced testing techniques (time manipulation, snapshots, balance manipulation)
+
+### Contracts You'll Test
+
+- **Cars.sol**: A contract managing a collection of cars with ownership and events
+- **CarLock.sol**: A time-locked contract for advanced testing techniques
+
+## Module 2 Exercises
+
+| # | Exercise | Topics Covered | Difficulty |
+|---|----------|----------------|------------|
+| 01 | [Basic Deployment](./module2/TestTemplates/01-basic-deployment.ts) | `getContractFactory`, `deploy`, `waitForDeployment` | ⭐ |
+| 02 | [Testing Functions](./module2/TestTemplates/02-testing-functions.ts) | Function calls, state changes, `connect()` | ⭐⭐ |
+| 03 | [Testing Events](./module2/TestTemplates/03-testing-events.ts) | `.to.emit()`, `.withArgs()`, event verification | ⭐⭐⭐ |
+| 04 | [Testing Reverts](./module2/TestTemplates/04-testing-reverts.ts) | `.to.be.revertedWith()`, error handling | ⭐⭐⭐ |
+| 05 | [Advanced Testing](./module2/TestTemplates/05-advanced-testing.ts) | Time manipulation, snapshots, balance checks | ⭐⭐⭐⭐ |
+
+## Module 2 Running Tests
+
+### Compile Contracts
+```bash
+cd module2
+npm run compile
+```
+
+### Run Your Tests
+```bash
+# Run a specific test template you're working on
+npx hardhat test TestTemplates/01-basic-deployment.ts
+
+# Run all your test templates
+npx hardhat test TestTemplates/
+```
+
+### Run Validators
+```bash
+# Run all validators (for submission check)
+npm run test:validators
+
+# Run a specific validator
+npx hardhat test test-validators/validate-01-basic-deployment.ts
+```
+
+### View Detailed Test Output
+```bash
+npx hardhat test --verbose
+```
+
+### Check Gas Usage
+```bash
+REPORT_GAS=true npx hardhat test
+```
+
+## How to Complete Module 2 Exercises
+
+### Step 1: Open the Test Template
+
+Navigate to `module2/TestTemplates/` and open the exercise file. You'll see test code with blanks (`___`):
+
+```typescript
+// Example from 01-basic-deployment.ts
+it("should deploy the Cars contract successfully", async function () {
+  const Cars = await ethers.___("Cars");
+  const cars = await Cars.___();
+  await cars.___();
+  
+  const address = await cars.___();
+  ___(address).to.be.a("___");
+});
+```
+
+### Step 2: Fill in the Blanks
+
+Replace each `___` with the correct Ethers.js code:
+
+```typescript
+it("should deploy the Cars contract successfully", async function () {
+  const Cars = await ethers.getContractFactory("Cars");
+  const cars = await Cars.deploy();
+  await cars.waitForDeployment();
+  
+  const address = await cars.getAddress();
+  expect(address).to.be.a("string");
+});
+```
+
+### Step 3: Test Your Solution
+
+Run the test file to verify your solution:
+
+```bash
+npx hardhat test TestTemplates/01-basic-deployment.ts
+```
+
+### Step 4: Fix Any Errors
+
+If tests fail, read the error messages carefully:
+- ❌ **Method errors**: Check Ethers.js method names and syntax
+- ❌ **Assertion errors**: Verify your expect statements
+- ❌ **Compilation errors**: Ensure contracts compile first
+
+### Step 5: Run Validators
+
+Once your tests pass, verify with the validators:
+
+```bash
+npx hardhat test test-validators/validate-01-basic-deployment.ts
+```
+
+### Step 6: Move to the Next Exercise
+
+Once all tests and validators pass (✅), move to the next exercise!
+
+## Module 2 Submission Guidelines
+
+### Before Submitting
+
+- ✅ All test templates completed
+- ✅ All tests pass when run
+- ✅ All validators pass
+- ✅ No syntax errors
+- ✅ Code follows testing best practices
+
+### Submission Checklist
+
+```bash
+# 1. Create a branch following the naming convention: module2/your-username
+git checkout -b module2/your-username
+
+# 2. Run all tests one final time
+cd module2
+npm run test:validators
+
+# 3. Check for any uncommitted changes
+git status
+
+# 4. Commit your work
+git add module2/
+git commit -m "Complete Module 2: Testing Smart Contracts"
+
+# 5. Push to your fork
+git push origin module2/your-username
+
+# 6. Create Pull Request on GitHub to the parent repository
+# PR title must be: module2/your-username
+```
+
+**Remember**: Replace `your-username` with your course username or email address.
+
+### What We Check
+
+Your submission will be evaluated on:
+1. **Correctness**: All tests pass ✅
+2. **Completeness**: All exercises completed
+3. **Test Quality**: Proper use of assertions and patterns
+4. **Best Practices**: Uses `beforeEach`, proper test structure, etc.
+
+## Ethers.js Quick Reference
+
+### Essential Methods
+
+**Contract Deployment:**
+- `ethers.getContractFactory(name)` - Get contract factory
+- `factory.deploy(...args)` - Deploy contract
+- `contract.waitForDeployment()` - Wait for deployment
+- `contract.getAddress()` - Get deployed address
+
+**Testing Helpers:**
+- `ethers.getSigners()` - Get test accounts
+- `contract.connect(signer)` - Use different account
+- `ethers.parseEther(value)` - Convert ETH string to wei
+
+**Chai Matchers:**
+- `.to.equal(value)` - Exact equality
+- `.to.be.a(type)` - Type checking
+- `.to.emit(contract, event)` - Event emission
+- `.withArgs(...args)` - Event arguments
+- `.to.be.revertedWith(message)` - Revert checking
+
+## Module 2 Tips for Success
+
+### 📚 Learning Resources
+
+- **Watch the video lessons** before starting exercises
+- **Read the module README** in `module2/README.md` for detailed explanations
+- **Review Ethers.js documentation** when stuck
+- **Study the reference solutions** in `module2/test/` for comparison
+
+### 💡 Common Mistakes to Avoid
+
+- Don't forget to `await` async operations
+- Don't skip `waitForDeployment()` - it's essential
+- Don't forget to use `connect()` when testing with different signers
+- Don't mix up view functions and state-changing transactions
+
+### 🎯 Pro Tips
+
+- Use `console.log()` in tests for debugging (remove before submission)
+- Run tests frequently to get immediate feedback
+- Understand what you're testing - don't just fill blanks randomly
+- Compare with simpler examples before tackling advanced exercises
+- Use `beforeEach` to avoid repeating setup code
+
+## Module 2 Troubleshooting
+
+### Tests Won't Run
+
+```bash
+# Try reinstalling dependencies
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Compilation Errors
+
+```bash
+# Compile contracts first
+npm run compile
+
+# Or clean and recompile
+npx hardhat clean
+npm run compile
+```
+
+### Test Failures
+
+- Verify you're using the correct Ethers.js v6 syntax
+- Check that all async operations are awaited
+- Ensure contract methods are called correctly
+- Review the validator output for specific requirements
+
+### Need More Help?
+
+- Check the [Hardhat Documentation](https://hardhat.org/docs)
+- Review [Ethers.js v6 Documentation](https://docs.ethers.org/)
+- Review the module-specific README: `module2/README.md`
+- Ask in the course discussion forum
+- Reach out to the DevX team
 
 <p align="right">(<a href="#table-of-contents">back to top</a>) ⬆️</p>
 
