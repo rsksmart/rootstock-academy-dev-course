@@ -26,25 +26,25 @@ jobs:
         run: |
           PR_TITLE="${{ github.event.pull_request.title }}"
           echo "Parsing PR title: $PR_TITLE"
-          MODULE=$(echo "$PR_TITLE" | grep -oE '^module[0-9]+')
+          MODULE_RAW=$(echo "$PR_TITLE" | grep -ioE '^module[0-9]+')
 
-          if [ -z "$MODULE" ]; then
+          if [ -z "$MODULE_RAW" ]; then
             echo ":x: ERROR: PR title must start with 'moduleX/', e.g., 'module1/your-username'"
             echo "Current PR title: $PR_TITLE"
             exit 1
           fi
 
-          echo "✅ Detected module: $MODULE"
+          MODULE="${MODULE_RAW,,}"
+          echo "✅ Detected module: $MODULE (original: $MODULE_RAW)"
           echo "MODULE=$MODULE" >> $GITHUB_ENV
 
       # 3. Validate module is supported
       - name: Validate module is supported
         run: |
-          MODULE_RAW="${{ env.MODULE }}"
-          MODULE="${MODULE_RAW,,}"
+          MODULE="${{ env.MODULE }}"
           ALLOWED_MODULES=("module1" "module2" "module3" "module4")
           
-          echo "🔍 Validating module: $MODULE (original: $MODULE_RAW)"
+          echo "🔍 Validating module: $MODULE"
           echo "📋 Allowed modules: ${ALLOWED_MODULES[@]}"
           
           if [[ ! " ${ALLOWED_MODULES[@]} " =~ " ${MODULE} " ]]; then
@@ -55,7 +55,6 @@ jobs:
           fi
           
           echo "✅ Module validation passed: $MODULE is supported"
-          echo "MODULE=$MODULE" >> $GITHUB_ENV
 
       # 4. Generate GitHub App token for private repo access
       - name: Generate GitHub App Token
