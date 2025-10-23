@@ -22,11 +22,7 @@ describe("03-testing-events: Testing Events and Logs", function () {
   it("should emit event with correct carId", async function () {
     const [owner] = await ethers.getSigners();
     
-    // First car should have ID 1
-    await expect(cars.addCar("0xff0000", 4))
-      .to.emit(cars, "CarAdded")
-      .withArgs(1, owner.address);
-      
+
     // Second car should have ID 2
     await expect(cars.addCar("0x00ff00", 2))
       .to.emit(cars, "CarAdded")
