@@ -1,7 +1,3 @@
-//NOTE : This is the fixed version of the OneMilNftPixels contract. 
-//PLEASE CHECK THIS FILE ONLY IN CASE YOU WERE UNABLE TO FIX THE VULNERABILITIES.
-
-
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.0 <0.9.0;
 
@@ -245,33 +241,27 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      * param _data Additional data with no specified format
      */
     function _transferReceived(
-        address _sender,
-        uint256 _amount,
+        address /* _sender */,
+        uint256 /* _amount */,
         bytes memory _data
     ) private {
         (
             bytes4 selector,
-            ,
+            address newOwner,
             uint24 pixelId,
             bytes3 colour,
             uint256 amount
         ) = abi.decode(_data, (bytes4, address, uint24, bytes3, uint256));
-        
-        // SECURITY FIX OMP-002: Validate that the amount in data matches actual transferred amount
-        require(amount == _amount, 'Amount mismatch');
-        
-        // SECURITY FIX OMP-003: Only allow buy() and update() functions, prevent arbitrary function calls
-        require(
-            selector == this.buy.selector || selector == this.update.selector,
-            'Call of an unknown function'
+        // SECURITY HINT: modify this
+        bytes memory callData = abi.encodeWithSelector(
+            selector,
+            newOwner,
+            pixelId,
+            colour,
+            amount
         );
-        
-        // Direct call instead of delegatecall
-        if (selector == this.buy.selector) {
-            buy(_sender, pixelId, colour, amount);
-        } else if (selector == this.update.selector) {
-            update(_sender, pixelId, colour, amount);
-        }
+        (bool success, ) = address(this).delegatecall(callData);
+        require(success, 'Function call failed');
     }
 
     receive() external payable {
@@ -282,3 +272,4 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         revert('Unknown function call');
     }
 }
+
