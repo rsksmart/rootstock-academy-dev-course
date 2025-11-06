@@ -113,13 +113,14 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         require(balance >= compensationBalance, 'Insufficient balance!');
         require(compensationBalance > 0, 'Insufficient compensation balance!');
 
+        // SECURITY FIX OMP-001: Zero out balance BEFORE external call (checks-effects-interactions pattern)
+        compensationBalances[_msgSender()] = 0;
+
         // transfer msg.sender's compensation LUNAs to the address specified in `to`. If caller is EOA, call ERC20 transfer()
         bool withdrawalSuccess = (_msgSender() == tx.origin)
             ? acceptedToken.transfer(address(to), compensationBalance) // EOA
             : acceptedToken.transferAndCall(address(to), compensationBalance); // SC
         require(withdrawalSuccess, 'withdraw failed');
-        // SECURITY HINT: modify this
-        compensationBalances[_msgSender()] = 0;
 
         emit WithdrawCompensation(address(to), compensationBalance);
     }
