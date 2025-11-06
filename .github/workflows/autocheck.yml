@@ -105,7 +105,7 @@ jobs:
             
             echo "✅ Project structure ready for module4."
 
-          elif [ "$MODULE" = "module4" ]; then
+          elif [ "$MODULE" = "module5" ]; then
             echo "🔄 Module 5 detected: Using security audit evaluation flow"
             
             echo "🧹 Cleaning default contracts from module..."
