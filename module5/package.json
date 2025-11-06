@@ -1,9 +1,9 @@
 {
-  "name": "module4-smart-contract-testing",
+  "name": "module5-smart-contract-security",
   "version": "1.0.0",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@nomicfoundation/hardhat-network-helpers": "^1.1.0",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@types/chai": "^4.3.20",
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.3.0",
@@ -17,5 +17,8 @@
     "test": "hardhat test",
     "test:validators": "hardhat test test-validators/*.ts",
     "compile": "hardhat compile"
+  },
+  "dependencies": {
+    "erc-payable-token": "^7.0.0"
   }
 }

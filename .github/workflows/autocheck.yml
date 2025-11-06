@@ -42,14 +42,14 @@ jobs:
       - name: Validate module is supported
         run: |
           MODULE="${{ env.MODULE }}"
-          ALLOWED_MODULES=("module1" "module2" "module3" "module4")
+          ALLOWED_MODULES=("module3" "module4" "module5" "module6", "module7")
           
           echo "🔍 Validating module: $MODULE"
           echo "📋 Allowed modules: ${ALLOWED_MODULES[@]}"
           
           if [[ ! " ${ALLOWED_MODULES[@]} " =~ " ${MODULE} " ]]; then
             echo "❌ ERROR: Module '$MODULE' is not supported."
-            echo "✅ Supported modules are: module1, module2, module3, module4"
+            echo "✅ Supported modules are: module3, module4, module5, module6, module7"
             echo "Please update your PR title to use a valid module number."
             exit 1
           fi
@@ -83,8 +83,8 @@ jobs:
           cp -r tmp_template/${MODULE} project
 
           # Validate module number flow
-          if [ "$MODULE" = "module2" ]; then
-            echo "🔄 Module 2 detected: Using contract-based evaluation flow"
+          if [ "$MODULE" = "module3" ]; then
+            echo "🔄 Module 3 detected: Using contract-based evaluation flow"
             
             echo "🧹 Cleaning default contracts from module..."
             rm -rf project/contracts/*
@@ -92,10 +92,10 @@ jobs:
             echo "📦 Copying student's contracts into project/contracts..."
             cp -r ${MODULE}/contracts/* project/contracts/
             
-            echo "✅ Project structure ready for module2."
+            echo "✅ Project structure ready for module3."
             
-          elif [ "$MODULE" = "module3" ]; then
-            echo "🔄 Module 3 detected: Using test-based evaluation flow"
+          elif [ "$MODULE" = "module4" ]; then
+            echo "🔄 Module 4 detected: Using test-based evaluation flow"
             
             echo "🧹 Cleaning default tests from module..."
             rm -rf project/test/*
@@ -103,10 +103,10 @@ jobs:
             echo "📦 Copying student's tests into project/test/..."
             cp -r ${MODULE}/test/* project/test/
             
-            echo "✅ Project structure ready for module3."
+            echo "✅ Project structure ready for module4."
 
           elif [ "$MODULE" = "module4" ]; then
-            echo "🔄 Module 4 detected: Using security audit evaluation flow"
+            echo "🔄 Module 5 detected: Using security audit evaluation flow"
             
             echo "🧹 Cleaning default contracts from module..."
             rm -rf project/contracts/*
@@ -114,7 +114,7 @@ jobs:
             echo "📦 Copying student's contracts into project/contracts..."
             cp -r ${MODULE}/contracts/* project/contracts/
             
-            echo "✅ Project structure ready for module4."
+            echo "✅ Project structure ready for module5."
             
           else
             echo "❌ ERROR: Module '$MODULE' does not have an evaluation flow configured."
@@ -134,18 +134,18 @@ jobs:
             cd project
             npm install
             
-            if [ "$MODULE" = "module3" ]; then
-              echo "🔄 Module 3: Running student tests first..."
+            if [ "$MODULE" = "module4" ]; then
+              echo "🔄 Module 4: Running student tests first..."
               npx hardhat test test/* 2>&1 || true
               
-              echo "🔍 Module 3: Running test validators..."
+              echo "🔍 Module 4: Running test validators..."
               npx hardhat test test-validators/* > ../reports/hardhat-output.txt 2>&1 || true
-              echo "✅ Module 3: Test validators completed"
+              echo "✅ Module 4: Test validators completed"
               
             else
-              echo "🔄 Module 2: Running standard tests..."
+              echo "🔄 Running standard tests..."
               npx hardhat test > ../reports/hardhat-output.txt 2>&1 || true
-              echo "✅ Module 2: Tests completed"
+              echo "✅ Tests completed"
             fi
             
             cd ..

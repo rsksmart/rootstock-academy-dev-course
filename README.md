@@ -1,4 +1,4 @@
-<h1> Blockchain Developer Rootstock Beginner to Expert Course <br>| Edition 2025  |</h1>
+<h1>Rootstock Developer Course</h1>
 
 # Table of Contents
 
@@ -14,21 +14,30 @@
 </ol>
 </details>
 <details>
-<summary> <a href="#module-1-solidity-fundamentals">Module 1: Solidity Fundamentals</a></summary>
-<ol>
-  <li><a href="#module-1-overview">Overview</a></li>
-  <li><a href="#exercises">Exercises</a></li>
-  <li><a href="#running-tests">Running Tests</a></li>
-  <li><a href="#submission-guidelines">Submission Guidelines</a></li>
-</ol>
-</details>
-<details>
-<summary> <a href="#module-3-testing-smart-contracts">Module 3: Testing Smart Contracts</a></summary>
+<summary> <a href="#module-3-write-smart-contracts">Module 3: Write Smart Contracts</a></summary>
 <ol>
   <li><a href="#module-3-overview">Overview</a></li>
   <li><a href="#module-3-exercises">Exercises</a></li>
   <li><a href="#module-3-running-tests">Running Tests</a></li>
   <li><a href="#module-3-submission-guidelines">Submission Guidelines</a></li>
+</ol>
+</details>
+<details>
+<summary> <a href="#module-4-test-smart-contracts">Module 4: Test Smart Contracts</a></summary>
+<ol>
+  <li><a href="#module-4-overview">Overview</a></li>
+  <li><a href="#module-4-exercises">Exercises</a></li>
+  <li><a href="#module-4-running-tests">Running Tests</a></li>
+  <li><a href="#module-4-submission-guidelines">Submission Guidelines</a></li>
+</ol>
+</details>
+<details>
+<summary> <a href="#module-5-secure-smart-contracts">Module 5: Secure Smart Contracts</a></summary>
+<ol>
+  <li><a href="#module-5-overview">Overview</a></li>
+  <li><a href="#module-5-vulnerabilities">Vulnerabilities</a></li>
+  <li><a href="#module-5-running-tests">Running Tests</a></li>
+  <li><a href="#module-5-submission-guidelines">Submission Guidelines</a></li>
 </ol>
 </details>
 
@@ -43,10 +52,9 @@ Welcome to the **Rootstock Developer Course**! This hands-on course will guide y
 ### What You'll Learn
 
 - ✅ Solidity programming language fundamentals
-- ✅ Smart contract testing with Hardhat and Ethers.js
-- ✅ Smart contract development and deployment
+- ✅ Smart contract testing with Hardhat and Foundry
+- ✅ Smart contract deployment
 - ✅ Best practices for secure contract design
-- ✅ Integration with blockchain networks
 - ✅ Real-world project development
 
 ## Best Practices
@@ -54,18 +62,21 @@ Welcome to the **Rootstock Developer Course**! This hands-on course will guide y
 ### Working with the Repository
 
 - **Fork this repository** to your GitHub account before starting
-- **Create a new branch** for each module following the format: `module[número]/[usuario]`
-  - Example: `module1/scguaquetam` or `module1/student@email.com`
+- **Create a new branch** for each module following the format: `module[number]/[username-or-email]`
+  - Example: `module1/andrew` or `module1/student@email.com`
 - **Commit frequently** with descriptive messages
 - **Test your code** before submitting
 - **Read the instructions carefully** in each exercise
+- **Use the required Pull Request Name Format** to verify your solutions
+  - Example: `module1/andrew` or `module1/student@email.com`
+- **Create a Pull Request** to the main Rootstock Developer Course repository
+- **Wait for review** from the RSK Developer Education team
+- **Once approved, your grade will be recorded in the platform**
 
 ### Code Quality
 
 - Follow Solidity style guidelines
-- Write clean, readable code
 - Test your contracts thoroughly
-- Document complex logic with comments
 - Use meaningful variable and function names
 
 ### Getting Help
@@ -73,7 +84,7 @@ Welcome to the **Rootstock Developer Course**! This hands-on course will guide y
 - Review the lesson videos before starting exercises
 - Check the exercise descriptions in each module's README
 - Test your code frequently using the provided test suites
-- Ask questions in the course community forum
+- Ask questions in the course community forum (Discord) or using GitHub Issues
 - Review the reference documentation when needed
 
 ## Getting Started
@@ -85,7 +96,7 @@ Before starting the course, ensure you have:
 - **Node.js** (v18 or higher) - [Download here](https://nodejs.org/)
 - **npm** or **yarn** package manager
 - **Git** - [Install Git](https://git-scm.com/downloads)
-- A code editor (we recommend [VS Code](https://code.visualstudio.com/))
+- A code editor (we recommend [VS Code](https://code.visualstudio.com/) or [Cursor](https://cursor.com/download))
 - Basic JavaScript/TypeScript knowledge
 
 ### Installation
@@ -94,7 +105,7 @@ Before starting the course, ensure you have:
 
 2. **Clone your fork** to your local machine:
    ```bash
-   git clone https://github.com/rsksmart/rootstock-academy-dev-course
+   git clone https://github.com/rsksmart/rootstock-academy-dev-course.git
    cd rootstock-academy-dev-course
    ```
 
@@ -116,9 +127,9 @@ You should see tests running (they will fail initially - that's expected!). Take
 ### Submission Process
 
 1. **Complete the exercises** by filling in the blanks in the contract templates
-2. **Run the tests** to verify your solutions
+2. **Run the tests (locally)** to verify your solutions
 3. **Commit your changes** to your fork
-4. **Create a Pull Request** to the main repository
+4. **Create a Pull Request** to the main [Rootstock Developer Course repository](https://github.com/rsksmart/rootstock-academy-dev-course)
 5. **Wait for review** from the RSK Developer Education team
 
 ### Creating a Pull Request
@@ -163,15 +174,15 @@ git push origin module2/your-username
 
 ---
 
-# Module 2: Solidity Fundamentals
+# Module 3: Write Smart Contracts
 
 💡 **Learning Time**: 4-6 hours  
 📹 **Video Lessons**: Available on the platform  
 🎯 **Goal**: Master core Solidity concepts through hands-on coding
 
-## Module 2 Overview
+## Module 3 Overview
 
-In Module 2, you'll learn the fundamental building blocks of Solidity smart contracts through 13 progressive exercises. Each exercise builds on the previous one, taking you from basic contract structure to advanced concepts like interfaces and imports.
+In Module 3, you'll learn the fundamental building blocks of Solidity smart contracts through 13 progressive exercises. Each exercise builds on the previous one, taking you from basic contract structure to advanced concepts like interfaces and imports.
 
 ### What You'll Build
 
@@ -183,7 +194,7 @@ You'll build a **Cars Smart Contract** that demonstrates:
 - Events for logging
 - Contract interaction through interfaces
 
-## Exercises
+## Module 3 Exercises
 
 | # | Exercise | Concepts | Difficulty |
 |---|----------|----------|------------|
@@ -201,11 +212,11 @@ You'll build a **Cars Smart Contract** that demonstrates:
 | 12 | [Interface References](./module2/ContractsTemplate/12-reference-interface.sol) | contract references, casting | ⭐⭐⭐⭐ |
 | 13 | [Imports](./module2/ContractsTemplate/13-import.sol) | `import`, modular code | ⭐⭐⭐⭐ |
 
-## Running Tests
+## Module 3 Running Tests
 
 ### Run All Tests
 ```bash
-cd module2
+cd module3
 npx hardhat test
 ```
 
@@ -219,11 +230,11 @@ npx hardhat test test/01-contract.ts
 npx hardhat test --verbose
 ```
 
-## How to Complete Exercises
+## How to Complete Module 3 Exercises
 
 ### Step 1: Open the Template
 
-Navigate to `module2/ContractsTemplate/` and open the exercise file. You'll see code with blanks (`___`):
+Navigate to `module3/ContractsTemplate/` and open the exercise file. You'll see code with blanks (`___`):
 
 ```solidity
 // Example from 01-contract.sol
@@ -267,7 +278,7 @@ If tests fail, read the error messages carefully:
 
 Once all tests pass (✅), move to the next exercise!
 
-## Submission Guidelines
+## Module 3 Submission Guidelines
 
 ### Before Submitting
 
@@ -280,21 +291,21 @@ Once all tests pass (✅), move to the next exercise!
 
 ```bash
 # 1. Create a branch following the naming convention: module1/your-username
-git checkout -b module2/your-username
+git checkout -b module3/your-username
 
 # 2. Run all tests one final time
-cd module2
+cd module3
 npx hardhat test
 
 # 3. Check for any uncommitted changes
 git status
 
 # 4. Commit your work
-git add module2/
+git add module3/
 git commit -m "Complete Module 1: Solidity Fundamentals"
 
 # 5. Push to your fork
-git push origin module2/your-username
+git push origin module3/your-username
 
 # 6. Create Pull Request on GitHub to the parent repository
 # PR title must be: module1/your-username
@@ -310,31 +321,7 @@ Your submission will be evaluated on:
 3. **Code Quality**: Clean, readable code
 4. **Following Instructions**: Used correct keywords and patterns
 
-## Tips for Success
-
-### 📚 Learning Resources
-
-- **Watch the video lessons** before starting exercises
-- **Read the exercise descriptions** carefully in each file
-- **Review Solidity documentation** when stuck
-- **Study the test files** to understand what's expected
-
-### 💡 Common Mistakes to Avoid
-
-- Don't skip exercises - they build on each other
-- Don't copy/paste without understanding
-- Don't ignore compiler warnings
-- Don't submit without running tests
-
-### 🎯 Pro Tips
-
-- Start with easier exercises (01-03) to build confidence
-- Use VS Code with Solidity extensions for syntax highlighting
-- Read error messages carefully - they often tell you exactly what's wrong
-- Test frequently - don't wait until all exercises are done
-- Ask for help if you're stuck for more than 30 minutes
-
-## Troubleshooting
+## Module 3 Troubleshooting
 
 ### Tests Won't Run
 
@@ -368,15 +355,15 @@ npm install
 
 ---
 
-# Module 3: Testing Smart Contracts
+# Module 4: Test Smart Contracts
 
 💡 **Learning Time**: 6-8 hours  
 📹 **Video Lessons**: Available on the platform  
 🎯 **Goal**: Master smart contract testing with Hardhat and Ethers.js
 
-## Module 2 Overview
+## Module 4 Overview
 
-In Module 2, you'll learn how to write comprehensive tests for Solidity smart contracts using Hardhat and Ethers.js. This module teaches you testing best practices and advanced techniques essential for building reliable blockchain applications.
+In Module 4, you'll learn how to write comprehensive tests for Solidity smart contracts using Hardhat and Ethers.js. This module teaches you testing best practices and advanced techniques essential for building reliable blockchain applications.
 
 ### What You'll Learn
 
@@ -392,21 +379,21 @@ By completing this module, you will be able to:
 - **Cars.sol**: A contract managing a collection of cars with ownership and events
 - **CarLock.sol**: A time-locked contract for advanced testing techniques
 
-## Module 3 Exercises
+## Module 4 Exercises
 
 | # | Exercise | Topics Covered | Difficulty |
 |---|----------|----------------|------------|
-| 01 | [Basic Deployment](./module3/TestTemplates/01-basic-deployment.ts) | `getContractFactory`, `deploy`, `waitForDeployment` | ⭐ |
-| 02 | [Testing Functions](./module3/TestTemplates/02-testing-functions.ts) | Function calls, state changes, `connect()` | ⭐⭐ |
-| 03 | [Testing Events](./module3/TestTemplates/03-testing-events.ts) | `.to.emit()`, `.withArgs()`, event verification | ⭐⭐⭐ |
-| 04 | [Testing Reverts](./module3/TestTemplates/04-testing-reverts.ts) | `.to.be.revertedWith()`, error handling | ⭐⭐⭐ |
-| 05 | [Advanced Testing](./module3/TestTemplates/05-advanced-testing.ts) | Time manipulation, snapshots, balance checks | ⭐⭐⭐⭐ |
+| 01 | [Basic Deployment](./module4/TestTemplates/01-basic-deployment.ts) | `getContractFactory`, `deploy`, `waitForDeployment` | ⭐ |
+| 02 | [Testing Functions](./module4/TestTemplates/02-testing-functions.ts) | Function calls, state changes, `connect()` | ⭐⭐ |
+| 03 | [Testing Events](./module4/TestTemplates/03-testing-events.ts) | `.to.emit()`, `.withArgs()`, event verification | ⭐⭐⭐ |
+| 04 | [Testing Reverts](./module4/TestTemplates/04-testing-reverts.ts) | `.to.be.revertedWith()`, error handling | ⭐⭐⭐ |
+| 05 | [Advanced Testing](./module4/TestTemplates/05-advanced-testing.ts) | Time manipulation, snapshots, balance checks | ⭐⭐⭐⭐ |
 
-## Module 3 Running Tests
+## Module 4 Running Tests
 
 ### Compile Contracts
 ```bash
-cd module3
+cd module4
 npm run compile
 ```
 
@@ -424,11 +411,11 @@ npx hardhat test
 npx hardhat test --verbose
 ```
 
-## How to Complete Module 3 Exercises
+## How to Complete Module 4 Exercises
 
 ### Step 1: Open the Test File
 
-Navigate to `module3/test/` and open the test file. You'll see test code with blanks (`___`):
+Navigate to `module4/test/` and open the test file. You'll see test code with blanks (`___`):
 
 ```typescript
 // Example from 01-basic-deployment.ts
@@ -476,7 +463,7 @@ If tests fail, read the error messages carefully:
 
 Once all tests pass (✅), move to the next exercise!
 
-## Module 3 Submission Guidelines
+## Module 4 Submission Guidelines
 
 ### Before Submitting
 
@@ -488,25 +475,25 @@ Once all tests pass (✅), move to the next exercise!
 ### Submission Checklist
 
 ```bash
-# 1. Create a branch following the naming convention: module2/your-username
-git checkout -b module3/your-username
+# 1. Create a branch following the naming convention: module4/your-username
+git checkout -b module4/your-username
 
 # 2. Run all tests one final time
-cd module3
+cd module4
 npm run test
 
 # 3. Check for any uncommitted changes
 git status
 
 # 4. Commit your work
-git add module3/
-git commit -m "Complete Module 3: Testing Smart Contracts"
+git add module4/
+git commit -m "Complete Module 4: Testing Smart Contracts"
 
 # 5. Push to your fork
-git push origin module3/your-username
+git push origin module4/your-username
 
 # 6. Create Pull Request on GitHub to the parent repository
-# PR title must be: module2/your-username
+# PR title must be: module4/your-username
 ```
 
 **Remember**: Replace `your-username` with your course username or email address.
@@ -519,31 +506,7 @@ Your submission will be evaluated on:
 3. **Test Quality**: Proper use of assertions and patterns
 4. **Best Practices**: Uses `beforeEach`, proper test structure, etc.
 
-## Module 2 Tips for Success
-
-### 📚 Learning Resources
-
-- **Watch the video lessons** before starting exercises
-- **Read the module README** in `module3/README.md` for detailed explanations
-- **Review Ethers.js documentation** when stuck
-- **Study the reference solutions** in `module3/test/` for comparison
-
-### 💡 Common Mistakes to Avoid
-
-- Don't forget to `await` async operations
-- Don't skip `waitForDeployment()` - it's essential
-- Don't forget to use `connect()` when testing with different signers
-- Don't mix up view functions and state-changing transactions
-
-### 🎯 Pro Tips
-
-- Use `console.log()` in tests for debugging (remove before submission)
-- Run tests frequently to get immediate feedback
-- Understand what you're testing - don't just fill blanks randomly
-- Compare with simpler examples before tackling advanced exercises
-- Use `beforeEach` to avoid repeating setup code
-
-## Module 3 Troubleshooting
+## Module 4 Troubleshooting
 
 ### Tests Won't Run
 
@@ -574,7 +537,304 @@ npm run compile
 
 - Check the [Hardhat Documentation](https://hardhat.org/docs)
 - Review [Ethers.js v6 Documentation](https://docs.ethers.org/)
-- Review the module-specific README: `module3/README.md`
+- Review the module-specific README: `module4/README.md`
+- Ask in the course discussion forum
+- Reach out to the DevX team
+
+<p align="right">(<a href="#table-of-contents">back to top</a>) ⬆️</p>
+
+---
+
+# Module 5: Secure Smart Contracts
+
+💡 **Learning Time**: 4-6 hours  
+📹 **Video Lessons**: Available on the platform  
+🎯 **Goal**: Identify and fix security vulnerabilities in smart contracts based on professional audit reports
+
+## Module 5 Overview
+
+In Module 5, you'll learn how to identify and fix critical security vulnerabilities in Solidity smart contracts. This module is based on a real security audit report and teaches you essential security patterns used in professional blockchain development.
+
+### What You'll Learn
+
+By completing this module, you will be able to:
+- Read and interpret professional security audit reports
+- Identify and fix reentrancy vulnerabilities
+- Identify and fix data validation issues
+- Identify and fix access control problems
+- Apply the Checks-Effects-Interactions pattern
+- Implement robust input validation
+- Implement proper function access control
+- Verify security fixes through automated tests
+
+### What You'll Fix
+
+You'll work with the **OneMilNftPixels** contract, a vulnerable NFT marketplace that contains three critical security vulnerabilities discovered in a professional audit. Your goal is to fix these vulnerabilities while maintaining the contract's functionality.
+
+## Module 5 Vulnerabilities
+
+| # | Vulnerability | Severity | Type | Difficulty |
+|---|---------------|----------|------|------------|
+| OMP-001 | [Reentrancy in withdrawCompensation](./module5/README.md#omp-001-reentrancy-in-withdrawcompensation) | 🔴 CRITICAL | Reentrancy Attack | ⭐⭐⭐⭐ |
+| OMP-002 | [NFTs can be purchased for free](./module5/README.md#omp-002-nfts-can-be-purchased-for-free) | 🔴 CRITICAL | Data Validation | ⭐⭐⭐ |
+| OMP-003 | [Frontrunners can deny NFT purchases](./module5/README.md#omp-003-frontrunners-can-deny-nft-purchases) | 🟠 HIGH | Access Control | ⭐⭐⭐⭐ |
+
+### Vulnerability Details
+
+#### OMP-001: Reentrancy Attack
+**Concept**: Checks-Effects-Interactions Pattern
+
+The contract updates state **after** making an external call, allowing attackers to re-enter the function and drain funds.
+
+**Key Learning**: Always update state before external calls to prevent reentrancy attacks.
+
+#### OMP-002: Data Validation
+**Concept**: Input Validation
+
+The contract doesn't validate that encoded data matches actual transferred amounts, allowing attackers to buy NFTs for free.
+
+**Key Learning**: Always validate that calldata matches actual values - never trust user-provided data.
+
+#### OMP-003: Access Control
+**Concept**: Function Whitelisting
+
+The contract allows `delegatecall` to any function, enabling frontrunning attacks that can deny legitimate purchases.
+
+**Key Learning**: Use whitelists and avoid delegatecall with unvalidated external data.
+
+## Module 5 Running Tests
+
+### Compile Contracts
+```bash
+cd module5
+npx hardhat compile
+```
+
+### Run Security Tests
+```bash
+# Run all exploit tests to verify your fixes
+npx hardhat test test/Exploit-OMP001.js
+npx hardhat test test/Exploit-OMP002.js
+npx hardhat test test/Exploit-OMP003.js
+
+# Run all tests including functionality tests
+npx hardhat test
+```
+
+### View Detailed Test Output
+```bash
+npx hardhat test --verbose
+```
+
+## How to Complete Module 5
+
+### Step 1: Read the Audit Report
+
+Open and carefully read the security audit report:
+```
+module5/one-mil-nft-pixels--security-assessment-report--v1.1.pdf
+```
+
+This professional audit report details:
+- The three critical vulnerabilities
+- How each vulnerability can be exploited
+- The impact and severity of each issue
+- Recommendations for fixing each vulnerability
+
+### Step 2: Study the Vulnerable Contract
+
+Open the vulnerable contract:
+```
+module5/contracts/OneMilNftPixels.sol
+```
+
+Study the code and try to identify:
+- Where the reentrancy vulnerability exists
+- Where validation is missing
+- Where access control is insufficient
+
+### Step 3: Analyze the Exploits
+
+Review the exploit contracts to understand how attackers would exploit these vulnerabilities:
+```
+module5/contracts/security-audit/Exploit-OMP001.sol  # Reentrancy exploit
+module5/contracts/security-audit/Exploit-OMP003.sol  # Frontrunning exploit
+```
+
+### Step 4: Fix the Vulnerabilities
+
+Modify `OneMilNftPixels.sol` to fix all three vulnerabilities:
+
+**OMP-001 Fix**: Update state before external calls
+```solidity
+// Move state update BEFORE the external call
+compensationBalances[_msgSender()] = 0;
+bool withdrawalSuccess = acceptedToken.transferAndCall(address(to), compensationBalance);
+```
+
+**OMP-002 Fix**: Add validation
+```solidity
+// Validate that encoded amount matches actual amount
+require(amount == _amount, 'Amount mismatch');
+```
+
+**OMP-003 Fix**: Implement function whitelist
+```solidity
+// Only allow specific functions
+require(
+    selector == this.buy.selector || selector == this.update.selector,
+    'Call of an unknown function'
+);
+```
+
+### Step 5: Run Tests to Verify Fixes
+
+Run the exploit tests to verify your fixes prevent the attacks:
+
+```bash
+# These tests should now PASS (exploits should FAIL)
+npx hardhat test test/Exploit-OMP001.js  # 5 tests should pass
+npx hardhat test test/Exploit-OMP002.js  # 3 tests should pass
+npx hardhat test test/Exploit-OMP003.js  # 5 tests should pass
+```
+
+### Step 6: Verify Functionality Still Works
+
+Ensure your fixes didn't break the contract's normal functionality:
+
+```bash
+# All functionality tests should still pass
+npx hardhat test
+```
+
+## Module 5 Submission Guidelines
+
+### Before Submitting
+
+- ✅ All three vulnerabilities fixed
+- ✅ All exploit tests pass (exploits should fail)
+- ✅ All functionality tests still pass
+- ✅ Code includes comments explaining the fixes
+- ✅ You can explain each vulnerability and its fix
+
+### Submission Checklist
+
+```bash
+# 1. Create a branch following the naming convention: module5/your-username
+git checkout -b module4/your-username
+
+# 2. Run all tests one final time
+cd module5
+npx hardhat test
+
+# 3. Check for any uncommitted changes
+git status
+
+# 4. Commit your work
+git add module5/
+git commit -m "Complete Module 5: Smart Contract Security"
+
+# 5. Push to your fork
+git push origin module5/your-username
+
+# 6. Create Pull Request on GitHub to the parent repository
+# PR title must be: module5/your-username
+```
+
+**Remember**: Replace `your-username` with your course username or email address.
+
+### What We Check
+
+Your submission will be evaluated on:
+1. **Security**: All vulnerabilities properly fixed ✅
+2. **Correctness**: All tests pass (13 exploit tests + functionality tests) ✅
+3. **Code Quality**: Clean code with clear comments explaining fixes
+4. **Understanding**: Able to explain each vulnerability and why your fix works
+5. **No Breaking Changes**: Original functionality still works correctly
+
+### Expected Test Results
+
+After your fixes, you should see:
+
+**Exploit-OMP001.js** (5 tests passing):
+- ✅ Transfer some lunas to exploit
+- ✅ Transfer some lunas to oneMlnPix
+- ✅ Should NOT exploit reentrancy in withdrawCompensation()
+- ✅ Should NOT withdraw (almost) all Lunas from oneMlnPix
+- ✅ Exploit balance should NOT increase
+
+**Exploit-OMP002.js** (3 tests passing):
+- ✅ Attacker should have 1 Luna token
+- ✅ Attacker is NOT able to buy pixel for low price
+- ✅ Pixel should remain unowned after exploit attempt
+
+**Exploit-OMP003.js** (5 tests passing):
+- ✅ Deployer buys pixel 1001
+- ✅ Buyer becomes the new owner
+- ✅ Deployer buys the pixel back
+- ✅ Buyer receives a compensation
+- ✅ Attacker should NOT call withdrawCompensation through transferAndCall
+
+## Module 5 Tips for Success
+
+### 📚 Learning Resources
+
+- **Read the audit report thoroughly** - it contains all the information you need
+- **Study the exploit contracts** - understanding the attack helps you fix it
+- **Review the module README** in `module5/README.md` for detailed explanations
+- **Watch the video lessons** before attempting the fixes
+- **Research the security patterns**: Checks-Effects-Interactions, input validation, access control
+
+### 💡 Common Mistakes to Avoid
+
+- Don't just move code around without understanding why
+- Don't add validation in the wrong place (OMP-002 needs validation in `_transferReceived`)
+- Don't forget that fixing one vulnerability shouldn't break functionality
+- Don't skip reading the audit report - it has crucial details
+- Don't use complex solutions when simple ones work better
+
+## Module 5 Troubleshooting
+
+### Tests Don't Compile
+
+```bash
+# Try reinstalling dependencies
+rm -rf node_modules package-lock.json
+npm install
+
+# Recompile contracts
+npx hardhat clean
+npx hardhat compile
+```
+
+### "Amount mismatch" Error in Normal Tests
+
+**Cause**: Validation added in wrong place  
+**Solution**: Only validate in `_transferReceived`, not in `buy` or `update` functions directly
+
+### Exploit Tests Still Fail
+
+**Cause**: Vulnerability not properly fixed  
+**Solution**: 
+- Re-read the audit report section for that vulnerability
+- Check the expected solution in `module5/README.md`
+- Verify you implemented the fix in the correct location
+- Make sure state updates happen before external calls (OMP-001)
+
+### Functionality Tests Break After Fixes
+
+**Cause**: Fixes too restrictive or in wrong place  
+**Solution**:
+- Ensure fixes only affect the vulnerable code paths
+- Don't add unnecessary restrictions
+- Test both exploit prevention AND normal usage
+
+### Need More Help?
+
+- Check the detailed explanations in `module5/README.md`
+- Review the [ConsenSys Smart Contract Best Practices](https://consensys.github.io/smart-contract-best-practices/)
+- Study the [OpenZeppelin Security Patterns](https://docs.openzeppelin.com/contracts/4.x/)
+- Review the [SWC Registry](https://swcregistry.io/) for vulnerability classifications
 - Ask in the course discussion forum
 - Reach out to the DevX team
 
