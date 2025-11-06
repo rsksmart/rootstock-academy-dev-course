@@ -70,12 +70,6 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             interfaceId == type(IERC1363Receiver).interfaceId ||
             super.supportsInterface(interfaceId);
     }
-
-    // =========================
-    // Compensation withdrawals
-    // =========================
-
-    // Backward-compatible for older tests/callers:
     function withdrawCompensation(IERC1363Receiver to) public {
         _withdrawCompensation(address(to));
     }
@@ -100,10 +94,6 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
 
         emit WithdrawCompensation(to, due);
     }
-
-    // =========================
-    // Core pixel logic
-    // =========================
 
     function _buy(address sender, uint24 id, bytes3 colour, uint256 amount) internal {
         require(id < pixels.length, 'invalid id');
@@ -210,4 +200,3 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         revert('Unknown function call');
     }
 }
-
