@@ -42,7 +42,7 @@ jobs:
       - name: Validate module is supported
         run: |
           MODULE="${{ env.MODULE }}"
-          ALLOWED_MODULES=("module3" "module4" "module5" "module6", "module7")
+          ALLOWED_MODULES=("module3" "module4" "module5" "module6" "module7")
           
           echo "🔍 Validating module: $MODULE"
           echo "📋 Allowed modules: ${ALLOWED_MODULES[@]}"
