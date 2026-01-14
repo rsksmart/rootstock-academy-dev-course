@@ -10,17 +10,17 @@ Provide the RSK Testnet Explorer URLs for each verified contract:
 
 ### SimpleToken
 ```text
-YOUR_EXPLORER_URL_HERE
+THIS IS A TEST FOR THE PR DELIVERABLE
 ```
 
 ### PriceOracle
 ```text
-YOUR_EXPLORER_URL_HERE
+THIS IS A TEST FOR THE PR DELIVERABLE
 ```
 
 ### NFTMarketplace
 ```text
-YOUR_EXPLORER_URL_HERE
+THIS IS A TEST FOR THE PR DELIVERABLE
 ```
 
 ---
@@ -48,5 +48,5 @@ This should show the green checkmark and the verified source code.
 Add any notes or observations from your verification process:
 
 ```text
-YOUR_NOTES_HERE
+test testing notes on the assessment
 ```
