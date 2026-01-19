@@ -1,0 +1,171 @@
+name: 3. Post PR Feedback
+
+on:
+  workflow_run:
+    workflows: ["2. Run PR Tests"]
+    types:
+      - completed
+
+jobs:
+  feedback:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+      actions: read
+
+    steps:
+      - name: Download test results
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: test-results
+          path: reports
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Read metadata
+        id: metadata
+        run: |
+          if [ ! -f "reports/metadata.txt" ]; then
+            echo "ERROR: metadata.txt not found"
+            exit 1
+          fi
+          
+          cat reports/metadata.txt
+          
+          while IFS='=' read -r key value; do
+            echo "$key=$value" >> $GITHUB_ENV
+            echo "$key=$value" >> $GITHUB_OUTPUT
+          done < reports/metadata.txt
+
+      - name: Post PR comment
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        env:
+          MODULE_NAME: ${{ env.MODULE }}
+          PR_NUMBER: ${{ env.PR_NUMBER }}
+          WORKFLOW_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const moduleName = process.env.MODULE_NAME;
+            const prNumber = parseInt(process.env.PR_NUMBER, 10);
+            const workflowConclusion = process.env.WORKFLOW_CONCLUSION;
+            
+            if (!prNumber || isNaN(prNumber)) {
+              console.log('ERROR: Invalid PR number');
+              return;
+            }
+            
+            let body = '';
+            
+            if (workflowConclusion === 'failure') {
+              body = `###  Test Execution Failed (${moduleName})\n\n`;
+              body += `The test workflow encountered an error. Please check your submission.\n\n`;
+              body += `Common issues:\n`;
+              body += `- Missing required files\n`;
+              body += `- Syntax errors in code\n`;
+              body += `- Incompatible dependencies\n`;
+            }
+            else if (moduleName === 'module7') {
+              body = `### Verification Assessment (${moduleName}):\n\n`;
+              
+              if (fs.existsSync('reports/module7-assessment.md')) {
+                const assessmentContent = fs.readFileSync('reports/module7-assessment.md', 'utf8');
+                
+                // Check if URLs are filled in (not placeholders)
+                const hasValidUrls = !assessmentContent.includes('YOUR_EXPLORER_URL_HERE');
+                const hasNotes = !assessmentContent.includes('YOUR_NOTES_HERE') || assessmentContent.split('YOUR_NOTES_HERE').length < 2;
+                
+                if (hasValidUrls) {
+                  body += `**Assessment file contains contract URLs**\n\n`;
+                } else {
+                  body += `**Warning**: Assessment file still contains placeholder URLs. Please fill in your verified contract URLs.\n\n`;
+                }
+                
+                body += `---\n\n`;
+                body += `#### Student's Submission:\n\n`;
+                body += assessmentContent;
+                body += `\n\n---\n\n`;
+                body += `> **Note for reviewers**: Please verify the Explorer URLs are valid and contracts are actually verified on RSK Testnet.`;
+              } else {
+                body += `**Error**: Assessment file not found.\n\n`;
+                body += `Please make sure you have:\n`;
+                body += `1. Completed the \`assessment/commands-and-outputs.md\` file\n`;
+                body += `2. Included it in your PR submission\n`;
+              }
+            } else {
+              // Other modules: Show test results
+              let hardhatOutput = '';
+              let foundryOutput = '';
+
+              // Read and clean Hardhat output
+              if (fs.existsSync('reports/hardhat-output.txt')) {
+                const hhLines = fs.readFileSync('reports/hardhat-output.txt', 'utf8').split('\n');
+                
+                let endIndex = hhLines.length - 1;
+                let hasFailures = false;
+                let testSummaryEndIndex = -1;
+                
+                for (let i = 0; i < hhLines.length; i++) {
+                  if (hhLines[i].includes('passing') || hhLines[i].includes('failing')) {
+                    testSummaryEndIndex = i;
+                    if (hhLines[i].includes('failing')) {
+                      hasFailures = true;
+                    }
+                  }
+                }
+                
+                if (hasFailures) {
+                  for (let i = testSummaryEndIndex; i < hhLines.length; i++) {
+                    if (hhLines[i].includes('·') || hhLines[i].includes('│') || hhLines[i].includes('Solidity and Network Configuration')) {
+                      endIndex = i - 1;
+                      break;
+                    }
+                  }
+                } else {
+                  endIndex = testSummaryEndIndex;
+                }
+                
+                const cleanLines = hhLines.slice(0, endIndex + 1);
+                hardhatOutput = cleanLines.join('\n').trim();
+              }
+
+              // Read Foundry output
+              if (fs.existsSync('reports/foundry-output.txt')) {
+                const fLines = fs.readFileSync('reports/foundry-output.txt', 'utf8').split('\n');
+                foundryOutput = fLines.slice(-50).join('\n');
+              }
+
+              body = `###  Test Results (${moduleName}):`;
+
+              if (hardhatOutput) {
+                body += `\n\n#### Hardhat:\n\`\`\`\n${hardhatOutput}\n\`\`\``;
+              }
+
+              if (foundryOutput) {
+                body += `\n\n#### Foundry:\n\`\`\`\n${foundryOutput}\n\`\`\``;
+              }
+
+              if (!hardhatOutput && !foundryOutput) {
+                body += '\n\n No test output found. Something went wrong with the execution.';
+              }
+            }
+
+            // Post the comment
+            await github.rest.issues.createComment({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            });
+            
+            console.log(`Posted feedback comment to PR #${prNumber}`);
+
+      - name: Summary
+        run: |
+          echo "## Feedback Posted" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Module:** $MODULE" >> $GITHUB_STEP_SUMMARY
+          echo "- **PR Number:** $PR_NUMBER" >> $GITHUB_STEP_SUMMARY
+          echo "- **Test Workflow Status:** ${{ github.event.workflow_run.conclusion }}" >> $GITHUB_STEP_SUMMARY
