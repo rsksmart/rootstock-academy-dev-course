@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Hardhat artifacts
+cache/
+artifacts/
+
+# Environment variables (NEVER commit!)
+.env
+
+# TypeScript build
+*.tsbuildinfo
+
+# Coverage
+coverage/
+coverage.json
+
+# Deployment artifacts (students will generate these)
+# deployments/

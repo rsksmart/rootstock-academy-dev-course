@@ -1,0 +1,209 @@
+name: 2. Run PR Tests
+
+on:
+  workflow_run:
+    workflows: ["1. Validate PR Submission"]
+    types:
+      - completed
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    permissions:
+      contents: read
+      actions: read
+
+    steps:
+      - name: Download student submission
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: student-submission
+          path: ${{ runner.temp }}/submission-artifacts
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Read submission metadata
+        id: metadata
+        run: |
+          ARTIFACT_DIR="${RUNNER_TEMP}/submission-artifacts"
+          
+          if [ ! -f "${ARTIFACT_DIR}/metadata.txt" ]; then
+            echo "ERROR: metadata.txt not found in downloaded artifacts"
+            exit 1
+          fi
+          
+          mkdir -p submission
+          cp "${ARTIFACT_DIR}/metadata.txt" submission/metadata.txt
+          
+          cat submission/metadata.txt
+          
+          while IFS='=' read -r key value; do
+            echo "$key=$value" >> $GITHUB_ENV
+            echo "$key=$value" >> $GITHUB_OUTPUT
+          done < submission/metadata.txt
+          
+          echo "Module: $MODULE"
+          echo "PR Number: $PR_NUMBER"
+
+      - name: Generate GitHub App Token
+        if: env.MODULE != 'module7'
+        id: generate_token
+        uses: actions/create-github-app-token@31c86eb3b33c9b601a1f60f98dcbfd1d70f379b4 # v1.10.3
+        with:
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          owner: rsksmart
+          repositories: rsk-devcourse-assestments-internal
+
+      - name: Clone official template
+        if: env.MODULE != 'module7'
+        run: |
+          echo "Cloning official template repo..."
+          git clone --depth 1 https://x-access-token:${{ steps.generate_token.outputs.token }}@github.com/rsksmart/rsk-devcourse-assestments-internal template
+          
+          echo "Template cloned successfully"
+          ls -la template/
+
+      - name: Setup Node.js
+        if: env.MODULE != 'module7'
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      - name: Assemble project
+        if: env.MODULE != 'module7'
+        run: |
+          echo "Preparing project for module: $MODULE"
+          ARTIFACT_DIR="${RUNNER_TEMP}/submission-artifacts"
+          
+          cp -r template/${MODULE} project
+          
+          if [ "$MODULE" = "module3" ]; then
+            echo "Module 3: Injecting student contracts..."
+            rm -rf project/contracts/*
+            
+            for file in ${ARTIFACT_DIR}/*.sol; do
+              if [ -f "$file" ]; then
+                cp "$file" project/contracts/
+                echo "Copied: $(basename $file)"
+              fi
+            done
+            
+          elif [ "$MODULE" = "module4" ]; then
+            echo "Module 4: Injecting student tests..."
+            rm -rf project/test/*
+            
+            for file in ${ARTIFACT_DIR}/*.ts; do
+              if [ -f "$file" ]; then
+                cp "$file" project/test/
+                echo "Copied: $(basename $file)"
+              fi
+            done
+            
+          elif [ "$MODULE" = "module5" ]; then
+            echo "Module 5: Injecting student contracts for security audit..."
+            rm -rf project/contracts/*
+            
+            for file in ${ARTIFACT_DIR}/*.sol; do
+              if [ -f "$file" ]; then
+                cp "$file" project/contracts/
+                echo "Copied: $(basename $file)"
+              fi
+            done
+            
+          elif [ "$MODULE" = "module6" ]; then
+            echo "Module 6: Injecting student deployment scripts..."
+            rm -rf project/scripts/*
+            
+            for file in ${ARTIFACT_DIR}/*.ts; do
+              if [ -f "$file" ]; then
+                cp "$file" project/scripts/
+                echo "Copied script: $(basename $file)"
+              fi
+            done
+          fi
+          
+          echo ""
+          echo "=== Project structure ==="
+          ls -la project/
+
+      - name: Install dependencies
+        if: env.MODULE != 'module7'
+        working-directory: project
+        run: |
+          npm install
+
+      - name: Run tests
+        if: env.MODULE != 'module7'
+        working-directory: project
+        run: |
+          mkdir -p ../reports
+          
+          if [ "$MODULE" = "module4" ]; then
+            echo "Module 4: Running student tests first..."
+            npx hardhat test test/* 2>&1 || true
+            
+            echo "Module 4: Running test validators..."
+            npx hardhat test test-validators/* > ../reports/hardhat-output.txt 2>&1 || true
+            
+          elif [ "$MODULE" = "module6" ]; then
+            echo "Module 6: Running deployment validators..."
+            npx hardhat test test-validators/* > ../reports/hardhat-output.txt 2>&1 || true
+            
+          else
+            echo "Running standard tests..."
+            npx hardhat test > ../reports/hardhat-output.txt 2>&1 || true
+          fi
+          
+          echo "Hardhat tests completed"
+          
+          # Run Foundry tests if available
+          if [ -f "foundry.toml" ]; then
+            echo "Running Foundry tests..."
+            forge install 2>&1 || true
+            forge test > ../reports/foundry-output.txt 2>&1 || true
+            echo "Foundry tests completed"
+          fi
+
+      - name: Prepare module 7 assessment
+        if: env.MODULE == 'module7'
+        run: |
+          mkdir -p reports
+          ARTIFACT_DIR="${RUNNER_TEMP}/submission-artifacts"
+          
+          if [ -f "${ARTIFACT_DIR}/commands-and-outputs.md" ]; then
+            cp "${ARTIFACT_DIR}/commands-and-outputs.md" reports/module7-assessment.md
+            echo "Assessment file copied to reports"
+          else
+            echo "# Assessment File Not Found" > reports/module7-assessment.md
+          fi
+
+      - name: Add metadata to reports
+        run: |
+          mkdir -p reports
+          cp submission/metadata.txt reports/metadata.txt
+          echo "WORKFLOW_RUN_ID=${{ github.event.workflow_run.id }}" >> reports/metadata.txt
+
+      - name: Upload test results
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: test-results
+          path: reports/
+          retention-days: 1
+
+      - name: Summary
+        run: |
+          echo "## Test Execution Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Module:** $MODULE" >> $GITHUB_STEP_SUMMARY
+          echo "- **PR Number:** $PR_NUMBER" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f "reports/hardhat-output.txt" ]; then
+            echo "### Hardhat Output (last 50 lines)" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 reports/hardhat-output.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi

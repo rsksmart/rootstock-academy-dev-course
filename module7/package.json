@@ -1,0 +1,27 @@
+{
+  "name": "module6-smart-contract-deployment",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.1.0",
+    "@openzeppelin/contracts": "^5.0.0",
+    "@types/chai": "^4.3.20",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.3.0",
+    "chai": "^4.5.0",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.7.0",
+    "hardhat": "^2.26.3",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.0.4"
+  },
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy:simple": "hardhat run scripts/01-deploy-simple.ts",
+    "deploy:params": "hardhat run scripts/02-deploy-with-params.ts",
+    "deploy:multiple": "hardhat run scripts/03-deploy-multiple.ts",
+    "deploy:all": "hardhat run scripts/03-deploy-multiple.ts",
+    "test": "hardhat test",
+    "test:validators": "hardhat test test-validators/*.ts"
+  }
+}
