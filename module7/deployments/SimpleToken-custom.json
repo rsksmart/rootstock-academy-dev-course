@@ -1,0 +1,16 @@
+{
+  "address": "0x8c45ffEC995FdB194aC06AEb48781DaCD2D39dF2",
+  "deployer": "0x72EEfa1112478b657cc6aC3dBF8e9cdBf62aB457",
+  "parameters": {
+    "name": "RootstockToken",
+    "symbol": "RSK",
+    "initialSupply": 500000
+  },
+  "verified": {
+    "name": "RootstockToken",
+    "symbol": "RSK",
+    "totalSupply": "500000000000000000000000"
+  },
+  "timestamp": "2026-01-13T10:56:46.795Z",
+  "network": "rskTestnet"
+}

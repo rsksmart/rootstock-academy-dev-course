@@ -1,0 +1,177 @@
+name: 1. Validate PR Submission
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Detect module from PR title
+        id: detect_module
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "Parsing PR title: $PR_TITLE"
+          MODULE_RAW=$(echo "$PR_TITLE" | grep -ioE '^module[0-9]+')
+
+          if [ -z "$MODULE_RAW" ]; then
+            echo "ERROR: PR title must start with 'moduleX/', e.g., 'module1/your-username'"
+            echo "Current PR title: $PR_TITLE"
+            exit 1
+          fi
+
+          MODULE="${MODULE_RAW,,}"
+          echo "Detected module: $MODULE (original: $MODULE_RAW)"
+          echo "MODULE=$MODULE" >> $GITHUB_ENV
+          echo "module=$MODULE" >> $GITHUB_OUTPUT
+
+      - name: Validate module is supported
+        run: |
+          MODULE="${{ env.MODULE }}"
+          ALLOWED_MODULES=("module3" "module4" "module5" "module6" "module7")
+          
+          echo "Validating module: $MODULE"
+          echo "Allowed modules: ${ALLOWED_MODULES[@]}"
+          
+          if [[ ! " ${ALLOWED_MODULES[@]} " =~ " ${MODULE} " ]]; then
+            echo "ERROR: Module '$MODULE' is not supported."
+            echo "Supported modules are: module3, module4, module5, module6, module7"
+            echo "Please update your PR title to use a valid module number."
+            exit 1
+          fi
+          
+          echo "Module validation passed: $MODULE is supported"
+
+      - name: Prepare student submission
+        run: |
+          mkdir -p submission
+          
+          echo "MODULE=$MODULE" > submission/metadata.txt
+          echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> submission/metadata.txt
+          echo "PR_SHA=${{ github.event.pull_request.head.sha }}" >> submission/metadata.txt
+          
+          if [ "$MODULE" = "module3" ]; then
+            echo "Module 3: Extracting Solidity contracts only..."
+            
+            if [ ! -d "${MODULE}/contracts" ]; then
+              echo "ERROR: ${MODULE}/contracts directory not found"
+              exit 1
+            fi
+            
+            find ${MODULE}/contracts -maxdepth 1 -name "*.sol" -type f -exec cp {} submission/ \;
+            
+            SOL_COUNT=$(find submission -name "*.sol" | wc -l)
+            echo "Found $SOL_COUNT Solidity files"
+            
+            if [ "$SOL_COUNT" -eq 0 ]; then
+              echo "ERROR: No Solidity files found in ${MODULE}/contracts"
+              exit 1
+            fi
+            
+          elif [ "$MODULE" = "module4" ]; then
+            echo "Module 4: Extracting TypeScript test files only..."
+            
+            if [ ! -d "${MODULE}/test" ]; then
+              echo "ERROR: ${MODULE}/test directory not found"
+              exit 1
+            fi
+            
+            find ${MODULE}/test -maxdepth 1 -name "*.ts" -type f -exec cp {} submission/ \;
+            
+            TS_COUNT=$(find submission -name "*.ts" | wc -l)
+            echo "Found $TS_COUNT TypeScript test files"
+            
+            if [ "$TS_COUNT" -eq 0 ]; then
+              echo "ERROR: No TypeScript files found in ${MODULE}/test"
+              exit 1
+            fi
+            
+          elif [ "$MODULE" = "module5" ]; then
+            echo "Module 5: Extracting Solidity contracts only..."
+            
+            if [ ! -d "${MODULE}/contracts" ]; then
+              echo "ERROR: ${MODULE}/contracts directory not found"
+              exit 1
+            fi
+            
+            find ${MODULE}/contracts -maxdepth 1 -name "*.sol" -type f -exec cp {} submission/ \;
+            
+            SOL_COUNT=$(find submission -name "*.sol" | wc -l)
+            echo "Found $SOL_COUNT Solidity files"
+            
+          elif [ "$MODULE" = "module6" ]; then
+            echo "Module 6: Extracting deployment scripts only..."
+            
+            if [ ! -d "${MODULE}/scripts" ]; then
+              echo "ERROR: ${MODULE}/scripts directory not found"
+              exit 1
+            fi
+            
+            find ${MODULE}/scripts -maxdepth 1 -name "*.ts" -type f -exec cp {} submission/ \;
+            
+            TS_COUNT=$(find submission -name "*.ts" | wc -l)
+            echo "Found $TS_COUNT TypeScript deployment scripts"
+            
+            if [ "$TS_COUNT" -eq 0 ]; then
+              echo "ERROR: No TypeScript files found in ${MODULE}/scripts"
+              exit 1
+            fi
+            
+          elif [ "$MODULE" = "module7" ]; then
+            echo "Module 7: Extracting assessment file only..."
+            
+            ASSESSMENT_FILE="${MODULE}/assessment/commands-and-outputs.md"
+            
+            if [ -f "$ASSESSMENT_FILE" ]; then
+              cp "$ASSESSMENT_FILE" submission/commands-and-outputs.md
+              echo "Assessment file found and copied"
+            else
+              echo "WARNING: Assessment file not found at $ASSESSMENT_FILE"
+              echo "# Assessment File Not Found" > submission/commands-and-outputs.md
+            fi
+          fi
+          
+          echo ""
+          echo "=== Submission contents ==="
+          ls -la submission/
+
+      - name: Validate Solidity syntax (modules 3, 5)
+        if: env.MODULE == 'module3' || env.MODULE == 'module5'
+        run: |
+          echo "Checking Solidity file syntax..."
+          
+          for file in submission/*.sol; do
+            if [ -f "$file" ]; then
+              if ! head -20 "$file" | grep -qE '(SPDX-License-Identifier|pragma solidity)'; then
+                echo "WARNING: $file may be missing SPDX license or pragma statement"
+              fi
+              echo "✓ $file looks like valid Solidity"
+            fi
+          done
+
+      - name: Upload student submission
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: student-submission
+          path: submission/
+          retention-days: 1
+          if-no-files-found: error
+
+      - name: Summary
+        run: |
+          echo "## PR Validation Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Module:** $MODULE" >> $GITHUB_STEP_SUMMARY
+          echo "- **PR Number:** ${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Files submitted:** $(ls submission/ | wc -l)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Submission uploaded for testing." >> $GITHUB_STEP_SUMMARY
