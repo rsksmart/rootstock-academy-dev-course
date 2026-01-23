@@ -184,10 +184,10 @@ Your submission passes when:
 ## Additional Resources
 
 - [Rootstock Explorer - Testnet](https://explorer.testnet.rootstock.io/)
-- [Rootstock Testnet Faucet](https://faucet.rsk.co/)
+- [Rootstock Testnet Faucet](https://faucet.rootstock.io/)
 - [Hardhat Flatten Documentation](https://hardhat.org/hardhat-runner/docs/advanced/flattening)
 - [ABI Encoder Tool](https://abi.hashex.org/)
-- [Rootstock Developer Portal](https://developers.rsk.co/)
+- [Rootstock Developer Portal](https://dev.rootstock.io/)
 
 ---
 
@@ -198,4 +198,4 @@ Complete the `assessment/commands-and-outputs.md` file and create a PR with titl
 - Completed `assessment/commands-and-outputs.md`
 - Screenshots in the `assessment/` folder
 
-The PR will be automatically reviewed by the Rootstock Developer Education team.
+The PR will be automatically reviewed by the Rootstock Developer Experience team.

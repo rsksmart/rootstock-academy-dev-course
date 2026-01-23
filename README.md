@@ -1,13 +1,13 @@
-<h1>Rootstock Developer Course</h1>
+<h1>Rootstock Developer Course Assessments and Resources Repo</h1>
 
-# Table of Contents
+## Table of Contents
 
-> All the sections in this repo are for the Rootstock Developer Course.
+**All the sections in this repo are for the Rootstock Developer Course.**
 
 <details>
-<summary> <a href="#welcome-to-the-course-repo">Welcome to the Course Repo!</a></summary>
+<summary> <a href="#Assessment-Examples-and-Submission-Guidelines">Welcome to the Dev Course Assessments and Resources Repo!</a></summary>
 <ol>
-  <li><a href="#welcome-to-the-course">Welcome to the course!</a></li>
+  <li><a href="#welcome-to-the-course">Welcome to the dev course assessments repo!</a></li>
   <li><a href="#best-practices">Best Practices</a></li>
   <li><a href="#getting-started">Getting Started</a></li>
   <li><a href="#how-to-submit-your-work">How to Submit Your Work</a></li>
@@ -61,14 +61,9 @@
 
 ---
 
-# Welcome to the Course Repo
-
-## Welcome to the course!
-
-Welcome to the **Rootstock Developer Course**! This hands-on course will guide you through blockchain development fundamentals, from basic Solidity concepts to advanced smart contract patterns.
-
+## Assessment Examples and Submission Guidelines
+ 
 ### What You'll Learn
-
 - ✅ Solidity programming language fundamentals
 - ✅ Smart contract testing with Hardhat and Foundry
 - ✅ Smart contract deployment
@@ -82,27 +77,26 @@ Welcome to the **Rootstock Developer Course**! This hands-on course will guide y
 - **Fork this repository** to your GitHub account before starting
 - **Create a new branch** for each module following the format: `module[number]/[username-or-email]`
   - Example: `module1/andrew` or `module1/student@email.com`
-- **Commit frequently** with descriptive messages
+- Change directory into specific module
+- **Read the instructions carefully** in each module `README.md`
 - **Test your code** before submitting
-- **Read the instructions carefully** in each exercise
-- **Use the required Pull Request Name Format** to verify your solutions
+- **Commit Changes** with descriptive messages
+- **Use the required Pull Request Format** to verify your solutions
   - Example: `module1/andrew` or `module1/student@email.com`
 - **Create a Pull Request** to the main Rootstock Developer Course repository
-- **Wait for review** from the RSK Developer Education team
+- **Wait for review** from the Rootstock Developer Experience team
 - **Once approved, your grade will be recorded in the platform**
 
 ### Code Quality
-
 - Follow Solidity style guidelines
 - Test your contracts thoroughly
 - Use meaningful variable and function names
 
 ### Getting Help
-
 - Review the lesson videos before starting exercises
 - Check the exercise descriptions in each module's README
 - Test your code frequently using the provided test suites
-- Ask questions in the course community forum (Discord) or using GitHub Issues
+- Ask questions in the course community forum by tagging @Mentors on Discord or using GitHub Issues.
 - Review the reference documentation when needed
 
 ## Getting Started
@@ -120,25 +114,22 @@ Before starting the course, ensure you have:
 ### Installation
 
 1. **Fork this repository** to your GitHub account
-
 2. **Clone your fork** to your local machine:
    ```bash
    git clone https://github.com/rsksmart/rootstock-academy-dev-course.git
    cd rootstock-academy-dev-course
    ```
-
 3. **Navigate to Desired Module Folder** and install dependencies:
    ```bash
    cd module2 #(module2 for example)
    npm install
    ```
-
 4. **Verify your setup** by running the tests:
    ```bash
    npx hardhat test
    ```
 
-You should see tests running (they will fail initially - that's expected!). Take in account each module has different exercises and tests, and ways to run the tests.
+> You should see tests running (they will fail initially - that's expected!). Take in account each module has different exercises and tests, and ways to run the tests.
 
 ## How to Submit Your Work
 
@@ -148,7 +139,7 @@ You should see tests running (they will fail initially - that's expected!). Take
 2. **Run the tests (locally)** to verify your solutions
 3. **Commit your changes** to your fork
 4. **Create a Pull Request** to the main [Rootstock Developer Course repository](https://github.com/rsksmart/rootstock-academy-dev-course)
-5. **Wait for review** from the RSK Developer Education team
+5. **Wait for review** from the Rootstock Developer Experience team
 
 ### Creating a Pull Request
 
@@ -181,7 +172,6 @@ git push origin module2/your-username
 ```
 
 ### What Happens Next?
-
 1. Your PR will be automatically tested
 2. The DevX team will review your submission
 3. You'll receive feedback if changes are needed
@@ -893,7 +883,7 @@ By completing this module, you will be able to:
 | 01 | [Basic Deployment](./module6/scripts/01-deploy-simple.ts) | `getContractFactory`, `deploy`, `waitForDeployment` | ⭐ |
 | 02 | [Deploy with Parameters](./module6/scripts/02-deploy-with-params.ts) | Constructor args, state verification | ⭐⭐ |
 | 03 | [Deploy Multiple Contracts](./module6/scripts/03-deploy-multiple.ts) | Dependencies, contract linking | ⭐⭐⭐ |
-| 04 | [Network Configuration](./module6/hardhat.config.ts) | RSK networks, accounts, gas settings | ⭐⭐ |
+| 04 | [Network Configuration](./module6/hardhat.config.ts) | Rootstock networks, accounts, gas settings | ⭐⭐ |
 
 ## Module 6 Running Scripts
 
@@ -920,9 +910,9 @@ npx hardhat run scripts/02-deploy-with-params.ts
 npx hardhat run scripts/03-deploy-multiple.ts
 ```
 
-### Deploy to RSK Testnet (Optional)
+### Deploy to Rootstock Testnet (Optional)
 ```bash
-# First, get some tRBTC from the RSK Testnet Faucet: https://faucet.rsk.co/
+# First, get some tRBTC from the Rootstock Testnet Faucet: https://faucet.rootstock.io/
 
 # Create .env file with your private key
 cp env.example .env
@@ -991,7 +981,7 @@ Once your script works correctly, move to the next exercise!
 
 - ✅ All deployment scripts execute without errors
 - ✅ Deployment artifacts are created in `deployments/`
-- ✅ Network configuration is valid for RSK
+- ✅ Network configuration is valid for Rootstock
 - ✅ Code follows best practices
 
 ### Expected Output
@@ -1078,7 +1068,7 @@ npx hardhat compile
 ### Need More Help?
 
 - Check the [Hardhat Deployment Guide](https://hardhat.org/hardhat-runner/docs/guides/deploying)
-- Review [RSK Developer Portal](https://developers.rsk.co/)
+- Review [Rootstock Developer Portal](https://dev.rootstock.io/)
 - Review the module-specific README: `module6/README.md`
 - Ask in the course discussion forum
 - Reach out to the DevX team
@@ -1117,7 +1107,7 @@ By completing this module, you will be able to:
 | Step | Task | Description | Difficulty |
 |------|------|-------------|------------|
 | 1 | Setup Environment | Install dependencies, configure `.env` | ⭐ |
-| 2 | Deploy to Testnet | Deploy all 3 contracts to RSK Testnet | ⭐⭐ |
+| 2 | Deploy to Testnet | Deploy all 3 contracts to Rootstock Testnet | ⭐⭐ |
 | 3 | Flatten Source Files | Generate flattened `.sol` files | ⭐ |
 | 4 | Verify on Explorer | Verify all 3 contracts on Rootstock Explorer | ⭐⭐⭐ |
 | 5 | Complete Assessment | Fill in `assessment/commands-and-outputs.md` | ⭐ |
@@ -1143,7 +1133,7 @@ cp env.example .env
 # Compile contracts
 npx hardhat compile
 
-# Deploy all contracts to RSK Testnet
+# Deploy all contracts to Rootstock Testnet
 npx hardhat run scripts/03-deploy-multiple.ts --network rskTestnet
 ```
 
@@ -1237,7 +1227,7 @@ git push origin module7/your-username
 ### What We Check
 
 Your submission will be evaluated on:
-1. **Deployment**: All contracts deployed to RSK Testnet ✅
+1. **Deployment**: All contracts deployed to Rootstock Testnet ✅
 2. **Verification**: All contracts verified on Explorer ✅
 3. **Documentation**: Assessment file contains valid URLs
 4. **Completeness**: All three contracts verified
@@ -1295,19 +1285,19 @@ Use an [ABI Encoder Tool](https://abi.hashex.org/) to encode constructor argumen
 
 ---
 
-## Contact & Support
+## Resources & Support
 
 For questions or issues:
 - **Technical Support**: DevX (DevRel) Team
-- **Course Content**: platform messaging
-- **Community Help**: Discord #developer-support channel
+- **Developer Course Content**: [Thinkifc Platform](https://rootstock.thinkific.com/courses/blockchain-developer-course)
+- **Community Help**: [Discord](http://discord.gg/rootstock) `#rootcamp` channel
 
 ---
 
 ## License
 
-This course material is provided by Rootstock for educational purposes.
+🪪 MIT
 
-© 2025 Rootstock. All rights reserved.
+This developer course material is provided by Rootstock for educational purposes.
 
----
+© 2026 Rootstock. All rights reserved.

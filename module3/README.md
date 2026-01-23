@@ -91,4 +91,4 @@ Your task is to check what is missing or contains errors, and complete/fix it.
 
 ## Submissions
 
-Please follow the instructions given in the course, create a PR with the changes to the contracts and the tests pass. this in a public repo [RSK DevCourse](https://github.com/rsksmart/rootstock-academy-dev-course). The PR will be automatically reviewed by the RSK Developer Education team.
+Please follow the instructions given in the course, create a PR with the changes to the contracts and the tests pass. this in a public repo [Rootstock Developer Course](https://github.com/rsksmart/rootstock-academy-dev-course). The PR will be automatically reviewed by the Rootstock Developer Experience team.
