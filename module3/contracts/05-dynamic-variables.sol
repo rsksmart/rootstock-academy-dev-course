@@ -11,8 +11,8 @@ contract Cars {
         address owner;
     }
 
-    ___ public numCars = ___;
-    ____(uint256 => ___) public cars;
+    uint256 public numCars = 0;
+    mapping(uint256 => Car) public cars;
 
     constructor() {
     }

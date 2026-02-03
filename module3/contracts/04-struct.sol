@@ -1,17 +1,17 @@
 pragma solidity ^0.8.0;
 
-contract Cars {
+ontract Cars {
 
-    enum CarStatus { driving, parked }
-
-    ___ Car {
-        ___ colour;
-        ___ doors;
-        ___ status;
-        ___ owner;
+    enum CarStatus {
+        driving,
+        parked
     }
+
+    bytes3 public colour;
+    uint8 public doors;
+    CarStatus public status;
+    address public owner;
 
     constructor() {
     }
-
 }
