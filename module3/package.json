@@ -13,11 +13,22 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.3.0",
     "chai": "^4.5.0",
-    "hardhat": "^2.26.3",
+    "hardhat": "^2.28.4",
     "hardhat-gas-reporter": "^2.3.0",
     "solidity-coverage": "^0.8.16",
     "ts-node": "^10.9.2",
     "typescript": "~5.0.4",
     "viem": "^2.34.0"
-  }
+  },
+  "description": "In this module, you will learn the fundamental building blocks of Solidity smart contracts through 13 progressive exercises. Each exercise builds on the previous one, taking you from basic contract structure to advanced concepts like interfaces and imports.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

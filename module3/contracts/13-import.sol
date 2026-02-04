@@ -1,9 +1,9 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-___ "___";
+import {ISuperHonk} from "./13-import-target.sol";
 
 contract Cars {
-
     enum CarStatus { driving, parked }
 
     event CarHonk(uint256 indexed carId);
@@ -19,9 +19,7 @@ contract Cars {
     uint256 public numCars = 0;
     mapping(uint256 => Car) public cars;
 
-    constructor(
-        address superHonkAddress
-    ) {
+    constructor(address superHonkAddress) {
         superHonk = ISuperHonk(superHonkAddress);
     }
 
@@ -74,15 +72,19 @@ contract Cars {
         }
     }
 
-    modifier onlyOwner(
-        uint256 carId
-    )
-    {
+    // ADD THIS: Public getter for superHonk address so test can access it
+    function getSuperHonkAddress() public view returns (address) {
+        return address(superHonk);
+    }
+
+    // ALTERNATIVE: Make superHonk public instead of private
+    // ISuperHonk public superHonk; // Change from private to public
+
+    modifier onlyOwner(uint256 carId) {
         require(
             cars[carId].owner == msg.sender,
             "only owner"
         );
         _;
     }
-
 }
