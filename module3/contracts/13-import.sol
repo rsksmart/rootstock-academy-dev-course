@@ -72,10 +72,15 @@ contract Cars {
         }
     }
 
-    modifier onlyOwner(
-        uint256 carId
-    )
-    {
+    // ADD THIS: Public getter for superHonk address so test can access it
+    function getSuperHonkAddress() public view returns (address) {
+        return address(superHonk);
+    }
+
+    // ALTERNATIVE: Make superHonk public instead of private
+    // ISuperHonk public superHonk; // Change from private to public
+
+    modifier onlyOwner(uint256 carId) {
         require(
             cars[carId].owner == msg.sender,
             "only owner"
