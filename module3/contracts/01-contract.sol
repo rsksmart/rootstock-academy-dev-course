@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
-
-solidity ^0.8.0;
+pragma solidity ^0.8.0;
 
 contract Abc {
     uint256 public sum;
