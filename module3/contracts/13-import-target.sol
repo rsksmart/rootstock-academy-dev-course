@@ -6,9 +6,9 @@ interface ISuperHonk {
 }
 
 contract SuperHonk is ISuperHonk {
-    event HonkCalled(address indexed caller);
+    uint256 public count = 0;
     
     function honk() external override {
-        emit HonkCalled(msg.sender);
+        count += 1;
     }
 }
