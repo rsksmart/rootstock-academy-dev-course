@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// SPECIFIC IMPORT - not global import
 import {ISuperHonk} from "./13-import-target.sol";
 
 contract Cars {
@@ -16,7 +15,6 @@ contract Cars {
         address owner;
     }
 
-    // Using the imported ISuperHonk type
     ISuperHonk private superHonk;
     uint256 public numCars = 0;
     mapping(uint256 => Car) public cars;
