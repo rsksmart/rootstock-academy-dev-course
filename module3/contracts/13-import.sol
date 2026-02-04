@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./13-import-target.sol";
-
 contract Cars {
-
     enum CarStatus { driving, parked }
 
     event CarHonk(uint256 indexed carId);
@@ -16,15 +13,8 @@ contract Cars {
         address owner;
     }
 
-    ISuperHonk private superHonk;
     uint256 public numCars = 0;
     mapping(uint256 => Car) public cars;
-
-    constructor(
-        address superHonkAddress
-    ) {
-        superHonk = ISuperHonk(superHonkAddress);
-    }
 
     function addCar(
         bytes3 colour,
@@ -70,9 +60,7 @@ contract Cars {
         onlyOwner(carId)
     {
         emit CarHonk(carId);
-        if (isLoud) {
-            superHonk.honk();
-        }
+        // No external contract call
     }
 
     modifier onlyOwner(
