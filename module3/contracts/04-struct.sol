@@ -8,16 +8,22 @@ contract Cars {
         parked
     }
 
-    bytes3 public colour;
-    uint8 public doors;
-    CarStatus public status;
-    address public owner;
+    struct Car {
+        bytes3 colour;
+        uint8 doors;
+        CarStatus status;
+        address owner;
+    }
+
+    Car public car;
 
     constructor() {
-        // Initialize default values
-        colour = 0x000000;
-        doors = 4;
-        status = CarStatus.parked;
-        owner = msg.sender;
+        // Initialize default values in the struct
+        car = Car({
+            colour: 0x000000,
+            doors: 4,
+            status: CarStatus.parked,
+            owner: msg.sender
+        });
     }
 }
