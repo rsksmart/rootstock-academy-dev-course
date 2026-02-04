@@ -15,4 +15,4 @@ Contract Cars {
 
     constructor() {
     }
-}
+};
