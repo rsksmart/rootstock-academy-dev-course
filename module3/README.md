@@ -15,25 +15,30 @@ Your task is to check what is missing or contains errors, and complete/fix it.
 - `01-contract.sol` <!-- showDiff -->
   - Implement a valid Solidity smart contract that can compile
   - Fill in the missing keywords
+
 - `02-primitive-variables.sol` <!-- showDiff -->
   - Add primitive variables to a smart contract
   - `isBlack` should be able to store a boolean value, true or false
   - `doors` should be able to store a big (big-int) non-negative whole number
   - `owner` should be able to reference an EOA (Externally Owned Account) or a SC (Smart Contract)
   - All the variables should be `public`
+
 - `03-enum.sol` <!-- showDiff -->
   - Add an enumerated value for `CarStatus`, which can be either `driving` or `parked`
   - Add a state variable for `status` that uses this enumeration
+
 - `04-struct.sol` <!-- showDiff -->
   - Create a structure for `Car`
   - Shift all existing state variables (`colour`, `doors`, `owner`, `status`) into it
   - What happens to the visibility modifiers?
+
 - `05-dynamic-variables.sol` <!-- showDiff -->
   - Create a dynamic variable `cars` that stores key value pairs
     - where the key is a large non-negative whole number, and
     - the value is an instance of the `Car` structure already defined
   - Create a primitive variable `numCars` that
     stores a large non-negative whole number
+    
 - `06-function-stub.sol` <!-- showDiff -->
   - Write a new function `addCar`
   - It should take 2 parameters `colour` and `doors`
