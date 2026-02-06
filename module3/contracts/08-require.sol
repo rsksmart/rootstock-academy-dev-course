@@ -26,8 +26,8 @@ contract Cars {
         returns(uint256 carId)
     {
         require(
-            msg.value > 0.1 ether,
-            "requires payment"
+            msg.value >= 0.1 ether,
+            "You must pay 0.001 RBTC to add a new car"
         );
 
         carId = ++numCars;
@@ -48,12 +48,12 @@ contract Cars {
     ) public {
         require(
             cars[carId].owner == msg.sender,
-            "only owner"
+            "you are not the owner of this car"
         );
 
         require(
             cars[carId].status != newStatus,
-            "no change"
+            "car is already in this status"
         );
 
         cars[carId].status = newStatus;
