@@ -17,12 +17,12 @@ contract Cars {
     constructor() {
     }
 
-    ___ addCar(
-        _________
-        _________
+    function addCar(
+        bytes3 colour,
+        uint8 doors
     )
-        ___
-        returns(___ ___)
+        public
+        returns(uint256 carId)
     {
     }
 

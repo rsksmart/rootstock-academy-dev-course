@@ -5,9 +5,9 @@ contract Cars {
     enum CarStatus { driving, parked }
 
     struct Car {
-        byte3 colour;
+        bytes3 colour;
         uint256 doors;
-        carStatus status;
+        CarStatus status;
         address owner;
     }
     // variables lose their individual visibility modifiers when moved

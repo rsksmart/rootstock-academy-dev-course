@@ -2,7 +2,7 @@ pragma solidity ^0.8.0;
 
 contract Cars {
 
-    enum CarStatus { driving, packed }
+    enum CarStatus { driving, parked }
 
     bytes3 public colour;
     uint256 public doors;
