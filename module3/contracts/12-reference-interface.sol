@@ -1,8 +1,8 @@
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 interface ISuperHonk {
   function count() external view returns (uint256);
-
   function honk() external;
 }
 
@@ -32,14 +32,14 @@ contract Cars {
         address owner;
     }
 
-    ___ ___ superHonk;
+    ISuperHonk private superHonk;  
     uint256 public numCars = 0;
     mapping(uint256 => Car) public cars;
 
     constructor(
-        ___ superHonkAddress
+        address superHonkAddress
     ) {
-        superHonk = ___(___);
+        superHonk = ISuperHonk(superHonkAddress);
     }
 
     function addCar(
