@@ -2,14 +2,14 @@
   "name": "module4-smart-contract-testing",
   "version": "1.0.0",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@nomicfoundation/hardhat-network-helpers": "^1.1.0",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@types/chai": "^4.3.20",
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.3.0",
     "chai": "^4.5.0",
     "ethers": "^6.7.0",
-    "hardhat": "^2.26.3",
+    "hardhat": "^2.28.4",
     "ts-node": "^10.9.2",
     "typescript": "~5.0.4"
   },
