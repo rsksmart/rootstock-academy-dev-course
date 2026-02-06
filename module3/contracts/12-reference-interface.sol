@@ -32,14 +32,14 @@ contract Cars {
         address owner;
     }
 
-    ___ ___ superHonk;
+    ISuperHonk private superHonk;
     uint256 public numCars = 0;
     mapping(uint256 => Car) public cars;
 
     constructor(
-        ___ superHonkAddress
+        address superHonkAddress
     ) {
-        superHonk = ___(___);
+        superHonk = ISuperHonk(superHonkAddress);
     }
 
     function addCar(
