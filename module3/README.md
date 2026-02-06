@@ -81,6 +81,7 @@ Your task is to check what is missing or contains errors, and complete/fix it.
 - `11-interface.sol` <!-- showDiff -->
   - Define an interface for the `SuperHonk` contract, named `ISuperHonk`
   - Are there any differences in the visibility modifiers?
+  
 - `12-reference-interface copy.sol` <!-- showDiff -->
   - Create a private state variable named `superHonk`
     that stores a reference to the `SuperHonk` contract
