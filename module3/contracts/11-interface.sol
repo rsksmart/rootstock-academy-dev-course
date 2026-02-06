@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma pragma solidity ^0.8.0;
 
 interface ISuperHonk {
     function count() external view returns (uint256);
@@ -31,11 +31,11 @@ contract Cars {
         address owner;
     }
 
+
     uint256 public numCars = 0;
     mapping(uint256 => Car) public cars;
 
-    constructor() {
-    }
+    constructor() {}
 
     function addCar(
         bytes3 colour,
@@ -74,12 +74,16 @@ contract Cars {
     }
 
     function honk(
-        uint256 carId
+        uint256 carId,
+        bool isLoud
     )
         public
         onlyOwner(carId)
     {
         emit CarHonk(carId);
+        if (isLoud) {
+            superHonk.honk();
+        }
     }
 
     modifier onlyOwner(
@@ -92,5 +96,4 @@ contract Cars {
         );
         _;
     }
-
 }
