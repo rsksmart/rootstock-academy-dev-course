@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
 contract Cars {
@@ -17,12 +18,12 @@ contract Cars {
     constructor() {
     }
 
-    ___ addCar(
-        _________
-        _________
+    function addCar(
+        bytes3 colour,
+        uint8 doors
     )
-        ___
-        returns(___ ___)
+        public
+        returns(uint256 carId)
     {
     }
 
