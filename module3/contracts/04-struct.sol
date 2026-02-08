@@ -4,11 +4,11 @@ contract Cars {
 
     enum CarStatus { driving, parked }
 
-    ___ Car {
-        ___ colour;
-        ___ doors;
-        ___ status;
-        ___ owner;
+    struct Car {
+        bytes3 colour;
+        uint8 doors;
+        address owner;
+        CarStatus status;
     }
 
     constructor() {

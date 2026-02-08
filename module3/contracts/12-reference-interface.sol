@@ -7,12 +7,13 @@ interface ISuperHonk {
 }
 
 contract SuperHonk is ISuperHonk {
-    uint256 public count;
+    uint256 public override count;
 
     event LoudSound(address indexed source);
 
     function honk()
       public
+      override
     {
         count += 1;
         emit LoudSound(msg.sender);
@@ -32,14 +33,14 @@ contract Cars {
         address owner;
     }
 
-    ___ ___ superHonk;
+    ISuperHonk private superHonk;
     uint256 public numCars = 0;
     mapping(uint256 => Car) public cars;
 
     constructor(
-        ___ superHonkAddress
+        address superHonkAddress
     ) {
-        superHonk = ___(___);
+        superHonk = ISuperHonk(superHonkAddress);
     }
 
     function addCar(
