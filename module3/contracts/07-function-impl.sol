@@ -18,20 +18,20 @@ contract Cars {
     }
 
     function addCar(
-        bytes3 colour,
+        bytes3 colors,
         uint8 doors
     )
         public
         returns(uint256 carId)
     {
-        ___ = ++numCars;
-        ___ memory newCar = ___(
-            ___,
-            ___,
-            CarStatus.___,
-            msg.___
+        carId = ++numCars;
+        Car memory newCar = Car(
+            colors,
+            doors,
+            CarStatus.parked,
+            msg.sender
         );
-        _________ = newCar;
+        cars[carId] = newCar;
     }
 
 }

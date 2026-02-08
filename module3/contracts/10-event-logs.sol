@@ -4,7 +4,7 @@ contract Cars {
 
     enum CarStatus { driving, parked }
 
-    ___ CarHonk(_________);
+    event CarHonk(uint256 indexed carId);
 
     struct Car {
         bytes3 colour;
@@ -18,6 +18,7 @@ contract Cars {
 
     constructor() {
     }
+
 
     function addCar(
         bytes3 colour,
@@ -59,9 +60,9 @@ contract Cars {
         uint256 carId
     )
         public
-        _________
+        onlyOwner(carId)
     {
-        ___ CarHonk(___);
+        emit CarHonk(carId);
     }
 
     modifier onlyOwner(
