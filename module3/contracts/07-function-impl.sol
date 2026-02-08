@@ -1,3 +1,4 @@
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract Cars {
@@ -24,14 +25,16 @@ contract Cars {
         public
         returns(uint256 carId)
     {
-        ___ = ++numCars;
-        ___ memory newCar = ___(
-            ___,
-            ___,
-            CarStatus.___,
-            msg.___
-        );
-        _________ = newCar;
+       carId = ++numCars;
+
+    Car memory newCar = Car(
+        colour,
+        doors,
+        CarStatus.parked,
+        msg.sender
+    );
+
+    cars[carId] = newCar;
     }
 
 }
