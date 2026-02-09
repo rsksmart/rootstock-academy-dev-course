@@ -1,6 +1,9 @@
 {
   "name": "module3-write-smart-contracts",
   "version": "1.0.0",
+  "scripts": {
+    "test": "npx hardhat test"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-ignition": "^0.15.13",
     "@nomicfoundation/hardhat-ignition-viem": "^0.15.13",
