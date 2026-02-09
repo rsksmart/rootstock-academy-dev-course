@@ -43,7 +43,7 @@ describe("02-primitive-variables: Primitive Variables", function () {
     expect(value).to.be.a("string");
     expect(value).to.match(/^0x[a-fA-F0-9]{40}$/);
     
-    expect(() => getAddress(value)).to.not.throw();
+    expect(() => getAddress(value as string)).to.not.throw(); 
   });
 });
 

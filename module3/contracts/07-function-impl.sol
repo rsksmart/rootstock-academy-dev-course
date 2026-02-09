@@ -1,8 +1,11 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
 contract Cars {
-
-    enum CarStatus { driving, parked }
+    enum CarStatus {
+        driving,
+        parked
+    }
 
     struct Car {
         bytes3 colour;
@@ -14,24 +17,11 @@ contract Cars {
     uint256 public numCars = 0;
     mapping(uint256 => Car) public cars;
 
-    constructor() {
-    }
+    constructor() {}
 
-    function addCar(
-        bytes3 colour,
-        uint8 doors
-    )
-        public
-        returns(uint256 carId)
-    {
-        ___ = ++numCars;
-        ___ memory newCar = ___(
-            ___,
-            ___,
-            CarStatus.___,
-            msg.___
-        );
-        _________ = newCar;
+    function addCar(bytes3 colour, uint8 doors) public returns (uint256 carId) {
+        carId = ++numCars;
+        Car memory newCar = Car(colour, doors, CarStatus.parked, msg.sender);
+        cars[carId] = newCar;
     }
-
 }

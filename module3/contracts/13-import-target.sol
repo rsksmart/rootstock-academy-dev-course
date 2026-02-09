@@ -1,9 +1,10 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
 interface ISuperHonk {
-  function count() external view returns (uint256);
+    function count() external view returns (uint256);
 
-  function honk() external;
+    function honk() external;
 }
 
 contract SuperHonk is ISuperHonk {
@@ -11,9 +12,7 @@ contract SuperHonk is ISuperHonk {
 
     event LoudSound(address indexed source);
 
-    function honk()
-      public
-    {
+    function honk() public {
         count += 1;
         emit LoudSound(msg.sender);
     }

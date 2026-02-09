@@ -35,7 +35,7 @@ describe("03-enum: Enumerated Values", function () {
     expect(contract.read.owner).to.be.a("function");
     const value = await contract.read.owner();
     expect(value).to.match(/^0x[a-fA-F0-9]{40}$/);
-    expect(() => getAddress(value)).to.not.throw();
+    expect(() => getAddress(value as string)).to.not.throw();
   });
 
   it("should have a public CarStatus enum variable 'status'", async function () {
