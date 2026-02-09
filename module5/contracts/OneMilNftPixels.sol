@@ -94,8 +94,9 @@ contract OneMilNftPixels is ERC721, Ownable, ReentrancyGuard, IERC1363Receiver {
         compensation = 10;
         
         // OMP-003: Initialize whitelisted function selectors
-        whitelistedSelectors[this.buy.selector] = true;
-        whitelistedSelectors[this.update.selector] = true;
+        whitelistedSelectors[bytes4(keccak256("buy(address,uint24,bytes3,uint256)"))] = true;
+        whitelistedSelectors[bytes4(keccak256("update(address,uint24,bytes3,uint256)"))] = true; 
+     
     }
 
     /**
@@ -252,7 +253,7 @@ contract OneMilNftPixels is ERC721, Ownable, ReentrancyGuard, IERC1363Receiver {
      * param _data Additional data with no specified format
      */
     function _transferReceived(
-        address _sender,
+        address /* sender */,
         uint256 _amount,
         bytes memory _data
     ) private {
