@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
+interface ISuperHonk {
+    function superHonk() external;
+}
+
 contract Abc {
 
     enum CarStatus { Driving, Parked }
@@ -16,10 +20,6 @@ contract Abc {
     uint public numCars;
 
     event LoudSound(uint indexed carId);
-
-    interface ISuperHonk {
-        function superHonk() external;
-    }
 
     ISuperHonk private superHonk;
 
