@@ -4,10 +4,11 @@ pragma solidity >=0.8.0 <0.9.0;
 import 'hardhat/console.sol';
 import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import 'erc-payable-token/contracts/token/ERC1363/IERC1363.sol';
 import 'erc-payable-token/contracts/token/ERC1363/IERC1363Receiver.sol';
 
-contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
+contract OneMilNftPixels is ERC721, Ownable, ReentrancyGuard, IERC1363Receiver {
     uint256 public minPriceIncrement;
     uint256 public updatePrice;
     uint256 public compensation;
@@ -17,6 +18,12 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      * Compensations are withdrawn from the accepted token OneMilNftPixels balance
      */
     mapping(address => uint256) public compensationBalances;
+    
+    /**
+     * @dev OMP-003: Whitelist for function selectors
+     */
+    mapping(bytes4 => bool) public whitelistedSelectors;
+    
     struct Pixel {
         bytes3 colour;
         uint256 price;
@@ -85,6 +92,10 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         minPriceIncrement = 10;
         updatePrice = 10;
         compensation = 10;
+        
+        // OMP-003: Initialize whitelisted function selectors
+        whitelistedSelectors[this.buy.selector] = true;
+        whitelistedSelectors[this.update.selector] = true;
     }
 
     /**
@@ -102,10 +113,10 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
     }
 
     /**
-     * @dev Allow withdrawal of compensations to a specified address.
+     * @dev OMP-001 FIXED: Allow withdrawal of compensations to a specified address.
      * If the balance of the NFT contract is 0 or msg.sender has 0 compensation balance, call will revert.
      */
-    function withdrawCompensation(IERC1363Receiver to) public {
+    function withdrawCompensation(IERC1363Receiver to) public nonReentrant {
         uint256 balance = IERC1363(acceptedToken).balanceOf(address(this));
         uint256 compensationBalance = compensationBalances[_msgSender()];
 
@@ -113,13 +124,14 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         require(balance >= compensationBalance, 'Insufficient balance!');
         require(compensationBalance > 0, 'Insufficient compensation balance!');
 
+        // OMP-001 FIX: Update state BEFORE external calls (checks-effects-interactions pattern)
+        compensationBalances[_msgSender()] = 0;
+
         // transfer msg.sender's compensation LUNAs to the address specified in `to`. If caller is EOA, call ERC20 transfer()
         bool withdrawalSuccess = (_msgSender() == tx.origin)
             ? acceptedToken.transfer(address(to), compensationBalance) // EOA
             : acceptedToken.transferAndCall(address(to), compensationBalance); // SC
         require(withdrawalSuccess, 'withdraw failed');
-        // SECURITY HINT: modify this
-        compensationBalances[_msgSender()] = 0;
 
         emit WithdrawCompensation(address(to), compensationBalance);
     }
@@ -133,7 +145,7 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      * - `colour` is an RGB value in hexadecimal,
      *   e.g. `0xFF00FF` is `rgb(255, 0, 255)` (purple)
      */
-    function buy(address sender, uint24 id, bytes3 colour, uint256 amount) public acceptedTokenOnly{
+    function buy(address sender, uint24 id, bytes3 colour, uint256 amount) public acceptedTokenOnly {
         Pixel storage pixel = pixels[id];
         require(
             amount >= pixel.price + minPriceIncrement,
@@ -234,14 +246,14 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
     }
 
     /**
-     * @dev Called after validating a `onTransferReceived`.
+     * @dev OMP-002 & OMP-003 FIXED: Called after validating a `onTransferReceived`.
      * param _sender The address which are token transferred from
      * param _amount The amount of tokens transferred
      * param _data Additional data with no specified format
      */
     function _transferReceived(
-        address /* _sender */,
-        uint256 /* _amount */,
+        address _sender,
+        uint256 _amount,
         bytes memory _data
     ) private {
         (
@@ -249,18 +261,34 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             address newOwner,
             uint24 pixelId,
             bytes3 colour,
-            uint256 amount
+            uint256 encodedAmount
         ) = abi.decode(_data, (bytes4, address, uint24, bytes3, uint256));
-        // SECURITY HINT: modify this
+        
+        // OMP-002 FIX: Add validation that encoded amount matches actual amount
+        require(_amount == encodedAmount, 'Amount mismatch');
+        
+        // OMP-003 FIX: Implement function whitelist
+        require(
+            whitelistedSelectors[selector],
+            'Call of an unknown function'
+        );
+        
         bytes memory callData = abi.encodeWithSelector(
             selector,
             newOwner,
             pixelId,
             colour,
-            amount
+            encodedAmount
         );
         (bool success, ) = address(this).delegatecall(callData);
         require(success, 'Function call failed');
+    }
+
+    /**
+     * @dev OMP-003: Function to manage whitelisted selectors (only owner)
+     */
+    function setWhitelistedSelector(bytes4 selector, bool allowed) external onlyOwner {
+        whitelistedSelectors[selector] = allowed;
     }
 
     receive() external payable {
@@ -271,4 +299,3 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         revert('Unknown function call');
     }
 }
-
