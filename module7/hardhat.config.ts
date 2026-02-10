@@ -14,23 +14,25 @@ dotenv.config();
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"; // Hardhat default key #0
 
-// 2: Define RPC URLs
+// Define RPC URLs
 const RSK_TESTNET_RPC = process.env.RSK_TESTNET_RPC || "https://public-node.testnet.rsk.co";
 const RSK_MAINNET_RPC = process.env.RSK_MAINNET_RPC || "https://public-node.rsk.co";
 
 const config: HardhatUserConfig = {
-    // TODO 1: Configure Solidity compiler
+    // Solidity compiler configuration
     solidity: {
         version: "0.8.20",
         settings: {
             optimizer: {
-                enabled: false,
+                enabled: true,
                 runs: 200
             }
+            },
+            evmVersion: "paris"
         }
     },
 
-    // TODO 2: Configure networks
+    // Network configuration
     networks: {
         // Hardhat's built-in network (used by default)
         hardhat: {
@@ -60,7 +62,7 @@ const config: HardhatUserConfig = {
         }
     },
 
-    // TODO 3: Configure paths
+    // Paths configuration
     paths: {
         sources: "./contracts",
         tests: "./test",
