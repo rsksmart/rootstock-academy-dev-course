@@ -42,21 +42,28 @@ export async function main() {
   // ============================================
   // TODO 1: Get the contract factory for SimpleToken
   // ============================================
-  // const SimpleToken = ...
+  const SimpleToken = await ethers.getContractFactory("SimpleToken");
+  console.log("Contract factory obtained");
 
   // ============================================
   // TODO 2: Deploy with CONFIG parameters
   // Pass CONFIG.tokenName, CONFIG.tokenSymbol, CONFIG.initialSupply
   // ============================================
-  // const token = ...
+  console.log("Deploying SimpleToken with custom parameters...");
+  const token = await SimpleToken.deploy(
+    CONFIG.tokenName,
+    CONFIG.tokenSymbol,
+    CONFIG.initialSupply
+  );
+  console.log("Deployment transaction sent:", token.deploymentTransaction()?.hash);
 
   // ============================================
   // TODO 3: Wait for deployment
   // ============================================
-  // await ...
-
-  // const tokenAddress = ...
-  // console.log("Token deployed to:", tokenAddress);
+  console.log("Waiting for deployment confirmation...");
+  await token.waitForDeployment();
+  const tokenAddress = await token.getAddress();
+  console.log("Token deployed to:", tokenAddress);
 
   // ============================================
   // TODO 4: Verify parameters by reading contract state
@@ -64,44 +71,45 @@ export async function main() {
   // ============================================
   console.log("\nVerifying deployment parameters...");
 
-  // const deployedName = await token.name();
-  // const deployedSymbol = await token.symbol();
-  // const deployedSupply = await token.totalSupply();
-  // const decimals = await token.decimals();
+  const deployedName = await token.name();
+  const deployedSymbol = await token.symbol();
+  const deployedSupply = await token.totalSupply();
+  const decimals = await token.decimals();
 
-  // console.log("   Name:", deployedName, deployedName === CONFIG.tokenName ? "[OK]" : "[FAIL]");
-  // console.log("   Symbol:", deployedSymbol, deployedSymbol === CONFIG.tokenSymbol ? "[OK]" : "[FAIL]");
+  console.log("   Name:", deployedName, deployedName === CONFIG.tokenName ? "[OK]" : "[FAIL]");
+  console.log("   Symbol:", deployedSymbol, deployedSymbol === CONFIG.tokenSymbol ? "[OK]" : "[FAIL]");
 
   // Expected supply in wei (with decimals)
-  // const expectedSupply = BigInt(CONFIG.initialSupply) * BigInt(10 ** Number(decimals));
-  // console.log("   Total Supply:", ethers.formatUnits(deployedSupply, decimals), "tokens",
-  //     deployedSupply === expectedSupply ? "[OK]" : "[FAIL]");
+  const expectedSupply = BigInt(CONFIG.initialSupply) * BigInt(10 ** Number(decimals));
+  console.log("   Total Supply:", ethers.formatUnits(deployedSupply, decimals), "tokens",
+      deployedSupply === expectedSupply ? "[OK]" : "[FAIL]");
 
   // ============================================
   // TODO 5: Check deployer received the tokens
   // ============================================
-  // const deployerBalance = await token.balanceOf(deployer.address);
-  // console.log("   Deployer Balance:", ethers.formatUnits(deployerBalance, decimals), "tokens",
-  //     deployerBalance === expectedSupply ? "[OK]" : "[FAIL]");
+  const deployerBalance = await token.balanceOf(deployer.address);
+  console.log("   Deployer Balance:", ethers.formatUnits(deployerBalance, decimals), "tokens",
+      deployerBalance === expectedSupply ? "[OK]" : "[FAIL]");
 
   // ============================================
   // TODO 6: Save deployment info WITH parameters
   // ============================================
   const deploymentInfo = {
-    // address: tokenAddress,
-    // deployer: deployer.address,
-    // parameters: {
-    //     name: CONFIG.tokenName,
-    //     symbol: CONFIG.tokenSymbol,
-    //     initialSupply: CONFIG.initialSupply
-    // },
-    // verified: {
-    //     name: deployedName,
-    //     symbol: deployedSymbol,
-    //     totalSupply: deployedSupply.toString()
-    // },
-    // timestamp: new Date().toISOString(),
-    // network: (await ethers.provider.getNetwork()).name
+    address: tokenAddress,
+    deployer: deployer.address,
+    parameters: {
+        name: CONFIG.tokenName,
+        symbol: CONFIG.tokenSymbol,
+        initialSupply: CONFIG.initialSupply
+    },
+    verified: {
+        name: deployedName,
+        symbol: deployedSymbol,
+        totalSupply: deployedSupply.toString()
+    },
+    timestamp: new Date().toISOString(),
+    network: (await ethers.provider.getNetwork()).name,
+    chainId: Number((await ethers.provider.getNetwork()).chainId)
   };
 
   const deploymentsDir = path.join(__dirname, "..", "deployments");
@@ -109,13 +117,16 @@ export async function main() {
     fs.mkdirSync(deploymentsDir, { recursive: true });
   }
 
-  // fs.writeFileSync(
-  //     path.join(deploymentsDir, "SimpleToken-custom.json"),
-  //     JSON.stringify(deploymentInfo, null, 2)
-  // );
-  // console.log("\nDeployment info saved to deployments/SimpleToken-custom.json");
+  fs.writeFileSync(
+      path.join(deploymentsDir, "SimpleToken-custom.json"),
+      JSON.stringify(deploymentInfo, null, 2)
+  );
+  console.log("\nDeployment info saved to deployments/SimpleToken-custom.json");
 
   console.log("\nDeployment with parameters complete!");
+  
+  // Return info for potential import usage
+  return deploymentInfo;
 }
 
 // Only run if executed directly (not imported)
