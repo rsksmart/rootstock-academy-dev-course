@@ -18,6 +18,4 @@ coverage.json
 # Deployment artifacts (students will generate these)
 # deployments/
 
-##Enviroment
-
 .env.example
