@@ -40,7 +40,7 @@ Provide a screenshot of the RSK Testnet Explorer "Code" tab after successful ver
 This should show the green checkmark and the verified source code.
 
 ![NFT Makertplace](module7/assessment/NFTMarketplace-code.pngpng)
-![Price Oracle](module7/assessment/Price Oracle-Code.png)
+![PriceOracle](module7/assessment/Price Oracle-Code.png)
 ![Simple Token](module7/assessment/SimpleToken-Code.png)
 
 ---
