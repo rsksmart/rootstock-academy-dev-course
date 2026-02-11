@@ -50,5 +50,5 @@ This should show the green checkmark and the verified source code.
 Add any notes or observations from your verification process:
 
 ```text
-YOUR_NOTES_HERE
+I did not capture the moment the form was filled out, but all contracts were successfully verified on the explorer, as evidenced by the green checkmark and the configuration settings visible in the image (compiler v0.8.20, EVM paris, optimization false)
 ```
