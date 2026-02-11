@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.24;
 
 contract Cars {
 
@@ -24,14 +24,14 @@ contract Cars {
         public
         returns(uint256 carId)
     {
-        ___ = ++numCars;
-        ___ memory newCar = ___(
-            ___,
-            ___,
-            CarStatus.___,
-            msg.___
+        carId = ++numCars;
+        Car memory newCar = Car(
+            colour,
+            doors,
+            CarStatus.parked,
+            msg.sender
         );
-        _________ = newCar;
+        cars[carId] = newCar;
     }
 
 }
