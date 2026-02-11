@@ -39,7 +39,9 @@ This should show the form filled out with the correct settings (compiler version
 Provide a screenshot of the RSK Testnet Explorer "Code" tab after successful verification for **one** of your contracts.
 This should show the green checkmark and the verified source code.
 
-![Verified Code Screenshot](./screenshot-verified-code.png)
+![NFT Makertplace](module7/assessment/NFTMarketplace-code.pngpng)
+![Price Oracle](module7/assessment/Price Oracle-Code.png)
+![Simple Token](module7/assessment/SimpleToken-Code.png)
 
 ---
 
