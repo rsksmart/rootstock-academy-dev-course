@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: UNLICENCED
 pragma solidity ^0.8.0;
 
 contract Cars {
@@ -6,7 +7,7 @@ contract Cars {
 
     struct Car {
         bytes3 colour;
-        uint256 doors;
+        uint8 doors;
         CarStatus status;
         address owner;
     }

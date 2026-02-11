@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: UNLICENCED
 pragma solidity ^0.8.0;
 
 contract Cars {
@@ -44,7 +45,7 @@ contract Cars {
         CarStatus newStatus
     )
         public
-        returns(uint256)
+        onlyOwner(carId)
     {
         require(
             cars[carId].status != newStatus,

@@ -1,8 +1,9 @@
+// SPDX-License-Identifier: UNLICENCED
 pragma solidity ^0.8.0;
 
 contract Cars {
 
-    enum CarStatus { driving, parked };
+    enum CarStatus { driving, parked }
 
     event CarHonk(uint256 indexed carId);
 

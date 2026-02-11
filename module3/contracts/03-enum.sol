@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: UNLICENCED
 pragma solidity ^0.8.0;
 
 contract Cars {
@@ -5,7 +6,7 @@ contract Cars {
     enum CarStatus { driving, parked }
 
     bytes3 public colour;
-    uint256 public doors;
+    uint8 public doors;
     CarStatus public status;
     address public owner;
 
