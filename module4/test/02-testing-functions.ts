@@ -47,7 +47,7 @@ describe("02-testing-functions: Testing Contract Functions", function () {
     const car = await cars.cars(1);
     
     // Owner should be the signer address
-    expect(car[3]).to.equal(owner);
+    expect(car[3]).to.equal(owner.address);
   });
 
   it("should handle multiple cars", async function () {
