@@ -25,8 +25,8 @@ describe("05-advanced-testing: Advanced Testing Techniques", function () {
     await carLock.lockCar();
     
     // Advance time by 1 hour (3600 seconds)
-    await network.provider.send("___", [3600]);
-    await network.provider.send("___");
+    await network.provider.send("evm_increaseTime", [3600]);
+    await network.provider.send("evm_mine");
     
     // Now unlock should work
     await expect(carLock.unlockCar(1)).to.not.be.reverted;
@@ -37,7 +37,7 @@ describe("05-advanced-testing: Advanced Testing Techniques", function () {
     await carLock.lockCar();
     
     // Take a snapshot of blockchain state
-    const snapshotId = await network.provider.send("___");
+    const snapshotId = await network.provider.send("evm_snapshot");
     
     // Advance time
     await network.provider.send("evm_increaseTime", [3600]);
@@ -47,7 +47,7 @@ describe("05-advanced-testing: Advanced Testing Techniques", function () {
     await expect(carLock.unlockCar(1)).to.not.be.reverted;
     
     // Revert to snapshot
-    await network.provider.send("___", [snapshotId]);
+    await network.provider.send("evm_revert", [snapshotId]);
     
     // Now we're back in time, unlock should fail
     await expect(
@@ -78,7 +78,7 @@ describe("05-advanced-testing: Advanced Testing Techniques", function () {
     
     // Advance time in small increments
     await network.provider.send("evm_increaseTime", [1800]);
-    await network.provider.send("___");
+    await network.provider.send("evm_mine");
     
     // Still too early
     await expect(carLock.unlockCar(1)).to.be.revertedWith("Too early");
@@ -96,7 +96,7 @@ describe("05-advanced-testing: Advanced Testing Techniques", function () {
     const testAccount = ethers.Wallet.createRandom();
     
     // Set balance to 10 ETH (with hardhat)
-    await network.provider.send("___", [
+    await network.provider.send("hardhat_setBalance", [
       testAccount.address,
       "0x8AC7230489E80000", // 10 ETH in hex
     ]);
