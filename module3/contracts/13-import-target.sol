@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.24;
 
 interface ISuperHonk {
   function count() external view returns (uint256);

@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.24;
 
 contract Cars {
 
@@ -44,7 +44,7 @@ contract Cars {
         CarStatus newStatus
     )
         public
-        ___(carId)
+        onlyOwner(carId)
     {
         require(
             cars[carId].status != newStatus,
@@ -53,15 +53,12 @@ contract Cars {
         cars[carId].status = newStatus;
     }
 
-    ___ onlyOwner(
-        ___ ___
-    )
-    {
+    modifier onlyOwner(uint256 carId) {
         require(
             cars[carId].owner == msg.sender,
             "only owner"
         );
-        _________
+        _;
     }
 
 }
