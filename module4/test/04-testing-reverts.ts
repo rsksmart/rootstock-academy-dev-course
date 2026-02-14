@@ -38,7 +38,7 @@ describe("04-testing-reverts: Testing Error Handling", function () {
     await cars.addCar("0xff0000", 4);
 
     // Owner should be able to remove it
-    await expect(cars.removeCar(1)).to.not.be.reverted();
+    await expect(cars.removeCar(1)).to.not.be.reverted;
   });
 
   it("should revert with correct error messages", async function () {
