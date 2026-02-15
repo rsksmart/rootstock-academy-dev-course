@@ -98,20 +98,20 @@ npx hardhat run scripts/03-deploy-multiple.ts
 ### Exercise 4: Network Configuration
 **File**: `hardhat.config.ts`
 
-Configure Hardhat to work with RSK networks.
+Configure Hardhat to work with Rootstock networks.
 
 **Tasks:**
 - [ ] Set up environment variable for private key
 - [ ] Configure `localhost` network for local development
 - [ ] Configure `rskTestnet` network with correct RPC URL
 - [ ] Configure `rskMainnet` network with correct RPC URL
-- [ ] Set appropriate gas prices for RSK networks
+- [ ] Set appropriate gas prices for Rootstock networks
 
-**RSK Network Details:**
+**Rootstock Network Details:**
 | Network | Chain ID | RPC URL |
 |---------|----------|---------|
-| RSK Testnet | 31 | https://public-node.testnet.rsk.co |
-| RSK Mainnet | 30 | https://public-node.rsk.co |
+| Rootstock Testnet | 31 | https://public-node.testnet.rsk.co |
+| Rootstock Mainnet | 30 | https://public-node.rsk.co |
 
 ---
 
@@ -143,9 +143,9 @@ npx hardhat run scripts/02-deploy-with-params.ts
 npx hardhat run scripts/03-deploy-multiple.ts
 ```
 
-### 4. Deploy to RSK Testnet (Optional)
+### 4. Deploy to Rootstock Testnet (Optional)
 
-First, get some tRBTC from the [RSK Testnet Faucet](https://faucet.rsk.co/).
+First, get some tRBTC from the [Rootstock Testnet Faucet](https://faucet.rsk.co/).
 
 ```bash
 # Create .env file with your private key
@@ -211,7 +211,7 @@ Your submission passes when:
 - ✅ All deployment scripts execute without errors
 - ✅ Deployment artifacts are created in `deployments/`
 - ✅ JSON files contain valid contract addresses
-- ✅ Network configuration is valid for RSK
+- ✅ Network configuration is valid for Rootstock
 - ✅ All validation tests pass
 
 ---
@@ -220,8 +220,8 @@ Your submission passes when:
 
 - [Hardhat Deployment Guide](https://hardhat.org/hardhat-runner/docs/guides/deploying)
 - [Hardhat Network Configuration](https://hardhat.org/hardhat-runner/docs/config#networks-configuration)
-- [RSK Developer Portal](https://developers.rsk.co/)
-- [RSK Testnet Faucet](https://faucet.rsk.co/)
+- [Rootstock Developer Portal](https://dev.rootstock.io/)
+- [Rootstock Testnet Faucet](https://faucet.rootstock.io/)
 - [Ethers.js Documentation](https://docs.ethers.org/v6/)
 
 ---
@@ -232,4 +232,4 @@ Create a PR with title `module6/your-username` containing:
 - Completed deployment scripts in `scripts/`
 - Updated `hardhat.config.ts` with network configurations
 
-The PR will be automatically reviewed by the RSK Developer Education team.
+The PR will be automatically reviewed by the Rootstock Developer Experience team.
