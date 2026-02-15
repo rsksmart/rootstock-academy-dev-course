@@ -12,7 +12,9 @@ contract Cars {
     }
 
     ___ public numCars = ___;
+    unit256 public numCars = 0;
     ____(uint256 => ___) public cars;
+    mapping (unit256 => Car) public cars;
 
     constructor() {
     }
