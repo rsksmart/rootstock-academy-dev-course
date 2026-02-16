@@ -1,4 +1,6 @@
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: UNLICENSED
+
+pragma solidity ^0.8.28;
 
 contract Cars {
 
@@ -11,12 +13,12 @@ contract Cars {
         address owner;
     }
 
-    ___ public numCars = ___;
-    unit256 public numCars = 0;
-    ____(uint256 => ___) public cars;
-    mapping (unit256 => Car) public cars;
+    uint256 public numCars = 0;
+    mapping(uint256 => Car) public cars;  
+    // Fixed: Car not car, no space after mapping
 
     constructor() {
     }
 
 }
+

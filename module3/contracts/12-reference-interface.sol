@@ -1,28 +1,24 @@
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: UNLICENSED
+
+pragma solidity ^0.8.28;
 
 interface ISuperHonk {
   function count() external view returns (uint256);
-
   function honk() external;
 }
 
 contract SuperHonk is ISuperHonk {
     uint256 public count;
-
     event LoudSound(address indexed source);
 
-    function honk()
-      public
-    {
+    function honk() public {
         count += 1;
         emit LoudSound(msg.sender);
     }
 }
 
 contract Cars {
-
     enum CarStatus { driving, parked }
-
     event CarHonk(uint256 indexed carId);
 
     struct Car {
@@ -32,14 +28,12 @@ contract Cars {
         address owner;
     }
 
-    ___ ___ superHonk;
+    ISuperHonk private superHonk;
     uint256 public numCars = 0;
     mapping(uint256 => Car) public cars;
 
-    constructor(
-        ___ superHonkAddress
-    ) {
-        superHonk = ___(___);
+    constructor(address superHonkAddress) {
+        superHonk = ISuperHonk(superHonkAddress);
     }
 
     function addCar(
@@ -99,7 +93,7 @@ contract Cars {
             cars[carId].owner == msg.sender,
             "only owner"
         );
-        _;
+        _; //where the code of the modified function should be executed
     }
-
 }
+

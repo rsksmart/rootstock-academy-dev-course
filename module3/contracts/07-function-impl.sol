@@ -1,4 +1,6 @@
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: UNLICENSED
+
+pragma solidity ^0.8.28;
 
 contract Cars {
 
@@ -24,14 +26,13 @@ contract Cars {
         public
         returns(uint256 carId)
     {
-        ___ = ++numCars;
-        ___ memory newCar = ___(
-            ___,
-            ___,
-            CarStatus.___,
-            msg.___
+        carId = ++numCars;
+        Car memory newCar = Car(
+            colour,
+            doors,
+            CarStatus.parked,
+            msg.sender
         );
-        _________ = newCar;
+        cars[carId] = newCar;
     }
-
 }

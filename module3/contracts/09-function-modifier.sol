@@ -1,4 +1,6 @@
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: UNLICENSED
+
+pragma solidity ^0.8.28;
 
 contract Cars {
 
@@ -44,7 +46,7 @@ contract Cars {
         CarStatus newStatus
     )
         public
-        ___(carId)
+        onlyOwner(carId)
     {
         require(
             cars[carId].status != newStatus,
@@ -53,15 +55,13 @@ contract Cars {
         cars[carId].status = newStatus;
     }
 
-    ___ onlyOwner(
-        ___ ___
-    )
-    {
+    modifier onlyOwner(uint256 carId) {
         require(
             cars[carId].owner == msg.sender,
             "only owner"
         );
-        _________
+        _; //where the code of the modified function should be executed
     }
-
 }
+
+
