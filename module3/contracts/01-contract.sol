@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
-    ___ solidity ^0.8.0;
-    pramga solidity ^0.8.0;
-
-    ___ Abc {
+    
+    pragma solidity ^0.8.28;
+    
     contract Abc {
 
-    ___() {
     constructor() {
     }
 
 }
+
