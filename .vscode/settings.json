@@ -1,0 +1,6 @@
+{
+    "wake.compiler.solc.remappings": [],
+    "chat.tools.terminal.autoApprove": {
+        "npx hardhat": true
+    }
+}

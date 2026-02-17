@@ -26,7 +26,7 @@ contract Cars {
         returns(uint256 carId)
     {
         require(
-            msg.value > 0.1 ether,
+            msg.value >= 0.1 ether,
             "requires payment"
         );
         carId = ++numCars;
@@ -44,7 +44,7 @@ contract Cars {
         CarStatus newStatus
     )
         public
-        ___(carId)
+        onlyOwner(carId)
     {
         require(
             cars[carId].status != newStatus,
@@ -53,15 +53,15 @@ contract Cars {
         cars[carId].status = newStatus;
     }
 
-    ___ onlyOwner(
-        ___ ___
+    modifier onlyOwner(
+        uint256 carId
     )
     {
         require(
             cars[carId].owner == msg.sender,
             "only owner"
         );
-        _________
+        _;
     }
 
 }
