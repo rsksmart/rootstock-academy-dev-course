@@ -1,4 +1,7 @@
-pragma solidity ^0.8.0;
+
+// SPDX-License-Identifier: UNLICENSED
+
+pragma solidity ^0.8.28;
 
 interface ISuperHonk {
   function count() external view returns (uint256);
