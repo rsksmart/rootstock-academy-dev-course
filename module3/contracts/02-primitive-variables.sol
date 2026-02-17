@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+
+pragma solidity ^0.8.28;
 
 contract Cars {
 
-    ___ ___ isBlack;
-    ___ ___ doors;
-    ___ ___ owner;
+    bool public isBlack;
+
+    uint256 public doors;
+
+    address public owner;
 
     constructor() {
     }
