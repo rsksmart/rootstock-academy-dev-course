@@ -1,7 +1,6 @@
 pragma solidity ^0.8.0;
 
 contract Cars {
-
     enum CarStatus { driving, parked }
 
     bytes3 public colour;
@@ -11,5 +10,4 @@ contract Cars {
 
     constructor() {
     }
-
 }

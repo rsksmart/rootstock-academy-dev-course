@@ -53,5 +53,4 @@ contract Cars {
         );
         cars[carId].status = newStatus;
     }
-
 }

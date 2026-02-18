@@ -33,5 +33,4 @@ contract Cars {
         );
         cars[carId] = newCar;
     }
-
 }
