@@ -1,12 +1,12 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
+interface  ISuperHonk {
+  function count() external view returns(uint256);
 
-___ ___ {
-  function count() ___ ___ returns (___);
-
-  function honk() ___;
+  function honk() external;
 }
 
-contract SuperHonk is ___ {
+contract SuperHonk is ISuperHonk {
     uint256 public count;
 
     event LoudSound(address indexed source);

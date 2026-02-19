@@ -1,10 +1,13 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract Cars {
 
     enum CarStatus { driving, parked }
 
-    ___ CarHonk(_________);
+    event LoudSound(uint256 indexed source);
+    
+  
 
     struct Car {
         bytes3 colour;
@@ -59,9 +62,9 @@ contract Cars {
         uint256 carId
     )
         public
-        _________
+        onlyOwner(carId)
     {
-        ___ CarHonk(___);
+        emit LoudSound(carId);
     }
 
     modifier onlyOwner(
