@@ -113,13 +113,14 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         require(balance >= compensationBalance, 'Insufficient balance!');
         require(compensationBalance > 0, 'Insufficient compensation balance!');
 
-        // transfer msg.sender's compensation LUNAs to the address specified in `to`. If caller is EOA, call ERC20 transfer()
-        bool withdrawalSuccess = (_msgSender() == tx.origin)
+        compensationBalances[_msgSender()] = 0;
+        // transfer msg.sender's compensation LUNAs to the address specified in `to`. If caller is EOA, call ERC20 transfer() //
+        bool withdrawalSuccess = (_msgSender() == tx.origin)  // 
             ? acceptedToken.transfer(address(to), compensationBalance) // EOA
             : acceptedToken.transferAndCall(address(to), compensationBalance); // SC
         require(withdrawalSuccess, 'withdraw failed');
         // SECURITY HINT: modify this
-        compensationBalances[_msgSender()] = 0;
+        
 
         emit WithdrawCompensation(address(to), compensationBalance);
     }
@@ -240,8 +241,8 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      * param _data Additional data with no specified format
      */
     function _transferReceived(
-        address /* _sender */,
-        uint256 /* _amount */,
+        address _sender, /* _sender */
+        uint256 _amount, /* _amount */
         bytes memory _data
     ) private {
         (
@@ -251,18 +252,20 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             bytes3 colour,
             uint256 amount
         ) = abi.decode(_data, (bytes4, address, uint24, bytes3, uint256));
-        // SECURITY HINT: modify this
-        bytes memory callData = abi.encodeWithSelector(
-            selector,
-            newOwner,
-            pixelId,
-            colour,
-            amount
+        // SECURITY HINT: modify this 
+         require(amount == _amount, 'Amount mismatch');
+         require(
+            selector == this.buy.selector || selector == this.update.selector,
+            'Call of an unknown function'
         );
-        (bool success, ) = address(this).delegatecall(callData);
-        require(success, 'Function call failed');
+        if (selector == this.buy.selector) {
+            buy(_sender, pixelId, colour, amount);
+        } else if (selector == this.update.selector) {
+            update(_sender, pixelId, colour, amount);
+        }
     }
-
+        
+        
     receive() external payable {
         revert('Accepts purchases in Luna tokens only');
     }

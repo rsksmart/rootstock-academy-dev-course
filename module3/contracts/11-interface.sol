@@ -13,7 +13,7 @@ contract SuperHonk is ISuperHonk {
     event LoudSound(address indexed source);
 
     function honk()
-      public
+      public 
     {
         count += 1;
         emit LoudSound(msg.sender);
