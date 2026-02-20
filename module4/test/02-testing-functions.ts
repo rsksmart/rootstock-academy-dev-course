@@ -4,7 +4,7 @@ import { expect } from "chai";
 describe("02-testing-functions: Testing Contract Functions", function () {
   let cars: any;
 
-  ___(async () => {
+  beforeEach(async () => {
     const Cars = await ethers.getContractFactory("Cars");
     cars = await Cars.deploy();
     await cars.waitForDeployment();
@@ -12,42 +12,42 @@ describe("02-testing-functions: Testing Contract Functions", function () {
 
   it("should increment numCars when addCar is called", async function () {
     // Get initial value
-    const initialNumCars = await cars.___();
+    const initialNumCars = await cars.numCars();
     expect(initialNumCars).to.equal(0);
-    
+
     // Call addCar function
     await cars.addCar("0xff0000", 4);
-    
+
     // Get new value
     const newNumCars = await cars.numCars();
-    expect(newNumCars).to.equal(___);
+    expect(newNumCars).to.equal(1);
   });
 
   it("should store car data correctly", async function () {
     // Add a car
     const tx = await cars.addCar("0x00ff00", 2);
-    await tx.___();
-    
+    await tx.wait();
+
     // Read the car data
     const car = await cars.cars(1);
-    
+
     // Verify car data
-    expect(car[0]).to.equal("___");  // colour
-    expect(car[1]).to.equal(___);     // doors
+    expect(car[0]).to.equal("0x00ff00");  // colour
+    expect(car[1]).to.equal(2);     // doors
     expect(car[2]).to.equal(1);       // status (parked = 1)
   });
 
   it("should set owner to msg.sender", async function () {
-    const [owner] = await ethers.___();
-    
+    const [owner] = await ethers.getSigners();
+
     // Add a car
     await cars.addCar("0xff0000", 4);
-    
+
     // Read the car
     const car = await cars.cars(1);
-    
+
     // Owner should be the signer address
-    expect(car[3]).to.equal(owner.___);
+    expect(car[3]).to.equal(owner.address);
   });
 
   it("should handle multiple cars", async function () {
@@ -55,20 +55,19 @@ describe("02-testing-functions: Testing Contract Functions", function () {
     await cars.addCar("0xff0000", 4);
     await cars.addCar("0x00ff00", 2);
     await cars.addCar("0x0000ff", 5);
-    
+
     // Check numCars
     const numCars = await cars.numCars();
     expect(numCars).to.equal(3);
-    
+
     // Verify each car exists
     const car1 = await cars.cars(1);
     const car2 = await cars.cars(2);
     const car3 = await cars.cars(3);
-    
+
     expect(car1[0]).to.equal("0xff0000");
     expect(car2[0]).to.equal("0x00ff00");
     expect(car3[0]).to.equal("0x0000ff");
   });
 
 });
-
