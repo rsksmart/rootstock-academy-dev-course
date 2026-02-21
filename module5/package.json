@@ -16,7 +16,9 @@
   "scripts": {
     "test": "hardhat test",
     "test:validators": "hardhat test test-validators/*.ts",
-    "compile": "hardhat compile"
+    "compile": "hardhat compile",
+    "lint": "npx prettier --list-different 'contracts/**/*.sol' 'test/**/*.ts'",
+    "lint-fix": "npx prettier --write 'contracts/**/*.sol' 'test/**/*.ts"
   },
   "dependencies": {
     "erc-payable-token": "^7.0.0"
