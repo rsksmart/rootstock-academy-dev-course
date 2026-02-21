@@ -40,13 +40,14 @@ describe('OneMilNftPixels - update pixel by non-owner - failure', () => {
   it('pixel 1001 should belong to the deployer', async () => {
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         deployAcct.address,
         pixel1001Id,
         pixelDefaultColour,
         tokenAmount,
+        ethers.MaxUint256,
       ],
     );
     await lunaToken[transferAndCallSignature](
@@ -63,13 +64,14 @@ describe('OneMilNftPixels - update pixel by non-owner - failure', () => {
     const unownedPixelId = 1002;
     const sigHash = oneMilNftPixels.interface.getFunction('update').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         deployAcct.address,
         unownedPixelId,
         pixelYellowColor,
         updatePrice,
+        0n,
       ],
     );
     const tx = lunaToken[transferAndCallSignature](
@@ -83,8 +85,15 @@ describe('OneMilNftPixels - update pixel by non-owner - failure', () => {
   it('should not allow buyers to update pixel 1001 that they do not own', async () => {
     const sigHash = oneMilNftPixels.interface.getFunction('update').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
-      [sigHash, buyerAcct.address, pixel1001Id, pixelYellowColor, updatePrice],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
+      [
+        sigHash,
+        buyerAcct.address,
+        pixel1001Id,
+        pixelYellowColor,
+        updatePrice,
+        0n,
+      ],
     );
     const tx = lunaToken
       .connect(buyerAcct)
