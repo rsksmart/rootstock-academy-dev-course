@@ -130,12 +130,23 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      * If pixel is not currently owned, NFT is minted.
      * If pixel is already owned, NFT is transferred.
      *
+     * OMP-003 front-running mitigation: maxAcceptablePrice reverts if the pixel price
+     * was increased (e.g. by a front-runner) before this tx. Set to type(uint256).max to skip.
+     *
      * - `id` is the offset of the pixel, where `offset = y * width + x`
      * - `colour` is an RGB value in hexadecimal,
      *   e.g. `0xFF00FF` is `rgb(255, 0, 255)` (purple)
+     * - `maxAcceptablePrice` only execute if pixel.price <= this (use type(uint256).max to skip)
      */
-    function buy(address sender, uint24 id, bytes3 colour, uint256 amount) public acceptedTokenOnly{
+    function buy(
+        address sender,
+        uint24 id,
+        bytes3 colour,
+        uint256 amount,
+        uint256 maxAcceptablePrice
+    ) public acceptedTokenOnly {
         Pixel storage pixel = pixels[id];
+        require(pixel.price <= maxAcceptablePrice, 'Price moved');
         require(
             amount >= pixel.price + minPriceIncrement,
             'should increment on current price'
@@ -238,9 +249,10 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      * @dev Called after validating a `onTransferReceived`.
      * Uses actual _sender and _amount from the token transfer, not user-supplied data,
      * to prevent OMP-002: buying/updating with fake amount or recipient.
+     * OMP-003: Only buy() and update() are allowed via transferAndCall (selector whitelist).
      * @param _sender The address which tokens were transferred from (from ERC1363)
      * @param _amount The amount of tokens actually transferred (from ERC1363)
-     * @param _data Additional data: selector, pixelId, colour; amount must match _amount
+     * @param _data (selector, address, pixelId, colour, amount, maxAcceptablePrice); amount must match _amount
      */
     function _transferReceived(
         address _sender,
@@ -252,18 +264,36 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             ,
             uint24 pixelId,
             bytes3 colour,
-            uint256 amount
-        ) = abi.decode(_data, (bytes4, address, uint24, bytes3, uint256));
+            uint256 amount,
+            uint256 maxAcceptablePrice
+        ) = abi.decode(
+            _data,
+            (bytes4, address, uint24, bytes3, uint256, uint256)
+        );
 
         require(amount == _amount, 'Amount mismatch');
 
-        bytes memory callData = abi.encodeWithSelector(
-            selector,
-            _sender,
-            pixelId,
-            colour,
-            _amount
+        require(
+            selector == this.buy.selector || selector == this.update.selector,
+            'Call of an unknown function'
         );
+
+        bytes memory callData = selector == this.buy.selector
+            ? abi.encodeWithSelector(
+                selector,
+                _sender,
+                pixelId,
+                colour,
+                _amount,
+                maxAcceptablePrice
+            )
+            : abi.encodeWithSelector(
+                selector,
+                _sender,
+                pixelId,
+                colour,
+                _amount
+            );
         (bool success, ) = address(this).delegatecall(callData);
         require(success, 'Function call failed');
     }

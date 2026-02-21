@@ -38,7 +38,13 @@ describe('OneMilNftPixels - buy pixel - failure', () => {
   it('should not allow to call buy function directly', async () => {
     const tx = oneMilNftPixels
       .connect(deployAcct)
-      .buy(deployAcct.address, pixel1001Id, pixelDefaultColour, 99)
+      .buy(
+        deployAcct.address,
+        pixel1001Id,
+        pixelDefaultColour,
+        99,
+        ethers.MaxUint256,
+      )
       .then((txResponse) => txResponse.wait());
     await expect(tx).to.be.revertedWith(
       'ERC1363Payable: accepts purchases in Lunas only',
@@ -49,13 +55,14 @@ describe('OneMilNftPixels - buy pixel - failure', () => {
     const tokenAmount = 10;
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         deployAcct.address,
         pixel1001Id,
         pixelDefaultColour,
         tokenAmount,
+        ethers.MaxUint256,
       ],
     );
 
@@ -73,13 +80,14 @@ describe('OneMilNftPixels - buy pixel - failure', () => {
     const tokenAmount = 10;
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         deployAcct.address,
         pixel1001Id,
         pixelDefaultColour,
         tokenAmount,
+        ethers.MaxUint256,
       ],
     );
     // adding `transferAndCall` function to ERC20 s/c interface
@@ -105,13 +113,14 @@ describe('OneMilNftPixels - buy pixel - failure', () => {
     const tokenAmount = 0;
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         deployAcct.address,
         pixel1001Id,
         pixelDefaultColour,
         tokenAmount,
+        ethers.MaxUint256,
       ],
     );
     const tx = lunaToken[transferAndCallSignature](
@@ -128,13 +137,14 @@ describe('OneMilNftPixels - buy pixel - failure', () => {
     const tokenAmount = 100;
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         deployAcct.address,
         pixel1001Id,
         pixelDefaultColour,
         tokenAmount,
+        ethers.MaxUint256,
       ],
     );
     const tx = lunaToken
@@ -154,13 +164,14 @@ describe('OneMilNftPixels - buy pixel - failure', () => {
     const tokenAmount = 1;
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         deployAcct.address,
         pixel1001Id,
         pixelDefaultColour,
         tokenAmount,
+        ethers.MaxUint256,
       ],
     );
     const tx = lunaToken[transferAndCallSignature](

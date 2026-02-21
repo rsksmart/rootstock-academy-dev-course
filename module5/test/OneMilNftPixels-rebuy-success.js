@@ -48,13 +48,14 @@ describe('OneMilNftPixels - re-buy pixel - success', () => {
     const tokenAmount = 10;
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         deployAcct.address,
         pixel1001Id,
         pixelDefaultColour,
         tokenAmount,
+        ethers.MaxUint256,
       ],
     );
     await lunaToken[transferAndCallSignature](
@@ -70,13 +71,14 @@ describe('OneMilNftPixels - re-buy pixel - success', () => {
   it('should allow buyer1Acct to buy pixel 1001 and make it yellow', async () => {
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         buyer1Acct.address,
         pixel1001Id,
         pixelYellowColor,
         newPixel1001Price,
+        ethers.MaxUint256,
       ],
     );
     rebuyTx = lunaToken

@@ -36,13 +36,14 @@ describe('OneMilNftPixels - admin by owner - success', () => {
 
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         deployAcct.address,
         pixel1001Id,
         pixelDefaultColour,
         tokenAmount,
+        ethers.MaxUint256,
       ],
     );
     await lunaToken[transferAndCallSignature](

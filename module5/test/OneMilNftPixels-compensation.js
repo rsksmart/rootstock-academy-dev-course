@@ -49,13 +49,14 @@ describe('OneMilNftPixels - compensations', () => {
   it('pixel 1001 should already belong to the deployer', async () => {
     const tokenAmount = 10;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         buySigHash,
         deployAcct.address,
         pixel1001Id,
         pixelDefaultColour,
         tokenAmount,
+        ethers.MaxUint256,
       ],
     );
     await lunaToken[transferAndCallSignature](
@@ -70,13 +71,14 @@ describe('OneMilNftPixels - compensations', () => {
 
   it('should allow buyer1Acct to repurchase pixel 1001', async () => {
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         buySigHash,
         buyer1Acct.address,
         pixel1001Id,
         pixelDefaultColour,
         newPixel1001Price,
+        ethers.MaxUint256,
       ],
     );
     rebuyTx = lunaToken

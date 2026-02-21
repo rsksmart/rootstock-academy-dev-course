@@ -39,13 +39,14 @@ describe('OneMilNftPixels - re-buy pixel - failure', () => {
   it('pixel 1001 should already belong to the deployer', async () => {
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         deployAcct.address,
         pixel1001Id,
         pixelDefaultColour,
         tokenAmount,
+        ethers.MaxUint256,
       ],
     );
     await lunaToken[transferAndCallSignature](
@@ -61,8 +62,15 @@ describe('OneMilNftPixels - re-buy pixel - failure', () => {
   it('should not allow buyer1Acct to re-purchase pixel without payment', async () => {
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'uint24', 'bytes3', 'address', 'uint256'],
-      [sigHash, pixel1001Id, pixelYellowColor, buyer1Acct.address, 0],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
+      [
+        sigHash,
+        buyer1Acct.address,
+        pixel1001Id,
+        pixelYellowColor,
+        0,
+        ethers.MaxUint256,
+      ],
     );
     const tx = lunaToken[transferAndCallSignature](
       oneMilNftPixels.target,
@@ -77,13 +85,14 @@ describe('OneMilNftPixels - re-buy pixel - failure', () => {
   it('should not allow buyer1Acct to re-purchase pixel with low payment', async () => {
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         buyer1Acct.address,
         pixel1001Id,
         pixelYellowColor,
         pixel1001Price + 1,
+        ethers.MaxUint256,
       ],
     );
     const tx = lunaToken[transferAndCallSignature](

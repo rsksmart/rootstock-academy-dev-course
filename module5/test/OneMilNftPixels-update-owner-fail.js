@@ -32,13 +32,14 @@ describe('OneMilNftPixels - update pixel by owner - failure', () => {
   it('pixel 1001 should belong to the deployer', async () => {
     const sigHash = oneMilNftPixels.interface.getFunction('buy').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         deployAcct.address,
         pixel1001Id,
         pixelDefaultColour,
         tokenAmount,
+        ethers.MaxUint256,
       ],
     );
     await lunaToken[transferAndCallSignature](
@@ -55,8 +56,15 @@ describe('OneMilNftPixels - update pixel by owner - failure', () => {
     const zeroTokens = 0;
     const sigHash = oneMilNftPixels.interface.getFunction('update').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
-      [sigHash, deployAcct.address, pixel1001Id, pixelYellowColor, zeroTokens],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
+      [
+        sigHash,
+        deployAcct.address,
+        pixel1001Id,
+        pixelYellowColor,
+        zeroTokens,
+        0n,
+      ],
     );
     const tx = lunaToken[transferAndCallSignature](
       oneMilNftPixels.target,
@@ -72,13 +80,14 @@ describe('OneMilNftPixels - update pixel by owner - failure', () => {
     const lowTokenAmount = 5;
     const sigHash = oneMilNftPixels.interface.getFunction('update').selector;
     const callData = ethers.AbiCoder.defaultAbiCoder().encode(
-      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256'],
+      ['bytes4', 'address', 'uint24', 'bytes3', 'uint256', 'uint256'],
       [
         sigHash,
         deployAcct.address,
         pixel1001Id,
         pixelYellowColor,
         lowTokenAmount,
+        0n,
       ],
     );
     const tx = lunaToken[transferAndCallSignature](
