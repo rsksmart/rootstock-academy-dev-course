@@ -156,24 +156,42 @@
      21572,
      21572,
      21584,
-     21584
+     21584,
+     21572,
+     21572,
+     21572,
+     21572,
+     21560,
+     21560
     ],
     "callData": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
      0,
      0,
      0,
      0
     ],
     "gasData": [
+     52128,
+     52128,
+     52140,
+     52140,
+     52140,
+     52140,
      52140,
      52140,
      52152,
      52152
     ],
-    "numberOfCalls": 4,
-    "executionGasAverage": 52146,
+    "numberOfCalls": 10,
+    "executionGasAverage": 52140,
     "calldataGasAverage": 0,
-    "min": 52140,
+    "min": 52128,
     "max": 52152
    },
    "LunaToken_1296ee62": {
@@ -193,10 +211,35 @@
     "contract": "LunaToken",
     "method": "transferAndCall",
     "fnSig": "transferAndCall(address,uint256,bytes)",
-    "intrinsicGas": [],
-    "callData": [],
-    "gasData": [],
-    "numberOfCalls": 0
+    "intrinsicGas": [
+     22828,
+     22828,
+     22828,
+     22828,
+     22828,
+     22828
+    ],
+    "callData": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "gasData": [
+     114752,
+     114752,
+     119552,
+     119552,
+     163760,
+     163760
+    ],
+    "numberOfCalls": 6,
+    "executionGasAverage": 132688,
+    "calldataGasAverage": 0,
+    "min": 114752,
+    "max": 163760
    },
    "LunaToken_23b872dd": {
     "key": "23b872dd",
@@ -1297,8 +1340,19 @@
    },
    {
     "name": "ExploitOMP003",
-    "gasData": [],
-    "callData": []
+    "gasData": [
+     509415,
+     509415
+    ],
+    "callData": [
+     0,
+     0
+    ],
+    "executionGasAverage": 509415,
+    "calldataGasAverage": 0,
+    "min": 509415,
+    "max": 509415,
+    "percent": 0.8
    },
    {
     "name": "FIXED_OneMilNftPixels",
@@ -1369,9 +1423,17 @@
     "name": "LunaToken",
     "gasData": [
      1649707,
+     1649707,
+     1649707,
+     1649707,
+     1649707,
      1649707
     ],
     "callData": [
+     0,
+     0,
+     0,
+     0,
      0,
      0
     ],
@@ -1394,17 +1456,25 @@
    {
     "name": "OneMilNftPixels",
     "gasData": [
-     3699729,
-     3699729
+     3735309,
+     3735309,
+     3735321,
+     3735321,
+     3735321,
+     3735321
     ],
     "callData": [
      0,
+     0,
+     0,
+     0,
+     0,
      0
     ],
-    "executionGasAverage": 3699729,
+    "executionGasAverage": 3735317,
     "calldataGasAverage": 0,
-    "min": 3699729,
-    "max": 3699729,
+    "min": 3735309,
+    "max": 3735321,
     "percent": 6.2
    },
    {
