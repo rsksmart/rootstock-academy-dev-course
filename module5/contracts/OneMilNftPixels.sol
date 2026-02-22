@@ -240,8 +240,8 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      * param _data Additional data with no specified format
      */
     function _transferReceived(
-        address /* _sender */,
-        uint256 /* _amount */,
+        address _sender,
+        uint256 _amount,
         bytes memory _data
     ) private {
         (
@@ -251,13 +251,12 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             bytes3 colour,
             uint256 amount
         ) = abi.decode(_data, (bytes4, address, uint24, bytes3, uint256));
-        // SECURITY HINT: modify this
         bytes memory callData = abi.encodeWithSelector(
             selector,
-            newOwner,
+            _sender,
             pixelId,
             colour,
-            amount
+            _amount
         );
         (bool success, ) = address(this).delegatecall(callData);
         require(success, 'Function call failed');
