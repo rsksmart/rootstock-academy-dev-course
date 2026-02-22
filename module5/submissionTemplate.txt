@@ -21,6 +21,6 @@
 
 *Paste the link to your open Pull Request below before uploading this file to Thinkific:*
 
-* **PR URL:** \[https://github.com/rsksmart/rootstock-academy-dev-course/pull/103]
+* **PR URL:** \[https://github.com/rsksmart/rootstock-academy-dev-course/pull/153]
 
 *Verification: Our automated CI/CD will comment on your PR once tests are completed. Please monitor your PR for feedback.*
