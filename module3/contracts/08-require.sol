@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
 contract Cars {
@@ -22,13 +23,10 @@ contract Cars {
         uint8 doors
     )
         public
-        ___
+        payable
         returns(uint256 carId)
     {
-        ___(
-            msg.___ > ___,
-            "requires payment"
-        );
+        require(msg.value > 0.1 ether, "requires payment");
         carId = ++numCars;
         Car memory newCar = Car(
             colour,
@@ -40,15 +38,15 @@ contract Cars {
     }
 
     function statusChange(
-        uint256 ___,
+        uint256 carId,
         CarStatus newStatus
     ) public {
         require(
-            cars[carId].___ == msg.___,
+            cars[carId].owner == msg.sender,
             "only owner"
         );
         require(
-            cars[carId].___ != ___,
+            cars[carId].status != newStatus,
             "no change"
         );
         cars[carId].status = newStatus;
