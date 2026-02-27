@@ -105,24 +105,25 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      * @dev Allow withdrawal of compensations to a specified address.
      * If the balance of the NFT contract is 0 or msg.sender has 0 compensation balance, call will revert.
      */
-    function withdrawCompensation(IERC1363Receiver to) public {
-        uint256 balance = IERC1363(acceptedToken).balanceOf(address(this));
-        uint256 compensationBalance = compensationBalances[_msgSender()];
+ function withdrawCompensation(IERC1363Receiver to) public {
+    uint256 balance = IERC1363(acceptedToken).balanceOf(address(this));
+    uint256 compensationBalance = compensationBalances[_msgSender()];
 
-        // check if there are sufficient funds in the compensation balance
-        require(balance >= compensationBalance, 'Insufficient balance!');
-        require(compensationBalance > 0, 'Insufficient compensation balance!');
+    require(balance >= compensationBalance, "Insufficient balance!");
+    require(compensationBalance > 0, "Insufficient compensation balance!");
 
-        // transfer msg.sender's compensation LUNAs to the address specified in `to`. If caller is EOA, call ERC20 transfer()
-        bool withdrawalSuccess = (_msgSender() == tx.origin)
-            ? acceptedToken.transfer(address(to), compensationBalance) // EOA
-            : acceptedToken.transferAndCall(address(to), compensationBalance); // SC
-        require(withdrawalSuccess, 'withdraw failed');
-        // SECURITY HINT: modify this
-        compensationBalances[_msgSender()] = 0;
+    // EFFECTS
+    compensationBalances[_msgSender()] = 0;
 
-        emit WithdrawCompensation(address(to), compensationBalance);
-    }
+    // INTERACTIONS
+    bool withdrawalSuccess = (_msgSender() == tx.origin)
+        ? acceptedToken.transfer(address(to), compensationBalance)
+        : acceptedToken.transferAndCall(address(to), compensationBalance);
+
+    require(withdrawalSuccess, "withdraw failed");
+
+    emit WithdrawCompensation(address(to), compensationBalance);
+}
 
     /**
      * @dev Purchase pixel and update its colour.
@@ -134,6 +135,7 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      *   e.g. `0xFF00FF` is `rgb(255, 0, 255)` (purple)
      */
     function buy(address sender, uint24 id, bytes3 colour, uint256 amount) public acceptedTokenOnly{
+        require(id < pixels.length, "Invalid pixel ID");
         Pixel storage pixel = pixels[id];
         require(
             amount >= pixel.price + minPriceIncrement,
@@ -168,6 +170,7 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
     function update(address sender, uint24 id, bytes3 colour, uint256 amount)
         public acceptedTokenOnly
     {
+        require(id < pixels.length, "Invalid pixel ID");
         require(
             amount >= updatePrice,
             'should pay update price'
@@ -241,7 +244,7 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      */
     function _transferReceived(
         address /* _sender */,
-        uint256 /* _amount */,
+        uint256 _amount,
         bytes memory _data
     ) private {
         (
@@ -252,6 +255,12 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             uint256 amount
         ) = abi.decode(_data, (bytes4, address, uint24, bytes3, uint256));
         // SECURITY HINT: modify this
+        require(_amount == amount, "Amount mismatch");
+        require(
+            selector == this.buy.selector ||
+            selector == this.update.selector,
+            "Call of an unknown function"
+        );
         bytes memory callData = abi.encodeWithSelector(
             selector,
             newOwner,
