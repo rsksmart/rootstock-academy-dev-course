@@ -61,26 +61,26 @@ const config: HardhatUserConfig = {
         },
 
         // TODO: Configure localhost network
-        // localhost: {
-        //     url: "http://127.0.0.1:8545",
-        //     chainId: 31337
-        // },
+        localhost: {
+            url: "http://127.0.0.1:8545",
+            chainId: 31337
+        },
 
         // TODO: Configure RSK Testnet
-        // rskTestnet: {
-        //     url: RSK_TESTNET_RPC,
-        //     chainId: 31,
-        //     accounts: [PRIVATE_KEY],
-        //     gasPrice: 60000000  // 0.06 gwei - RSK uses lower gas prices
-        // },
+        rskTestnet: {
+            url: RSK_TESTNET_RPC,
+            chainId: 31,
+            accounts: [PRIVATE_KEY],
+            gasPrice: 60000000  // 0.06 gwei - RSK uses lower gas prices
+        },
 
         // TODO: Configure RSK Mainnet
-        // rskMainnet: {
-        //     url: RSK_MAINNET_RPC,
-        //     chainId: 30,
-        //     accounts: [PRIVATE_KEY],
-        //     gasPrice: 60000000
-        // }
+        rskMainnet: {
+            url: RSK_MAINNET_RPC,
+            chainId: 30,
+            accounts: [PRIVATE_KEY],
+            gasPrice: 60000000
+        }
     },
 
     // ============================================

@@ -87,9 +87,6 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         compensation = 10;
     }
 
-    /**
-     * @dev See {IERC165-supportsInterface}.
-     */
     function supportsInterface(bytes4 interfaceId)
         public
         view
@@ -101,73 +98,53 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             super.supportsInterface(interfaceId);
     }
 
-    /**
-     * @dev Allow withdrawal of compensations to a specified address.
-     * If the balance of the NFT contract is 0 or msg.sender has 0 compensation balance, call will revert.
-     */
     function withdrawCompensation(IERC1363Receiver to) public {
-        uint256 balance = IERC1363(acceptedToken).balanceOf(address(this));
-        uint256 compensationBalance = compensationBalances[_msgSender()];
+    require(msg.sender == tx.origin, "Contracts not allowed");
 
-        // check if there are sufficient funds in the compensation balance
-        require(balance >= compensationBalance, 'Insufficient balance!');
-        require(compensationBalance > 0, 'Insufficient compensation balance!');
+    uint256 balance = acceptedToken.balanceOf(address(this));
+    uint256 compensationBalance = compensationBalances[_msgSender()];
 
-        // transfer msg.sender's compensation LUNAs to the address specified in `to`. If caller is EOA, call ERC20 transfer()
-        bool withdrawalSuccess = (_msgSender() == tx.origin)
-            ? acceptedToken.transfer(address(to), compensationBalance) // EOA
-            : acceptedToken.transferAndCall(address(to), compensationBalance); // SC
-        require(withdrawalSuccess, 'withdraw failed');
-        // SECURITY HINT: modify this
-        compensationBalances[_msgSender()] = 0;
+    require(balance >= compensationBalance, 'Insufficient balance!');
+    require(compensationBalance > 0, 'Insufficient compensation balance!');
 
-        emit WithdrawCompensation(address(to), compensationBalance);
-    }
+    compensationBalances[_msgSender()] = 0;
 
-    /**
-     * @dev Purchase pixel and update its colour.
-     * If pixel is not currently owned, NFT is minted.
-     * If pixel is already owned, NFT is transferred.
-     *
-     * - `id` is the offset of the pixel, where `offset = y * width + x`
-     * - `colour` is an RGB value in hexadecimal,
-     *   e.g. `0xFF00FF` is `rgb(255, 0, 255)` (purple)
-     */
-    function buy(address sender, uint24 id, bytes3 colour, uint256 amount) public acceptedTokenOnly{
+    bool withdrawalSuccess = acceptedToken.transfer(
+        address(to),
+        compensationBalance
+    );
+
+    require(withdrawalSuccess, 'withdraw failed');
+
+    emit WithdrawCompensation(address(to), compensationBalance);
+}
+
+    function buy(address sender, uint24 id, bytes3 colour, uint256 amount) public acceptedTokenOnly {
+        require(id < 1_000_000, 'Invalid pixel id');
+
         Pixel storage pixel = pixels[id];
         require(
             amount >= pixel.price + minPriceIncrement,
             'should increment on current price'
         );
+
         pixel.price = amount;
         pixel.colour = colour;
-        
-        // Check if token exists by trying to get its owner
+
         address currentOwner = _ownerOf(id);
         if (currentOwner != address(0)) {
-            // purchasing an pixel already in existence
-
-            // compensate the previous owner of the ERC721 token with a small amount of LUNAs
             compensationBalances[currentOwner] += compensation;
-
             _transfer(currentOwner, sender, id);
         } else {
-            // purchasing a previously untouched pixel
             _safeMint(sender, id);
         }
     }
 
-    /**
-     * @dev Purchase pixel and update its colour
-     *
-     * - `id` is the offset of the pixel, where `offset = y * width + x`.
-     *   Assuming 1e6 pixels in a square, this is `offset = y * 1000 + x`.
-     * - `colour` is an RGB value in hexadecimal,
-     *   e.g. `0xFF00FF` is `rgb(255, 0, 255)` (purple).
-     */
     function update(address sender, uint24 id, bytes3 colour, uint256 amount)
-        public acceptedTokenOnly
+        public
+        acceptedTokenOnly
     {
+        require(id < 1_000_000, 'Invalid pixel id');
         require(
             amount >= updatePrice,
             'should pay update price'
@@ -176,6 +153,7 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             ERC721.ownerOf(id) == sender,
             'only owner allowed'
         );
+
         Pixel storage pixel = pixels[id];
         pixel.colour = colour;
 
@@ -190,12 +168,10 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         minPriceIncrement = minPriceIncrementNew;
         updatePrice = updatePriceNew;
         if (withdraw) {
-            // check Luna balance of the current NFT contract
-            uint256 balance = IERC1363(acceptedToken).balanceOf(address(this));
+            uint256 balance = acceptedToken.balanceOf(address(this));
             if (balance > 0) {
-                // transfer all Lunas to the NFT owner's address
-                bool success = IERC1363(acceptedToken).transfer(
-                    Ownable(this).owner(),
+                bool success = acceptedToken.transfer(
+                    owner(),
                     balance
                 );
                 require(success, 'send failed');
@@ -204,26 +180,12 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         emit OwnerAdmin();
     }
 
-    /**
-     * @notice Handle the receipt of ERC1363 tokens
-     * @dev Any ERC1363 smart contract calls this function on the recipient
-     * after a `transfer` or a `transferFrom`. This function MAY throw to revert and reject the
-     * transfer. Return of other than the magic value MUST result in the
-     * transaction being reverted.
-     * Note: the token contract address is always the message sender.
-     * @param operator address The address which called `transferAndCall` or `transferFromAndCall` function
-     * @param sender address The address which are token transferred from
-     * @param amount uint256 The amount of tokens transferred
-     * @param data bytes Additional data with no specified format
-     * @return `bytes4(keccak256("onTransferReceived(address,address,uint256,bytes)"))`
-     *  unless throwing
-     */
     function onTransferReceived(
         address operator,
         address sender,
         uint256 amount,
         bytes calldata data
-    ) external override(IERC1363Receiver) acceptedTokenOnly returns (bytes4) {
+    ) external override acceptedTokenOnly returns (bytes4) {
         require(amount > 0, 'Stop fooling me! Are you going to pay?');
 
         emit TokensReceived(operator, sender, amount, data);
@@ -233,15 +195,9 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         return IERC1363Receiver(this).onTransferReceived.selector;
     }
 
-    /**
-     * @dev Called after validating a `onTransferReceived`.
-     * param _sender The address which are token transferred from
-     * param _amount The amount of tokens transferred
-     * param _data Additional data with no specified format
-     */
     function _transferReceived(
-        address /* _sender */,
-        uint256 /* _amount */,
+        address sender,
+        uint256 realAmount,
         bytes memory _data
     ) private {
         (
@@ -249,18 +205,25 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             address newOwner,
             uint24 pixelId,
             bytes3 colour,
-            uint256 amount
+            uint256 declaredAmount
         ) = abi.decode(_data, (bytes4, address, uint24, bytes3, uint256));
-        // SECURITY HINT: modify this
-        bytes memory callData = abi.encodeWithSelector(
-            selector,
-            newOwner,
-            pixelId,
-            colour,
-            amount
+
+        bytes4 buySelector = this.buy.selector;
+        bytes4 updateSelector = this.update.selector;
+
+        require(
+            selector == buySelector || selector == updateSelector,
+            'Call of an unknown function'
         );
-        (bool success, ) = address(this).delegatecall(callData);
-        require(success, 'Function call failed');
+
+        require(realAmount == declaredAmount, 'Amount mismatch');
+        require(sender == newOwner, 'Sender mismatch');
+
+        if (selector == buySelector) {
+            buy(sender, pixelId, colour, realAmount);
+        } else {
+            update(sender, pixelId, colour, realAmount);
+        }
     }
 
     receive() external payable {
@@ -271,4 +234,3 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         revert('Unknown function call');
     }
 }
-
