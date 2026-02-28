@@ -113,13 +113,14 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         require(balance >= compensationBalance, 'Insufficient balance!');
         require(compensationBalance > 0, 'Insufficient compensation balance!');
 
+        // SECURITY HINT: modify this
+        compensationBalances[_msgSender()] = 0;
+
         // transfer msg.sender's compensation LUNAs to the address specified in `to`. If caller is EOA, call ERC20 transfer()
         bool withdrawalSuccess = (_msgSender() == tx.origin)
             ? acceptedToken.transfer(address(to), compensationBalance) // EOA
             : acceptedToken.transferAndCall(address(to), compensationBalance); // SC
         require(withdrawalSuccess, 'withdraw failed');
-        // SECURITY HINT: modify this
-        compensationBalances[_msgSender()] = 0;
 
         emit WithdrawCompensation(address(to), compensationBalance);
     }
@@ -241,7 +242,7 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      */
     function _transferReceived(
         address /* _sender */,
-        uint256 /* _amount */,
+        uint256 _amount,
         bytes memory _data
     ) private {
         (
@@ -251,13 +252,21 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             bytes3 colour,
             uint256 amount
         ) = abi.decode(_data, (bytes4, address, uint24, bytes3, uint256));
+        
         // SECURITY HINT: modify this
+        require(amount == _amount, 'Amount mismatch');
+        require(
+            selector == this.buy.selector ||
+            selector == this.update.selector,
+            "Call of an unknown function"
+        );
+
         bytes memory callData = abi.encodeWithSelector(
             selector,
             newOwner,
             pixelId,
             colour,
-            amount
+            _amount
         );
         (bool success, ) = address(this).delegatecall(callData);
         require(success, 'Function call failed');
