@@ -1,12 +1,12 @@
 pragma solidity ^0.8.0;
 
-___ ___ {
-  function count() ___ ___ returns (___);
+interface ISuperHonk {
+    function count() external view returns (uint256);
 
-  function honk() ___;
+    function honk() external;
 }
 
-contract SuperHonk is ___ {
+contract SuperHonk is ISuperHonk {
     uint256 public count;
 
     event LoudSound(address indexed source);
@@ -47,7 +47,7 @@ contract Cars {
         returns(uint256 carId)
     {
         require(
-            msg.value > 0.1 ether,
+            msg.value >= 0.1 ether,
             "requires payment"
         );
         carId = ++numCars;

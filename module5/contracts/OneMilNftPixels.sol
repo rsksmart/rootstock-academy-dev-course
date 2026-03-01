@@ -68,6 +68,9 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         _;
     }
 
+    bytes4 private constant BUY_SELECTOR = bytes4(keccak256("buy(address,uint24,bytes3,uint256)"));
+    bytes4 private constant UPDATE_SELECTOR = bytes4(keccak256("update(address,uint24,bytes3,uint256)"));
+
     constructor(IERC1363 _acceptedToken)
         ERC721('OneMilNftPixels', 'NFT1MPX')
         Ownable(msg.sender)
@@ -113,13 +116,14 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         require(balance >= compensationBalance, 'Insufficient balance!');
         require(compensationBalance > 0, 'Insufficient compensation balance!');
 
-        // transfer msg.sender's compensation LUNAs to the address specified in `to`. If caller is EOA, call ERC20 transfer()
+        // effects: set balance to zero before external interaction to prevent reentrancy
+        compensationBalances[_msgSender()] = 0;
+
+        // transfer msg.sender's compensation LUNAs to the address specified in `to`.
         bool withdrawalSuccess = (_msgSender() == tx.origin)
             ? acceptedToken.transfer(address(to), compensationBalance) // EOA
             : acceptedToken.transferAndCall(address(to), compensationBalance); // SC
         require(withdrawalSuccess, 'withdraw failed');
-        // SECURITY HINT: modify this
-        compensationBalances[_msgSender()] = 0;
 
         emit WithdrawCompensation(address(to), compensationBalance);
     }
@@ -134,27 +138,7 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      *   e.g. `0xFF00FF` is `rgb(255, 0, 255)` (purple)
      */
     function buy(address sender, uint24 id, bytes3 colour, uint256 amount) public acceptedTokenOnly{
-        Pixel storage pixel = pixels[id];
-        require(
-            amount >= pixel.price + minPriceIncrement,
-            'should increment on current price'
-        );
-        pixel.price = amount;
-        pixel.colour = colour;
-        
-        // Check if token exists by trying to get its owner
-        address currentOwner = _ownerOf(id);
-        if (currentOwner != address(0)) {
-            // purchasing an pixel already in existence
-
-            // compensate the previous owner of the ERC721 token with a small amount of LUNAs
-            compensationBalances[currentOwner] += compensation;
-
-            _transfer(currentOwner, sender, id);
-        } else {
-            // purchasing a previously untouched pixel
-            _safeMint(sender, id);
-        }
+        _buy(sender, id, colour, amount);
     }
 
     /**
@@ -168,18 +152,7 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
     function update(address sender, uint24 id, bytes3 colour, uint256 amount)
         public acceptedTokenOnly
     {
-        require(
-            amount >= updatePrice,
-            'should pay update price'
-        );
-        require(
-            ERC721.ownerOf(id) == sender,
-            'only owner allowed'
-        );
-        Pixel storage pixel = pixels[id];
-        pixel.colour = colour;
-
-        emit Update(id);
+        _update(sender, id, colour, amount);
     }
 
     function ownerAdmin(
@@ -241,7 +214,7 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      */
     function _transferReceived(
         address /* _sender */,
-        uint256 /* _amount */,
+        uint256 _amountTransferred,
         bytes memory _data
     ) private {
         (
@@ -251,16 +224,50 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             bytes3 colour,
             uint256 amount
         ) = abi.decode(_data, (bytes4, address, uint24, bytes3, uint256));
-        // SECURITY HINT: modify this
-        bytes memory callData = abi.encodeWithSelector(
-            selector,
-            newOwner,
-            pixelId,
-            colour,
-            amount
+        // ensure the actual transferred amount matches the amount encoded in calldata
+        require(amount == _amountTransferred, 'Amount mismatch');
+        // only allow a small set of safe selectors (whitelist)
+        if (selector == BUY_SELECTOR) {
+            _buy(newOwner, pixelId, colour, amount);
+            return;
+        }
+        if (selector == UPDATE_SELECTOR) {
+            _update(newOwner, pixelId, colour, amount);
+            return;
+        }
+        revert('Call of an unknown function');
+    }
+
+    // Internal purchase logic without external modifiers (called from onTransferReceived)
+    function _buy(address sender, uint24 id, bytes3 colour, uint256 amount) internal {
+        Pixel storage pixel = pixels[id];
+        require(
+            amount >= pixel.price + minPriceIncrement,
+            'should increment on current price'
         );
-        (bool success, ) = address(this).delegatecall(callData);
-        require(success, 'Function call failed');
+        pixel.price = amount;
+        pixel.colour = colour;
+
+        // Check if token exists by trying to get its owner
+        address currentOwner = _ownerOf(id);
+        if (currentOwner != address(0)) {
+            // compensate the previous owner of the ERC721 token with a small amount of LUNAs
+            compensationBalances[currentOwner] += compensation;
+
+            _transfer(currentOwner, sender, id);
+        } else {
+            _safeMint(sender, id);
+        }
+    }
+
+    // Internal update logic without external modifiers (called from onTransferReceived)
+    function _update(address sender, uint24 id, bytes3 colour, uint256 amount) internal {
+        require(amount >= updatePrice, 'should pay update price');
+        require(ERC721.ownerOf(id) == sender, 'only owner allowed');
+        Pixel storage pixel = pixels[id];
+        pixel.colour = colour;
+
+        emit Update(id);
     }
 
     receive() external payable {
