@@ -1,0 +1,22 @@
+{
+  "contracts": {
+    "SimpleToken": "0x33c4d4BF85Df368Ba70190E6Fe01b70c33c397e6",
+    "PriceOracle": "0xd56248bf60594De0D6A17c34433FF231aeEb02a7",
+    "NFTMarketplace": "0x80200c257A7A9B243B081619388d02cF87E018a7"
+  },
+  "deployer": "0xD1AF2dAc4e0a9d1F58B99E2f42Bc0320Ed74a7cd",
+  "network": "rskTestnet",
+  "chainId": 31,
+  "timestamp": "2026-03-01T18:37:28.131Z",
+  "configuration": {
+    "token": {
+      "name": "MarketToken",
+      "symbol": "MKT",
+      "initialSupply": 1000000
+    },
+    "marketplace": {
+      "paymentToken": "0x33c4d4BF85Df368Ba70190E6Fe01b70c33c397e6",
+      "priceOracle": "0xd56248bf60594De0D6A17c34433FF231aeEb02a7"
+    }
+  }
+}
