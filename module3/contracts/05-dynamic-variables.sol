@@ -16,9 +16,6 @@ contract Cars {
     mapping(uint256 => Car) public cars;
 
     constructor() {
-        // add a default car to the mapping
-        cars[numCars] = Car(0xff0000, 4, CarStatus.parked, msg.sender);
-        numCars++;
     }
 
 }
