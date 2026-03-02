@@ -3,11 +3,14 @@ pragma solidity ^0.8.0;
 
 contract Cars {
 
-    ___ ___ isBlack;
-    ___ ___ doors;
-    ___ ___ owner;
+    bool public isBlack;
+    uint256 public doors;
+    address public owner;
 
     constructor() {
+        isBlack = true;
+        doors = 4;
+        owner = msg.sender;
     }
 
 }
