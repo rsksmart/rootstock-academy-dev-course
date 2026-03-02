@@ -14,7 +14,7 @@
 
 **PR Title/Branch Format:** `module6/makindemercymiracle@gmail.com`
 
-* *Example: module5/makindemercymiracle.gmail.com  
+* *Example: module6/makindemercymiracle.gmail.com  
 * **Target Repo:** [`https://github.com/rsksmart/rootstock-academy-dev-course`](https://github.com/rsksmart/rootstock-academy-dev-course) 
 
 ### **Submission Link**
