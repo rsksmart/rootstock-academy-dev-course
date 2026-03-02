@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
-___ solidity ^0.8.0;
+pragma solidity ^0.8.0;
 
-___ Abc {
+contract Abc {
 
-    ___() {
+    string public message;
+
+    constructor() {
+        message = "now this is a perfectly valid minimal smart contract!";
     }
 
 }
