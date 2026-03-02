@@ -69,8 +69,8 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
     }
 
     constructor(IERC1363 _acceptedToken)
-        ERC721('OneMilNftPixels', 'NFT1MPX')
-        Ownable(msg.sender)
+    ERC721('OneMilNftPixels', 'NFT1MPX')
+    Ownable(msg.sender)
     {
         require(
             address(_acceptedToken) != address(0),
@@ -91,14 +91,14 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      * @dev See {IERC165-supportsInterface}.
      */
     function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721)
-        returns (bool)
+    public
+    view
+    override(ERC721)
+    returns (bool)
     {
         return
-            interfaceId == type(IERC1363Receiver).interfaceId ||
-            super.supportsInterface(interfaceId);
+                interfaceId == type(IERC1363Receiver).interfaceId ||
+                super.supportsInterface(interfaceId);
     }
 
     /**
@@ -113,13 +113,14 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         require(balance >= compensationBalance, 'Insufficient balance!');
         require(compensationBalance > 0, 'Insufficient compensation balance!');
 
+        // SECURITY FIX OMP-001: Zero out balance BEFORE external call (checks-effects-interactions pattern)
+        compensationBalances[_msgSender()] = 0;
+
         // transfer msg.sender's compensation LUNAs to the address specified in `to`. If caller is EOA, call ERC20 transfer()
         bool withdrawalSuccess = (_msgSender() == tx.origin)
             ? acceptedToken.transfer(address(to), compensationBalance) // EOA
             : acceptedToken.transferAndCall(address(to), compensationBalance); // SC
         require(withdrawalSuccess, 'withdraw failed');
-        // SECURITY HINT: modify this
-        compensationBalances[_msgSender()] = 0;
 
         emit WithdrawCompensation(address(to), compensationBalance);
     }
@@ -141,7 +142,7 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         );
         pixel.price = amount;
         pixel.colour = colour;
-        
+
         // Check if token exists by trying to get its owner
         address currentOwner = _ownerOf(id);
         if (currentOwner != address(0)) {
@@ -166,7 +167,7 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      *   e.g. `0xFF00FF` is `rgb(255, 0, 255)` (purple).
      */
     function update(address sender, uint24 id, bytes3 colour, uint256 amount)
-        public acceptedTokenOnly
+    public acceptedTokenOnly
     {
         require(
             amount >= updatePrice,
@@ -240,27 +241,33 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      * param _data Additional data with no specified format
      */
     function _transferReceived(
-        address /* _sender */,
-        uint256 /* _amount */,
+        address _sender,
+        uint256 _amount,
         bytes memory _data
     ) private {
         (
             bytes4 selector,
-            address newOwner,
+            ,
             uint24 pixelId,
             bytes3 colour,
             uint256 amount
         ) = abi.decode(_data, (bytes4, address, uint24, bytes3, uint256));
-        // SECURITY HINT: modify this
-        bytes memory callData = abi.encodeWithSelector(
-            selector,
-            newOwner,
-            pixelId,
-            colour,
-            amount
+
+        // SECURITY FIX OMP-002: Validate that the amount in data matches actual transferred amount
+        require(amount == _amount, 'Amount mismatch');
+
+        // SECURITY FIX OMP-003: Only allow buy() and update() functions, prevent arbitrary function calls
+        require(
+            selector == this.buy.selector || selector == this.update.selector,
+            'Call of an unknown function'
         );
-        (bool success, ) = address(this).delegatecall(callData);
-        require(success, 'Function call failed');
+
+        // Direct call instead of delegatecall
+        if (selector == this.buy.selector) {
+            buy(_sender, pixelId, colour, amount);
+        } else if (selector == this.update.selector) {
+            update(_sender, pixelId, colour, amount);
+        }
     }
 
     receive() external payable {
