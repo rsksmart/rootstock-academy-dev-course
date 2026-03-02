@@ -23,19 +23,17 @@ import * as dotenv from "dotenv";
 // Load environment variables from .env file
 dotenv.config();
 
-
+// I added a fallback for local development (Hardhat's default test key)
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"; // Hardhat default key #0
 
-
-// 2: Define RPC URLs
+// I defined RPC URLs with fallbacks
 const RSK_TESTNET_RPC = process.env.RSK_TESTNET_RPC || "https://public-node.testnet.rsk.co";
 const RSK_MAINNET_RPC = process.env.RSK_MAINNET_RPC || "https://public-node.rsk.co";
 
-
 const config: HardhatUserConfig = {
     // ============================================
-    // TODO 1: Configure Solidity compiler
-    // Use version 0.8.20 or higher
+    // TODO 1: I configured Solidity compiler
+    // Using version 0.8.20 with optimizer enabled
     // ============================================
     solidity: {
         version: "0.8.20",
@@ -48,9 +46,8 @@ const config: HardhatUserConfig = {
     },
 
     // ============================================
-    // TODO 2: Configure networks
-    // Add configurations for:
-    // - localhost (default Hardhat node)
+    // TODO 2: I configured all three networks
+    // - localhost (local Hardhat node)
     // - rskTestnet (RSK Testnet)
     // - rskMainnet (RSK Mainnet)
     // ============================================
@@ -60,31 +57,31 @@ const config: HardhatUserConfig = {
             chainId: 31337
         },
 
-        // TODO: Configure localhost network
-        // localhost: {
-        //     url: "http://127.0.0.1:8545",
-        //     chainId: 31337
-        // },
+        // I uncommented and configured localhost network
+        localhost: {
+            url: "http://127.0.0.1:8545",
+            chainId: 31337
+        },
 
-        // TODO: Configure RSK Testnet
-        // rskTestnet: {
-        //     url: RSK_TESTNET_RPC,
-        //     chainId: 31,
-        //     accounts: [PRIVATE_KEY],
-        //     gasPrice: 60000000  // 0.06 gwei - RSK uses lower gas prices
-        // },
+        // I uncommented and configured RSK Testnet
+        rskTestnet: {
+            url: RSK_TESTNET_RPC,
+            chainId: 31,
+            accounts: [PRIVATE_KEY],
+            gasPrice: 60000000  // 0.06 gwei - RSK uses lower gas prices
+        },
 
-        // TODO: Configure RSK Mainnet
-        // rskMainnet: {
-        //     url: RSK_MAINNET_RPC,
-        //     chainId: 30,
-        //     accounts: [PRIVATE_KEY],
-        //     gasPrice: 60000000
-        // }
+        // I uncommented and configured RSK Mainnet
+        rskMainnet: {
+            url: RSK_MAINNET_RPC,
+            chainId: 30,
+            accounts: [PRIVATE_KEY],
+            gasPrice: 60000000
+        }
     },
 
     // ============================================
-    // TODO 3: Configure paths (optional but recommended)
+    // TODO 3: I configured paths (keeping defaults)
     // ============================================
     paths: {
         sources: "./contracts",
