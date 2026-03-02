@@ -14,6 +14,6 @@ artifacts/
 # Coverage
 coverage/
 coverage.json
-
+typechain-types/
 # Deployment artifacts (students will generate these)
 # deployments/
