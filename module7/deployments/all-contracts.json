@@ -1,13 +1,13 @@
 {
   "contracts": {
-    "SimpleToken": "0xD2B4B5bDb7964B5fB53306C760992c9834f05221",
-    "PriceOracle": "0xc590cdbe869aC02652565D1C8fFD878173A4160F",
-    "NFTMarketplace": "0xA1fFc83fEe544E23B069C7E8fE29Ece64938f518"
+    "SimpleToken": "0x7449478525Eb5106f487d44672B40592Af2a4E49",
+    "PriceOracle": "0x23e783F25D27095E3bdb7239C9755eBbCF75f6EB",
+    "NFTMarketplace": "0xb7D58AD6643c9C08aB9B774BE6C022693E6D09D2"
   },
-  "deployer": "0x72EEfa1112478b657cc6aC3dBF8e9cdBf62aB457",
+  "deployer": "0x09aB514B6974601967E7b379478EFf4073cceD06",
   "network": "rskTestnet",
   "chainId": 31,
-  "timestamp": "2026-01-13T18:12:00.966Z",
+  "timestamp": "2026-03-03T19:13:46.553Z",
   "configuration": {
     "token": {
       "name": "MarketToken",
@@ -15,8 +15,8 @@
       "initialSupply": 1000000
     },
     "marketplace": {
-      "paymentToken": "0xD2B4B5bDb7964B5fB53306C760992c9834f05221",
-      "priceOracle": "0xc590cdbe869aC02652565D1C8fFD878173A4160F"
+      "paymentToken": "0x7449478525Eb5106f487d44672B40592Af2a4E49",
+      "priceOracle": "0x23e783F25D27095E3bdb7239C9755eBbCF75f6EB"
     }
   }
 }

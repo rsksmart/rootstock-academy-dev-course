@@ -6,6 +6,7 @@
  */
 
 import { HardhatUserConfig } from "hardhat/config";
+import '@nomicfoundation/hardhat-verify';
 import "@nomicfoundation/hardhat-toolbox";
 import * as dotenv from "dotenv";
 
@@ -72,6 +73,23 @@ const config: HardhatUserConfig = {
     gasReporter: {
         enabled: process.env.REPORT_GAS === "true",
         currency: "USD"
+    },
+
+    // Etherscan verification configuration for RSK Testnet
+    etherscan: {
+        apiKey: {
+            rskTestnet: process.env.BLOCKSCOUT_API_KEY || ""
+        },
+        customChains: [
+            {
+                network: "rskTestnet",
+                chainId: 31,
+                urls: {
+                    apiURL: "https://rootstock-testnet.blockscout.com/api",
+                    browserURL: "https://rootstock-testnet.blockscout.com"
+                }
+            }
+        ]
     }
 };
 
