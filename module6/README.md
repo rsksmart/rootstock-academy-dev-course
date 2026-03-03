@@ -44,11 +44,11 @@ module6/
 Your first deployment! Learn the fundamentals of deploying a contract.
 
 **Tasks:**
-- [ ] Get the contract factory for `SimpleToken`
-- [ ] Deploy the contract with parameters: `"SimpleToken"`, `"STK"`, `1000000`
-- [ ] Wait for deployment confirmation
-- [ ] Log the deployed address
-- [ ] Save deployment info to `deployments/SimpleToken.json`
+- [x] Get the contract factory for `SimpleToken`
+- [x] Deploy the contract with parameters: `"SimpleToken"`, `"STK"`, `1000000`
+- [x] Wait for deployment confirmation
+- [x] Log the deployed address
+- [x] Save deployment info to `deployments/SimpleToken.json`
 
 **Run with:**
 ```bash
@@ -63,10 +63,10 @@ npx hardhat run scripts/01-deploy-simple.ts
 Deploy contracts with custom configuration and verify the parameters.
 
 **Tasks:**
-- [ ] Deploy `SimpleToken` with custom name, symbol, and supply
-- [ ] Verify parameters were set correctly by reading contract state
-- [ ] Check deployer received the initial supply
-- [ ] Save deployment info including parameters used
+- [x] Deploy `SimpleToken` with custom name, symbol, and supply
+- [x] Verify parameters were set correctly by reading contract state
+- [x] Check deployer received the initial supply
+- [x] Save deployment info including parameters used
 
 **Run with:**
 ```bash
@@ -81,12 +81,12 @@ npx hardhat run scripts/02-deploy-with-params.ts
 Deploy a complete system of contracts that depend on each other.
 
 **Tasks:**
-- [ ] Deploy `SimpleToken` first (no dependencies)
-- [ ] Deploy `PriceOracle` (no dependencies)
-- [ ] Deploy `NFTMarketplace` with `SimpleToken` address as parameter
-- [ ] Configure `NFTMarketplace` with `PriceOracle` address
-- [ ] Verify all contracts are properly connected
-- [ ] Save all addresses in `deployments/all-contracts.json`
+- [x] Deploy `SimpleToken` first (no dependencies)
+- [x] Deploy `PriceOracle` (no dependencies)
+- [x] Deploy `NFTMarketplace` with `SimpleToken` address as parameter
+- [x] Configure `NFTMarketplace` with `PriceOracle` address
+- [x] Verify all contracts are properly connected
+- [x] Save all addresses in `deployments/all-contracts.json`
 
 **Run with:**
 ```bash
@@ -101,11 +101,11 @@ npx hardhat run scripts/03-deploy-multiple.ts
 Configure Hardhat to work with Rootstock networks.
 
 **Tasks:**
-- [ ] Set up environment variable for private key
-- [ ] Configure `localhost` network for local development
-- [ ] Configure `rskTestnet` network with correct RPC URL
-- [ ] Configure `rskMainnet` network with correct RPC URL
-- [ ] Set appropriate gas prices for Rootstock networks
+- [x] Set up environment variable for private key
+- [x] Configure `localhost` network for local development
+- [x] Configure `rskTestnet` network with correct RPC URL
+- [x] Configure `rskMainnet` network with correct RPC URL
+- [x] Set appropriate gas prices for Rootstock networks
 
 **Rootstock Network Details:**
 | Network | Chain ID | RPC URL |
