@@ -59,6 +59,22 @@ const config: HardhatUserConfig = {
             gasPrice: 60000000
         }
     },
+    
+    etherscan: {
+        apiKey: {
+            rskTestnet: "RSK_TOKEN", // Any non-empty string works for Rootstock
+        },
+        customChains: [
+            {
+                network: "rskTestnet",
+                chainId: 31,
+                urls: {
+                    apiURL: "https://rootstock-testnet.blockscout.com/api",
+                    browserURL: "https://rootstock-testnet.blockscout.com/",
+                },
+            },
+        ],
+    },
 
     // TODO 3: Configure paths
     paths: {
