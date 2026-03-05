@@ -67,12 +67,12 @@ const config: HardhatUserConfig = {
         // },
 
         // TODO: Configure RSK Testnet
-        // rskTestnet: {
-        //     url: RSK_TESTNET_RPC,
-        //     chainId: 31,
-        //     accounts: [PRIVATE_KEY],
-        //     gasPrice: 60000000  // 0.06 gwei - RSK uses lower gas prices
-        // },
+        rskTestnet: {
+            url: RSK_TESTNET_RPC,
+            chainId: 31,
+            accounts: [PRIVATE_KEY],
+            gasPrice: 60000000  // 0.06 gwei - RSK uses lower gas prices
+        },
 
         // TODO: Configure RSK Mainnet
         // rskMainnet: {
