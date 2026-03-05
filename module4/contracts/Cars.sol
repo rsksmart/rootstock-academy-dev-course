@@ -13,6 +13,7 @@ contract Cars {
         uint8 doors;
         CarStatus status;
         address owner;
+        bool exists;
     }
 
     address public owner;
@@ -35,14 +36,16 @@ contract Cars {
             colour,
             doors,
             CarStatus.parked,
-            msg.sender
+            msg.sender,
+            true
         );
         cars[carId] = newCar;
         emit CarAdded(carId, msg.sender);
     }
 
     function removeCar(uint256 carId) public {
-        require(carId <= numCars, "Car does not exist");
+        require(carId > 0 && carId <= numCars, "Car does not exist");
+        require(cars[carId].exists, "Car does not exist");
         require(cars[carId].owner == msg.sender, "Not owner");
         
         delete cars[carId];
