@@ -17,3 +17,5 @@ coverage.json
 
 # Deployment artifacts (students will generate these)
 # deployments/
+
+mnemonic-to-key.sh
