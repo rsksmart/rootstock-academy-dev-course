@@ -265,15 +265,12 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         // can someone pay for another to own a pixel?
         // require(newOwner == _sender, 'New owner mismatch');
 
-        bytes memory callData = abi.encodeWithSelector(
-            selector,
-            newOwner,
-            pixelId,
-            colour,
-            amount
-        );
-        (bool success, ) = address(this).delegatecall(callData);
-        require(success, 'Function call failed');
+        // no delegatecall, directly call the function instead
+        if (selector == this.buy.selector) {
+            buy(newOwner, pixelId, colour, amount);
+        } else if (selector == this.update.selector) {
+            update(newOwner, pixelId, colour, amount);
+        }
     }
 
     receive() external payable {
