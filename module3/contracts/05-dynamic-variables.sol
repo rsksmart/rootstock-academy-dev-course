@@ -1,8 +1,9 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
 contract Cars {
 
-    enum CarStatus { driving, parked }
+    enum CarStatus { parked, driving }
 
     struct Car {
         bytes3 colour;
@@ -11,8 +12,8 @@ contract Cars {
         address owner;
     }
 
-    ___ public numCars = ___;
-    ____(uint256 => ___) public cars;
+    uint256 public numCars = 0;
+    mapping(uint256 => Car) public cars;
 
     constructor() {
     }
