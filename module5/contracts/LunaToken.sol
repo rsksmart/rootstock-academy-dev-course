@@ -9,6 +9,6 @@ contract LunaToken is ERC1363 {
     }
 
     fallback() external {
-        revert('Unknown function call');
+        revert('Unknown function call'); f
     }
 }
