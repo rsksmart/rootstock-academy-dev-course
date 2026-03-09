@@ -10,17 +10,17 @@ Provide the RSK Testnet Explorer URLs for each verified contract:
 
 ### SimpleToken
 ```text
-https://explorer.testnet.rootstock.io/address/0xa4edb4e680f1c9a541ff66a6a6313d4553774112
+https://explorer.testnet.rootstock.io/address/0xeaa80e1d23ff9060f5adcf970be4fef005c0d6b4
 ```
 
 ### PriceOracle
 ```text
-https://explorer.testnet.rootstock.io/address/0xf02929e7c529facd2d6510a50cc7137cdbd3717c
+https://explorer.testnet.rootstock.io/address/0x91d78f3ee77f5cc2909bd171625862e0c34ea5b4
 ```
 
 ### NFTMarketplace
 ```text
-https://explorer.testnet.rootstock.io/address/0xbe31a8d1712947614e3f33ec8298a3afa31a0e5b
+https://explorer.testnet.rootstock.io/address/0xa8d25ceb704dfdc8f91d04d9274d01099e94c048
 ```
 
 ---
@@ -48,5 +48,5 @@ This should show the green checkmark and the verified source code.
 Add any notes or observations from your verification process:
 
 ```text
-I noticed that i cannot verify twice, once i got the verification right the first time, i cannot verify again and i cannot use any solidity version other than the one i deployed with.
+ A contract can only be verified once, using the exact Solidity version and compiler settings it was deployed with. To make changes, deploy a new contract.
 ```
