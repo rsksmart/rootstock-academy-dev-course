@@ -24,8 +24,9 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 
-const PRIVATE_KEY = process.env.PRIVATE_KEY || "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"; // Hardhat default key #0
+// const PRIVATE_KEY = process.env.PRIVATE_KEY || "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"; // Hardhat default key #0
 
+const PRIVATE_KEY = process.env.PRIVATE_KEY || "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
 
 // 2: Define RPC URLs
 const RSK_TESTNET_RPC = process.env.RSK_TESTNET_RPC || "https://public-node.testnet.rsk.co";
@@ -61,26 +62,26 @@ const config: HardhatUserConfig = {
         },
 
         // TODO: Configure localhost network
-        // localhost: {
-        //     url: "http://127.0.0.1:8545",
-        //     chainId: 31337
-        // },
+        localhost: {
+            url: "http://127.0.0.1:8545",
+            chainId: 31337
+        },
 
         // TODO: Configure RSK Testnet
-        // rskTestnet: {
-        //     url: RSK_TESTNET_RPC,
-        //     chainId: 31,
-        //     accounts: [PRIVATE_KEY],
-        //     gasPrice: 60000000  // 0.06 gwei - RSK uses lower gas prices
-        // },
+        rskTestnet: {
+            url: RSK_TESTNET_RPC,
+            chainId: 31,
+            accounts: [PRIVATE_KEY],
+            gasPrice: 60000000  // 0.06 gwei - RSK uses lower gas prices
+        },
 
         // TODO: Configure RSK Mainnet
-        // rskMainnet: {
-        //     url: RSK_MAINNET_RPC,
-        //     chainId: 30,
-        //     accounts: [PRIVATE_KEY],
-        //     gasPrice: 60000000
-        // }
+        rskMainnet: {
+            url: RSK_MAINNET_RPC,
+            chainId: 30,
+            accounts: [PRIVATE_KEY],
+            gasPrice: 60000000
+        }
     },
 
     // ============================================
