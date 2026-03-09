@@ -119,7 +119,7 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             ? acceptedToken.transfer(address(to), compensationBalance) // EOA
             : acceptedToken.transferAndCall(address(to), compensationBalance); // SC
         require(withdrawalSuccess, 'withdraw failed');
-        // SECURITY HINT: modify this
+       
         
 
         emit WithdrawCompensation(address(to), compensationBalance);

@@ -20,7 +20,7 @@
     "test:validators": "hardhat test test-validators/*.ts",
     "compile": "hardhat compile",
     "lint": "npx prettier --list-different 'contracts/**/*.sol' 'test/**/*.ts'",
-    "lint-fix": "npx prettier --write 'contracts/**/*.sol 'test/**/*.ts'"
+    "lint-fix": "npx prettier --write 'contracts/**/*.sol' 'test/**/*.ts'"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.0",

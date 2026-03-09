@@ -26,7 +26,7 @@ describe("01-basic-deployment: Testing Contract Deployment", function () {
     const numCars = await cars.numCars();
     
     // Verify it's initialized to 0
-     expect(numCars).to.equal(0);
+    expect(numCars).to.equal(0);
   });
 
   it("should have a public numCars variable", async function () {

@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 contract Cars {
 
     enum CarStatus {
-        driver,
+        driving,
         parked
     }
 

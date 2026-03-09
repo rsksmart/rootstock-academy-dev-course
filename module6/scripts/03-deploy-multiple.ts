@@ -69,7 +69,8 @@ export async function main() {
 
   const NFTMarketplace = await ethers.getContractFactory("NFTMarketplace");
 
-  const marketplace = await NFTMarketplace.deploy(deployed.SimpleToken);
+  // Use non-null assertion since we know SimpleToken is deployed
+  const marketplace = await NFTMarketplace.deploy(deployed.SimpleToken!);
   await marketplace.waitForDeployment();
 
   deployed.NFTMarketplace = await marketplace.getAddress();
@@ -80,6 +81,11 @@ export async function main() {
   // STEP 4: Configure NFTMarketplace
   // ============================================
   console.log("\nStep 4: Configuring NFTMarketplace...");
+
+  // Check if PriceOracle exists before using it
+  if (!deployed.PriceOracle) {
+    throw new Error("PriceOracle address is undefined - deployment failed");
+  }
 
   const tx = await marketplace.setPriceOracle(deployed.PriceOracle);
   await tx.wait();
@@ -94,8 +100,7 @@ export async function main() {
   const paymentToken = await marketplace.paymentToken();
   console.log(
     "   Payment Token:",
-    paymentToken.toLowerCase() ===
-      deployed.SimpleToken!.toLowerCase()
+    paymentToken.toLowerCase() === deployed.SimpleToken!.toLowerCase()
       ? "[OK]"
       : "[FAIL]"
   );
@@ -103,8 +108,7 @@ export async function main() {
   const oracleAddr = await marketplace.priceOracle();
   console.log(
     "   Price Oracle:",
-    oracleAddr.toLowerCase() ===
-      deployed.PriceOracle!.toLowerCase()
+    oracleAddr.toLowerCase() === deployed.PriceOracle!.toLowerCase()
       ? "[OK]"
       : "[FAIL]"
   );
