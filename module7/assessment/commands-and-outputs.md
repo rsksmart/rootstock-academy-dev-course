@@ -10,17 +10,17 @@ Provide the RSK Testnet Explorer URLs for each verified contract:
 
 ### SimpleToken
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0xeb08beae69e2ab91724d5a1249ed84656b4b2d8e?tab=contract
 ```
 
 ### PriceOracle
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0xc590cdbe869ac02652565d1c8ffd878173a4160f?tab=contract
 ```
 
 ### NFTMarketplace
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0xa1ffc83fee544e23b069c7e8fe29ece64938f518?tab=contract
 ```
 
 ---
@@ -48,5 +48,10 @@ This should show the green checkmark and the verified source code.
 Add any notes or observations from your verification process:
 
 ```text
-YOUR_NOTES_HERE
+The contracts were verified on the Rootstock Testnet Explorer.
+Settings used:
+- Compiler Version: v0.8.20
+- EVM Version: paris
+- Optimization: No
+Flattened Solidity source files were generated using 'npx hardhat flatten' and verified as an exact match on the explorer.
 ```
