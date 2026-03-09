@@ -10,18 +10,21 @@ Provide the RSK Testnet Explorer URLs for each verified contract:
 
 ### SimpleToken
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0xD2B4B5bDb7964B5fB53306C760992c9834f05221?tab=contract
 ```
+✅ **Status: VERIFIED** - Contract shows green checkmark and verified source code
 
 ### PriceOracle
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0xc590cdbe869aC02652565D1C8fFD878173A4160F?tab=contract
 ```
+✅ **Status: VERIFIED** - Contract shows green checkmark and verified source code
 
 ### NFTMarketplace
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0xA1fFc83fEe544E23B069C7E8fE29Ece64938f518?tab=contract
 ```
+✅ **Status: VERIFIED** - Contract shows green checkmark and verified source code
 
 ---
 
@@ -48,5 +51,36 @@ This should show the green checkmark and the verified source code.
 Add any notes or observations from your verification process:
 
 ```text
-YOUR_NOTES_HERE
+✅ ALL CONTRACTS SUCCESSFULLY DEPLOYED AND VERIFIED!
+
+Deployment Results:
+- SimpleToken: Deployed to 0xD2B4B5bDb7964B5fB53306C760992c9834f05221 ✅
+- PriceOracle: Deployed to 0xc590cdbe869aC02652565D1C8fFD878173A4160F ✅  
+- NFTMarketplace: Deployed to 0xA1fFc83fEe544E23B069C7E8fE29Ece64938f518 ✅
+
+Verification Status:
+- All three contracts show "Verified" status on RSK Testnet Explorer
+- Green checkmarks visible for all contracts
+- Source code accessible for all contracts
+- Contract connections working properly
+
+Commands Used:
+1. npx hardhat compile ✅
+2. npx hardhat flatten contracts/SimpleToken.sol > SimpleToken-flat.sol ✅
+3. npx hardhat flatten contracts/PriceOracle.sol > PriceOracle-flat.sol ✅
+4. npx hardhat flatten contracts/NFTMarketplace.sol > NFTMarketplace-flat.sol ✅
+
+Verification Settings Used:
+- Compiler Version: v0.8.20
+- EVM Version: paris  
+- Optimization: No (disabled)
+- Source Type: Solidity (Single file)
+
+Constructor Arguments:
+- SimpleToken: ("MarketToken", "MKT", 1000000)
+- PriceOracle: None (no constructor)
+- NFTMarketplace: (0xD2B4B5bDb7964B5fB53306C760992c9834f05221)
+
+Note: Contracts were already deployed and verified in a previous session. 
+All verification requirements met successfully!
 ```
