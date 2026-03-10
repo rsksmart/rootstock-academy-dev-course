@@ -7,6 +7,8 @@ artifacts/
 
 # Environment variables (NEVER commit!)
 .env
+.env.local
+env.example
 
 # TypeScript build
 *.tsbuildinfo
