@@ -1,16 +1,19 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.0 <0.9.0;
 
-import 'hardhat/console.sol';
-import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
-import '@openzeppelin/contracts/access/Ownable.sol';
-import 'erc-payable-token/contracts/token/ERC1363/IERC1363.sol';
-import 'erc-payable-token/contracts/token/ERC1363/IERC1363Receiver.sol';
+import "hardhat/console.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "erc-payable-token/contracts/token/ERC1363/IERC1363.sol";
+import "erc-payable-token/contracts/token/ERC1363/IERC1363Receiver.sol";
 
 contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
     uint256 public minPriceIncrement;
     uint256 public updatePrice;
     uint256 public compensation;
+    
+    // Track the last transfer amount to prevent calldata manipulation
+    uint256 private _lastTransferAmount;
 
     /**
      * @dev Compensations paid to pixels' former owners, when they are bought over.
@@ -113,13 +116,14 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         require(balance >= compensationBalance, 'Insufficient balance!');
         require(compensationBalance > 0, 'Insufficient compensation balance!');
 
+        // SECURITY FIX: Update state BEFORE external call to prevent reentrancy
+        compensationBalances[_msgSender()] = 0;
+
         // transfer msg.sender's compensation LUNAs to the address specified in `to`. If caller is EOA, call ERC20 transfer()
         bool withdrawalSuccess = (_msgSender() == tx.origin)
             ? acceptedToken.transfer(address(to), compensationBalance) // EOA
             : acceptedToken.transferAndCall(address(to), compensationBalance); // SC
         require(withdrawalSuccess, 'withdraw failed');
-        // SECURITY HINT: modify this
-        compensationBalances[_msgSender()] = 0;
 
         emit WithdrawCompensation(address(to), compensationBalance);
     }
@@ -134,6 +138,9 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
      *   e.g. `0xFF00FF` is `rgb(255, 0, 255)` (purple)
      */
     function buy(address sender, uint24 id, bytes3 colour, uint256 amount) public acceptedTokenOnly{
+        // SECURITY FIX: Validate amount matches actual transfer
+        require(amount == _lastTransferAmount, 'Amount mismatch');
+        
         Pixel storage pixel = pixels[id];
         require(
             amount >= pixel.price + minPriceIncrement,
@@ -141,13 +148,13 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         );
         pixel.price = amount;
         pixel.colour = colour;
-        
+
         // Check if token exists by trying to get its owner
         address currentOwner = _ownerOf(id);
         if (currentOwner != address(0)) {
             // purchasing an pixel already in existence
 
-            // compensate the previous owner of the ERC721 token with a small amount of LUNAs
+            // compensate the previous owner of the ERC721 token with a small amount of LUNAS
             compensationBalances[currentOwner] += compensation;
 
             _transfer(currentOwner, sender, id);
@@ -226,6 +233,9 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
     ) external override(IERC1363Receiver) acceptedTokenOnly returns (bytes4) {
         require(amount > 0, 'Stop fooling me! Are you going to pay?');
 
+        // SECURITY FIX: Store the actual amount transferred
+        _lastTransferAmount = amount;
+
         emit TokensReceived(operator, sender, amount, data);
 
         _transferReceived(sender, amount, data);
@@ -251,7 +261,13 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             bytes3 colour,
             uint256 amount
         ) = abi.decode(_data, (bytes4, address, uint24, bytes3, uint256));
-        // SECURITY HINT: modify this
+        
+        // SECURITY FIX: Only allow specific function selectors
+        require(
+            selector == this.buy.selector || selector == this.update.selector,
+            'Call of an unknown function'
+        );
+        
         bytes memory callData = abi.encodeWithSelector(
             selector,
             newOwner,
@@ -259,8 +275,20 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
             colour,
             amount
         );
-        (bool success, ) = address(this).delegatecall(callData);
-        require(success, 'Function call failed');
+        
+        // FINAL FIX: Forward the original error message from the delegatecall
+        (bool success, bytes memory returnData) = address(this).delegatecall(callData);
+        
+        if (!success) {
+            if (returnData.length > 0) {
+                assembly {
+                    let returnData_size := mload(returnData)
+                    revert(add(32, returnData), returnData_size)
+                }
+            } else {
+                revert('Function call failed');
+            }
+        }
     }
 
     receive() external payable {
@@ -271,4 +299,3 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         revert('Unknown function call');
     }
 }
-
