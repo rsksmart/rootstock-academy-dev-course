@@ -10,15 +10,20 @@
     "chai": "^4.5.0",
     "ethers": "^6.7.0",
     "hardhat": "^2.26.3",
+    "prettier": "^3.8.1",
+    "prettier-plugin-solidity": "^2.3.1",
     "ts-node": "^10.9.2",
     "typescript": "~5.0.4"
   },
   "scripts": {
     "test": "hardhat test",
     "test:validators": "hardhat test test-validators/*.ts",
-    "compile": "hardhat compile"
+    "compile": "hardhat compile",
+    "lint": "npx prettier --list-different 'contracts/**/*.sol' 'test/**/*.js'",
+    "lint-fix": "npx prettier --write 'contracts/**/*.sol' 'test/**/*.js'"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^5.6.1",
     "erc-payable-token": "^7.0.0"
   }
 }
