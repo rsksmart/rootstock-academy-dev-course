@@ -10,17 +10,19 @@ Provide the RSK Testnet Explorer URLs for each verified contract:
 
 ### SimpleToken
 ```text
-YOUR_EXPLORER_URL_HERE
+(https://explorer.testnet.rootstock.io/address/0x68fa053514236ce24a61daba28b107f765f63125?tab=contract
+)
 ```
 
 ### PriceOracle
 ```text
-YOUR_EXPLORER_URL_HERE
+(https://explorer.testnet.rootstock.io/address/0x58bd36fbb8816b140d7381494204384e7eaaee92?tab=contract
+)
 ```
 
 ### NFTMarketplace
 ```text
-YOUR_EXPLORER_URL_HERE
+(https://explorer.testnet.rootstock.io/address/0x1c1c2712e738b0e2833594a0e30d8e5fc8023ef8?tab=contract)
 ```
 
 ---
@@ -30,7 +32,7 @@ YOUR_EXPLORER_URL_HERE
 Provide a screenshot of the RSK Testnet Explorer verification form for **one** of your contracts.
 This should show the form filled out with the correct settings (compiler version, EVM version, etc.)
 
-![Verification Form Screenshot](./screenshot-verification-form.png)
+![Verification Form Screenshot](./simple1.png)
 
 ---
 
@@ -39,7 +41,7 @@ This should show the form filled out with the correct settings (compiler version
 Provide a screenshot of the RSK Testnet Explorer "Code" tab after successful verification for **one** of your contracts.
 This should show the green checkmark and the verified source code.
 
-![Verified Code Screenshot](./screenshot-verified-code.png)
+![Verified Code Screenshot](./simple1.png)
 
 ---
 

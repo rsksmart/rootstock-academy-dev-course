@@ -22,35 +22,40 @@ contract Cars {
         uint8 doors
     )
         public
-        ___
+        payable
         returns(uint256 carId)
     {
-        ___(
-            msg.___ > ___,
-            "requires payment"
+        require(
+            msg.value >= 0.1 ether,
+            "You must pay 0.001 RBTC to add a new car"
         );
+
         carId = ++numCars;
+
         Car memory newCar = Car(
             colour,
             doors,
             CarStatus.parked,
             msg.sender
         );
+
         cars[carId] = newCar;
     }
 
     function statusChange(
-        uint256 ___,
+        uint256 carId,
         CarStatus newStatus
     ) public {
         require(
-            cars[carId].___ == msg.___,
-            "only owner"
+            cars[carId].owner == msg.sender,
+            "you are not the owner of this car"
         );
+
         require(
-            cars[carId].___ != ___,
-            "no change"
+            cars[carId].status != newStatus,
+            "car is already in this status"
         );
+
         cars[carId].status = newStatus;
     }
 

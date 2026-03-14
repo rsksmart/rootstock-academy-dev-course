@@ -4,7 +4,7 @@ contract Cars {
 
     enum CarStatus { driving, parked }
 
-    ___ CarHonk(_________);
+    event CarHonk(uint256 indexed carId);
 
     struct Car {
         bytes3 colour;
@@ -31,13 +31,16 @@ contract Cars {
             msg.value > 0.1 ether,
             "requires payment"
         );
+
         carId = ++numCars;
+
         Car memory newCar = Car(
             colour,
             doors,
             CarStatus.parked,
             msg.sender
         );
+
         cars[carId] = newCar;
     }
 
@@ -52,6 +55,7 @@ contract Cars {
             cars[carId].status != newStatus,
             "no change"
         );
+
         cars[carId].status = newStatus;
     }
 
@@ -59,9 +63,9 @@ contract Cars {
         uint256 carId
     )
         public
-        _________
+        onlyOwner(carId)
     {
-        ___ CarHonk(___);
+        emit CarHonk(carId);
     }
 
     modifier onlyOwner(
