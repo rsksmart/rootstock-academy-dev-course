@@ -44,7 +44,7 @@ contract Cars {
         CarStatus newStatus
     )
         public
-        ___(carId)
+        onlyOwner(carId)
     {
         require(
             cars[carId].status != newStatus,
@@ -53,15 +53,15 @@ contract Cars {
         cars[carId].status = newStatus;
     }
 
-    ___ onlyOwner(
-        ___ ___
+    modifier onlyOwner(
+        uint256 carId
     )
     {
         require(
             cars[carId].owner == msg.sender,
             "only owner"
         );
-        _________
+        _;
     }
 
 }
