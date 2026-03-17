@@ -10,17 +10,17 @@ Provide the RSK Testnet Explorer URLs for each verified contract:
 
 ### SimpleToken
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0x7a2100eb9d543960def707573697716ab6131149?tab=contract
 ```
 
 ### PriceOracle
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0x6dd219a99dac469ca48ad70a71500c9505d2ba5b?tab=contract
 ```
 
 ### NFTMarketplace
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0x8772fef2285ad55c1e41e971a1c62addfcd7b5f2?tab=contract
 ```
 
 ---
