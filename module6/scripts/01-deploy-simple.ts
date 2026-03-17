@@ -34,6 +34,7 @@ export async function main() {
   // Hint: Use ethers.getContractFactory("ContractName")
   // ============================================
   // const SimpleToken = ...
+  const SimpleToken = await ethers.getContractFactory("SimpleToken");
 
   // ============================================
   // TODO 2: Deploy the contract
@@ -42,12 +43,14 @@ export async function main() {
   // Hint: Use the deploy() method on the factory
   // ============================================
   // const token = ...
+  const token = await SimpleToken.deploy("SimpleToken", "STK", 1000000);
 
   // ============================================
   // TODO 3: Wait for deployment to complete
   // Hint: Use waitForDeployment() method
   // ============================================
   // await ...
+  await token.waitForDeployment();
 
   // ============================================
   // TODO 4: Get and log the contract address
@@ -55,18 +58,21 @@ export async function main() {
   // ============================================
   // const tokenAddress = ...
   // console.log("SimpleToken deployed to:", tokenAddress);
+  const tokenAddress = await token.getAddress();
+  console.log("SimpleToken deployed to:", tokenAddress);
 
   // ============================================
   // TODO 5: Save deployment information
   // Create a deployments folder if it doesn't exist
   // Save a JSON file with: address, deployer, timestamp, network
   // ============================================
+  const network = await ethers.provider.getNetwork();
   const deploymentInfo = {
-    // address: tokenAddress,
-    // deployer: deployer.address,
-    // timestamp: new Date().toISOString(),
-    // network: (await ethers.provider.getNetwork()).name,
-    // chainId: Number((await ethers.provider.getNetwork()).chainId)
+    address: tokenAddress,
+    deployer: deployer.address,
+    timestamp: new Date().toISOString(),
+    network: network.name,
+    chainId: Number((network).chainId)
   };
 
   // Create deployments directory
@@ -76,11 +82,11 @@ export async function main() {
   }
 
   // Save to file
-  // fs.writeFileSync(
-  //     path.join(deploymentsDir, "SimpleToken.json"),
-  //     JSON.stringify(deploymentInfo, null, 2)
-  // );
-  // console.log("Deployment info saved to deployments/SimpleToken.json");
+  fs.writeFileSync(
+      path.join(deploymentsDir, "SimpleToken.json"),
+      JSON.stringify(deploymentInfo, null, 2)
+  );
+  console.log("Deployment info saved to deployments/SimpleToken.json");
 
   console.log("\nDeployment complete!");
 }
