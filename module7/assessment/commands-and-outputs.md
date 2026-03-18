@@ -10,17 +10,17 @@ Provide the RSK Testnet Explorer URLs for each verified contract:
 
 ### SimpleToken
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/token/0x77eee9db3aba893862b4fc377b142f3d9e6c025b
 ```
 
 ### PriceOracle
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0x81317d3ae66b92af9b2de1e1cf3b5f8ea908e011
 ```
 
 ### NFTMarketplace
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0xe68ef484adb68f80bb15f7c74cf173674085258d
 ```
 
 ---
@@ -30,7 +30,7 @@ YOUR_EXPLORER_URL_HERE
 Provide a screenshot of the RSK Testnet Explorer verification form for **one** of your contracts.
 This should show the form filled out with the correct settings (compiler version, EVM version, etc.)
 
-![Verification Form Screenshot](./screenshot-verification-form.png)
+![Verification Form Screenshot](../contract-verified-form.png)
 
 ---
 
@@ -39,7 +39,7 @@ This should show the form filled out with the correct settings (compiler version
 Provide a screenshot of the RSK Testnet Explorer "Code" tab after successful verification for **one** of your contracts.
 This should show the green checkmark and the verified source code.
 
-![Verified Code Screenshot](./screenshot-verified-code.png)
+![Verified Code Screenshot](../NFTMarketplace-verified.png)
 
 ---
 
@@ -48,5 +48,5 @@ This should show the green checkmark and the verified source code.
 Add any notes or observations from your verification process:
 
 ```text
-YOUR_NOTES_HERE
+I didn't know I was to upload the form while filling
 ```
