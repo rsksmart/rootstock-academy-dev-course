@@ -9,21 +9,20 @@ Complete this file after deploying and verifying your contracts on RSK Testnet.
 Provide the RSK Testnet Explorer URLs for each verified contract:
 
 ### SimpleToken
-```text
-YOUR_EXPLORER_URL_HERE
-```
+
+https://explorer.testnet.rootstock.io/address/0x60c9783f3Ac6Decb40C4CCAC69F57f476Ee73ED2
+
 
 ### PriceOracle
-```text
-YOUR_EXPLORER_URL_HERE
-```
+
+https://explorer.testnet.rootstock.io/address/0x52bdD3CDA163AAcb89F62CCA5C0f754Ee0de7899
+
 
 ### NFTMarketplace
-```text
-YOUR_EXPLORER_URL_HERE
-```
 
----
+https://explorer.testnet.rootstock.io/address/0x47ED97FDd594AD4067E464D0cdcafAe345Ed69f7
+
+
 
 ## (2) Screenshot - Verification Form
 
