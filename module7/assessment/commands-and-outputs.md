@@ -10,17 +10,17 @@ Provide the RSK Testnet Explorer URLs for each verified contract:
 
 ### SimpleToken
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0xD2B4B5bDb7964B5fB53306C760992c9834f05221?tab=contract
 ```
 
 ### PriceOracle
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0xc590cdbe869aC02652565D1C8fFD878173A4160F?tab=contract
 ```
 
 ### NFTMarketplace
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0xA1fFc83fEe544E23B069C7E8fE29Ece64938f518?tab=contract
 ```
 
 ---
@@ -48,5 +48,21 @@ This should show the green checkmark and the verified source code.
 Add any notes or observations from your verification process:
 
 ```text
-YOUR_NOTES_HERE
+All three contracts were deployed to Rootstock Testnet (chainId: 31) and verified successfully.
+
+Deployment summary:
+- SimpleToken (MarketToken/MKT): 0xD2B4B5bDb7964B5fB53306C760992c9834f05221
+  Constructor args: name="MarketToken", symbol="MKT", initialSupply=1000000
+- PriceOracle: 0xc590cdbe869aC02652565D1C8fFD878173A4160F
+  No constructor args
+- NFTMarketplace: 0xA1fFc83fEe544E23B069C7E8fE29Ece64938f518
+  Constructor arg: _paymentToken=0xD2B4B5bDb7964B5fB53306C760992c9834f05221 (SimpleToken)
+
+Verification settings used for all contracts:
+- Source Type: Solidity (Single file)
+- Compiler Version: v0.8.20
+- EVM Version: paris
+- Optimization: No (disabled, false with 0 runs)
+
+Contracts were flattened using: npx hardhat flatten contracts/<Name>.sol > <Name>-flat.sol
 ```
