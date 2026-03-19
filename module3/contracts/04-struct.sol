@@ -1,17 +1,17 @@
 pragma solidity ^0.8.0;
 
 contract Cars {
-
-    enum CarStatus { driving, parked }
-
-    ___ Car {
-        ___ colour;
-        ___ doors;
-        ___ status;
-        ___ owner;
+    enum CarStatus {
+        driving,
+        parked
     }
 
-    constructor() {
+    struct Car {
+        bytes3 colour;
+        uint8 doors;
+        CarStatus status;
+        address owner;
     }
 
+    constructor() {}
 }
