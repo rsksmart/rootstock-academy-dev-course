@@ -33,10 +33,6 @@ const RSK_MAINNET_RPC = process.env.RSK_MAINNET_RPC || "https://public-node.rsk.
 
 
 const config: HardhatUserConfig = {
-    // ============================================
-    // TODO 1: Configure Solidity compiler
-    // Use version 0.8.20 or higher
-    // ============================================
     solidity: {
         version: "0.8.20",
         settings: {
@@ -47,45 +43,32 @@ const config: HardhatUserConfig = {
         }
     },
 
-    // ============================================
-    // TODO 2: Configure networks
-    // Add configurations for:
-    // - localhost (default Hardhat node)
-    // - rskTestnet (RSK Testnet)
-    // - rskMainnet (RSK Mainnet)
-    // ============================================
     networks: {
         // Hardhat's built-in network (used by default)
         hardhat: {
             chainId: 31337
         },
 
-        // TODO: Configure localhost network
-        // localhost: {
-        //     url: "http://127.0.0.1:8545",
-        //     chainId: 31337
-        // },
+        localhost: {
+            url: "http://127.0.0.1:8545",
+            chainId: 31337
+        },
 
-        // TODO: Configure RSK Testnet
-        // rskTestnet: {
-        //     url: RSK_TESTNET_RPC,
-        //     chainId: 31,
-        //     accounts: [PRIVATE_KEY],
-        //     gasPrice: 60000000  // 0.06 gwei - RSK uses lower gas prices
-        // },
+        rskTestnet: {
+            url: RSK_TESTNET_RPC,
+            chainId: 31,
+            accounts: [PRIVATE_KEY],
+            gasPrice: 60000000
+        },
 
-        // TODO: Configure RSK Mainnet
-        // rskMainnet: {
-        //     url: RSK_MAINNET_RPC,
-        //     chainId: 30,
-        //     accounts: [PRIVATE_KEY],
-        //     gasPrice: 60000000
-        // }
+        rskMainnet: {
+            url: RSK_MAINNET_RPC,
+            chainId: 30,
+            accounts: [PRIVATE_KEY],
+            gasPrice: 60000000
+        }
     },
 
-    // ============================================
-    // TODO 3: Configure paths (optional but recommended)
-    // ============================================
     paths: {
         sources: "./contracts",
         tests: "./test",
