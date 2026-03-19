@@ -10,17 +10,17 @@ Provide the RSK Testnet Explorer URLs for each verified contract:
 
 ### SimpleToken
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0x347049EdEa689E8CB534d6103A54cde39e14B0F4
 ```
 
 ### PriceOracle
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0x6084d803B766c87cD00693FC88C36b5Ece6aB89C
 ```
 
 ### NFTMarketplace
 ```text
-YOUR_EXPLORER_URL_HERE
+https://explorer.testnet.rootstock.io/address/0xef894DF715404739144CEdeD9161940c6B777A4F
 ```
 
 ---
@@ -48,5 +48,5 @@ This should show the green checkmark and the verified source code.
 Add any notes or observations from your verification process:
 
 ```text
-YOUR_NOTES_HERE
+Used Standard JSON Input method for verification as it was more reliable than the flattened single file approach.
 ```
