@@ -113,13 +113,13 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         require(balance >= compensationBalance, 'Insufficient balance!');
         require(compensationBalance > 0, 'Insufficient compensation balance!');
 
+        compensationBalances[_msgSender()] = 0;
+
         // transfer msg.sender's compensation LUNAs to the address specified in `to`. If caller is EOA, call ERC20 transfer()
         bool withdrawalSuccess = (_msgSender() == tx.origin)
             ? acceptedToken.transfer(address(to), compensationBalance) // EOA
             : acceptedToken.transferAndCall(address(to), compensationBalance); // SC
         require(withdrawalSuccess, 'withdraw failed');
-        // SECURITY HINT: modify this
-        compensationBalances[_msgSender()] = 0;
 
         emit WithdrawCompensation(address(to), compensationBalance);
     }
@@ -235,32 +235,36 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
 
     /**
      * @dev Called after validating a `onTransferReceived`.
-     * param _sender The address which are token transferred from
-     * param _amount The amount of tokens transferred
+     * param sender The address which are token transferred from
+     * param amount The amount of tokens transferred
      * param _data Additional data with no specified format
      */
     function _transferReceived(
-        address /* _sender */,
-        uint256 /* _amount */,
+        address sender,
+        uint256 amount,
         bytes memory _data
     ) private {
-        (
-            bytes4 selector,
-            address newOwner,
-            uint24 pixelId,
-            bytes3 colour,
-            uint256 amount
-        ) = abi.decode(_data, (bytes4, address, uint24, bytes3, uint256));
-        // SECURITY HINT: modify this
-        bytes memory callData = abi.encodeWithSelector(
-            selector,
-            newOwner,
-            pixelId,
-            colour,
-            amount
+        bytes4 selector;
+        uint24 pixelId;
+        bytes3 colour;
+        address ignoredAddress;
+        uint256 ignoredAmount;
+
+        (selector, ignoredAddress, pixelId, colour, ignoredAmount) = abi.decode(
+            _data,
+            (bytes4, address, uint24, bytes3, uint256)
         );
-        (bool success, ) = address(this).delegatecall(callData);
-        require(success, 'Function call failed');
+
+        require(
+            selector == this.buy.selector || selector == this.update.selector,
+            'Call of an unknown function'
+        );
+
+        if (selector == this.buy.selector) {
+            buy(sender, pixelId, colour, amount);
+        } else if (selector == this.update.selector) {
+            update(sender, pixelId, colour, amount);
+        }
     }
 
     receive() external payable {
