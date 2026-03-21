@@ -24,13 +24,13 @@ describe("03-testing-events: Testing Events and Logs", function () {
     
     // First car should have ID 1
     await expect(cars.addCar("0xff0000", 4))
-      .to.___(___, "___")
-      .withArgs(___, owner.___);
+      .to.emit(cars, "CarAdded")
+      .withArgs(1, owner.address);
       
     // Second car should have ID 2
     await expect(cars.addCar("0x00ff00", 2))
       .to.emit(cars, "CarAdded")
-      .withArgs(___, owner.address);
+      .withArgs(2, owner.address);
   });
 
   it("should emit CarRemoved event", async function () {
@@ -38,8 +38,8 @@ describe("03-testing-events: Testing Events and Logs", function () {
     await cars.addCar("0xff0000", 4);
     
     // Remove it and check event
-    await expect(cars.___(__))
-      .to.emit(___, "CarRemoved")
+    await expect(cars.removeCar(1))
+      .to.emit(cars, "CarRemoved")
       .withArgs(1);
   });
 
@@ -54,7 +54,7 @@ describe("03-testing-events: Testing Events and Logs", function () {
     // Add second car
     await expect(cars.addCar("0x00ff00", 2))
       .to.emit(cars, "CarAdded")
-      .withArgs(___, ___);
+      .withArgs(2, owner.address);
       
     // Add third car
     await expect(cars.addCar("0x0000ff", 5))
